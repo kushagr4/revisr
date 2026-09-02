@@ -1,0 +1,16 @@
+{
+  "importRevision": "d9dd742eca3a2faefb5487e72fddf9768f4ccf9693dc143921f68e01cfafadd9",
+  "questionRowsRead": 2600,
+  "questionIDsUnique": 2600,
+  "questionsCreatedOnCleanImport": 2600,
+  "questionsUpdatedOnImmediateReimport": 2600,
+  "duplicatesCreatedOnImmediateReimport": 0,
+  "programmeDays": 30,
+  "assignments": 530,
+  "sourcesExpected": 136,
+  "sourcesResolved": 136,
+  "protectedQuestions": 40,
+  "warnings": [
+    "Chunk 3 adds catalogue resources only; the D4-D30 programme is intentionally unchanged."
+  ]
+}

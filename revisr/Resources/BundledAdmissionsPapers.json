@@ -1,0 +1,1368 @@
+{
+  "formatIdentifier": "revisr.bundled-admissions-papers.v2",
+  "schemaVersion": 2,
+  "sourceCount": 136,
+  "totalBytes": 47774410,
+  "sources": [
+    {
+      "sourceID": "SRC-77A3868201B609D7",
+      "resourceName": "SRC-77A3868201B609D7",
+      "resourceExtension": "pdf",
+      "expectedFilename": "A4SMC_QP16.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 102189,
+      "sha256": "206d673927bec7ad0b1fdd068256431f76f57873d7a1769a8adf4921976da7d6"
+    },
+    {
+      "sourceID": "SRC-1AE8EB9EBCA6F2DE",
+      "resourceName": "SRC-1AE8EB9EBCA6F2DE",
+      "resourceExtension": "pdf",
+      "expectedFilename": "CSAT sample-test-1.pdf",
+      "family": "CSAT",
+      "pageCount": 5,
+      "byteCount": 206929,
+      "sha256": "9398f5a8a9b1a39e67dd4cdb7340e0844f0232138592c23dc2716c70a5656175"
+    },
+    {
+      "sourceID": "SRC-C97FD8C05809210A",
+      "resourceName": "SRC-C97FD8C05809210A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "CSAT sample-test-2.pdf",
+      "family": "CSAT",
+      "pageCount": 5,
+      "byteCount": 209985,
+      "sha256": "24e770dc2d1cc167b12ac110e6aeeb264a5c7ef8f086d0d4d0edef2b8685fe91"
+    },
+    {
+      "sourceID": "SRC-88F08D5D4C40B88B",
+      "resourceName": "SRC-88F08D5D4C40B88B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "CSAT sample-test-3.pdf",
+      "family": "CSAT",
+      "pageCount": 5,
+      "byteCount": 228444,
+      "sha256": "9803b11b8e6f402bbfb1f25bf2f3479c4b01738f20db8b62b8e075854598764e"
+    },
+    {
+      "sourceID": "SRC-71167A3A698A35E0",
+      "resourceName": "SRC-71167A3A698A35E0",
+      "resourceExtension": "pdf",
+      "expectedFilename": "CSAT sample-test-4.pdf",
+      "family": "CSAT",
+      "pageCount": 5,
+      "byteCount": 251107,
+      "sha256": "4548b3a954eafe136ed46f652e8358e5b74b2792fb5b44cc5dbf7af78702de15"
+    },
+    {
+      "sourceID": "SRC-26BAA8484F999049",
+      "resourceName": "SRC-26BAA8484F999049",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2015-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 94962,
+      "sha256": "978292a76ffa32ff3fac6d22ef7b0d6e48c9324ba9df3f84fb81939ab1f62228"
+    },
+    {
+      "sourceID": "SRC-B42BFE9FDF08DCC7",
+      "resourceName": "SRC-B42BFE9FDF08DCC7",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2016-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 112683,
+      "sha256": "dec66a94c75054b9e4ee05352ead93d2c95b93b692c9f900adba0214ccbc1d0e"
+    },
+    {
+      "sourceID": "SRC-C6919E51AE3BB35A",
+      "resourceName": "SRC-C6919E51AE3BB35A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2017-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 105346,
+      "sha256": "562963a8fb04d9a88a3894b2e233932526aa7b8a1261602dee9e106456170512"
+    },
+    {
+      "sourceID": "SRC-C047558B64466DC4",
+      "resourceName": "SRC-C047558B64466DC4",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2018-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 49075,
+      "sha256": "812c626c8f142505f399290b2a89af9404dde6a55eb7f441a27a3023deb5c40d"
+    },
+    {
+      "sourceID": "SRC-86FD66F8AF4BF48F",
+      "resourceName": "SRC-86FD66F8AF4BF48F",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2019-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 104763,
+      "sha256": "70ad6dce54e2d13a9860d33eb892b58ee4471befccc9332769d3e964f952be67"
+    },
+    {
+      "sourceID": "SRC-FD7FB1E4F91FED59",
+      "resourceName": "SRC-FD7FB1E4F91FED59",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2020-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 84004,
+      "sha256": "9882bb5fcc5d20477cc3255e15a387b13f32b9d1685c5eaec73d8d9b6fa5ed6a"
+    },
+    {
+      "sourceID": "SRC-8BD9AFF23A269F4C",
+      "resourceName": "SRC-8BD9AFF23A269F4C",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2021-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 87496,
+      "sha256": "d86df135946785e3954059b414947c4254db4a9146ab56a64ba1e8eec27f5f5c"
+    },
+    {
+      "sourceID": "SRC-47E3165F5EF80842",
+      "resourceName": "SRC-47E3165F5EF80842",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2023-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 81842,
+      "sha256": "a4384476d84cebed4562f8d82b26a73f4cfc50c6fafac506ca5f3d4f3ca6b95a"
+    },
+    {
+      "sourceID": "SRC-2CB27CDFBF1D5AA2",
+      "resourceName": "SRC-2CB27CDFBF1D5AA2",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2024-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 92284,
+      "sha256": "b8e136eaeac19d59f607f59a094b3fff7459f657bbbc1e9432f7ee04acace3f1"
+    },
+    {
+      "sourceID": "SRC-B7FCBD589B706F3E",
+      "resourceName": "SRC-B7FCBD589B706F3E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "IMC-2025-q.pdf",
+      "family": "IMC",
+      "pageCount": 5,
+      "byteCount": 82705,
+      "sha256": "8f86db776591ae6e75d2d71c1d4ac35bfeced890ea7f36a2dd7469acc5223df2"
+    },
+    {
+      "sourceID": "SRC-11DCAC5BA30A4B9B",
+      "resourceName": "SRC-11DCAC5BA30A4B9B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2007.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 175540,
+      "sha256": "90240a16ea4e0166bd3e2369fd3c2e3fefc61803ab9b685cb8e9770f37b5f956"
+    },
+    {
+      "sourceID": "SRC-00908C66E7A061DA",
+      "resourceName": "SRC-00908C66E7A061DA",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2008.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 173979,
+      "sha256": "671dada4dc6a50a7f44f5382927c247133eba89cefecc79f3b1e343bd2f459fc"
+    },
+    {
+      "sourceID": "SRC-5475F9B3E90022E0",
+      "resourceName": "SRC-5475F9B3E90022E0",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2010.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 200701,
+      "sha256": "8e65a552b017dbc75222f256b13b9ba5139593f4953260a2dbd1a5aba7c59571"
+    },
+    {
+      "sourceID": "SRC-47D778194E00158C",
+      "resourceName": "SRC-47D778194E00158C",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2011.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 207221,
+      "sha256": "0973f938d531efb06cdc401ff376e1e5260aa9f97280d14aec04b3cfb1ca0901"
+    },
+    {
+      "sourceID": "SRC-03465A7EAF4F34FE",
+      "resourceName": "SRC-03465A7EAF4F34FE",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2014.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 235953,
+      "sha256": "9344e12f91be16baafd4d7e38a7022868bf7ca9b71f14065f5df560f74eb5244"
+    },
+    {
+      "sourceID": "SRC-166FF0D4CFFFF57E",
+      "resourceName": "SRC-166FF0D4CFFFF57E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2015.pdf",
+      "family": "MAT",
+      "pageCount": 30,
+      "byteCount": 778494,
+      "sha256": "f92a4eb33e5567e1052842510ad31831e182d8afdc29316c0388761d18940605"
+    },
+    {
+      "sourceID": "SRC-A3BD8716CB8D1B56",
+      "resourceName": "SRC-A3BD8716CB8D1B56",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2016.pdf",
+      "family": "MAT",
+      "pageCount": 29,
+      "byteCount": 251110,
+      "sha256": "f90e528fad80d0184e38c4b427f2fe55f2edd92cf319129ec00a5224c1de878b"
+    },
+    {
+      "sourceID": "SRC-CCC0114178624E11",
+      "resourceName": "SRC-CCC0114178624E11",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2017.pdf",
+      "family": "MAT",
+      "pageCount": 29,
+      "byteCount": 472370,
+      "sha256": "a909aa7dec3f5dba1ddb0a9171bd80ebb0c4af212241ddce14a1277b44b8e9ae"
+    },
+    {
+      "sourceID": "SRC-303E5FCD4BDC6E0A",
+      "resourceName": "SRC-303E5FCD4BDC6E0A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2018.pdf",
+      "family": "MAT",
+      "pageCount": 29,
+      "byteCount": 1677526,
+      "sha256": "30ee57f5164f50b5a80353170adf215ebd4f831968d5e400a2dc2b6e2f4e21a1"
+    },
+    {
+      "sourceID": "SRC-F6EDA85D703DD87D",
+      "resourceName": "SRC-F6EDA85D703DD87D",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2019.pdf",
+      "family": "MAT",
+      "pageCount": 33,
+      "byteCount": 338093,
+      "sha256": "9d7f4ce219fe9faf5c8de1ec36dfb11a33fe9fbee7b65a7a7e8b40b5d06579f2"
+    },
+    {
+      "sourceID": "SRC-C019252AEDA1B31C",
+      "resourceName": "SRC-C019252AEDA1B31C",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2020.pdf",
+      "family": "MAT",
+      "pageCount": 33,
+      "byteCount": 301683,
+      "sha256": "d14b3114bb40b6088092283a889373b41ecc5fc6867b9113afec21661a161e64"
+    },
+    {
+      "sourceID": "SRC-D1AA1ACAD167131F",
+      "resourceName": "SRC-D1AA1ACAD167131F",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2021.pdf",
+      "family": "MAT",
+      "pageCount": 33,
+      "byteCount": 325795,
+      "sha256": "a3fd54fcbc3fd5f012a7915eb1035b4b44375ba5ceb2d6a5057057b59c9ecfc0"
+    },
+    {
+      "sourceID": "SRC-F03B8E3E693DC444",
+      "resourceName": "SRC-F03B8E3E693DC444",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT 2022.pdf",
+      "family": "MAT",
+      "pageCount": 33,
+      "byteCount": 359168,
+      "sha256": "d4ff22b8aa943d8f8618e5f62ff5673328323ab5fae4fb5e15eb70e283a27e1f"
+    },
+    {
+      "sourceID": "SRC-0C0A23C53FC5A152",
+      "resourceName": "SRC-0C0A23C53FC5A152",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT Specimen 1.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 233641,
+      "sha256": "68ef050fba44a8166fb226744fcc39d6b90f53d9926ea55d5e5a954d3393900a"
+    },
+    {
+      "sourceID": "SRC-B6726EBA178465DA",
+      "resourceName": "SRC-B6726EBA178465DA",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MAT Specimen 2.pdf",
+      "family": "MAT",
+      "pageCount": 25,
+      "byteCount": 244548,
+      "sha256": "01b2e941a640cdb41e94e55061daddb12c8dcf3ea991bd4211d43942a801915c"
+    },
+    {
+      "sourceID": "SRC-5DFAF28630ADE000",
+      "resourceName": "SRC-5DFAF28630ADE000",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC-2017-paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 102800,
+      "sha256": "0002e5967481d9ef6ac63013fcb7f70ceb66b845e360c4fd962a6e8676b84339"
+    },
+    {
+      "sourceID": "SRC-C7490969E242938D",
+      "resourceName": "SRC-C7490969E242938D",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC-2022-Paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 128983,
+      "sha256": "367bc810639f2f4ed10edcdb83b811178a08b6d28722ba5473082bcff226e327"
+    },
+    {
+      "sourceID": "SRC-802E1A98D14C82D9",
+      "resourceName": "SRC-802E1A98D14C82D9",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC-2023-Paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 150622,
+      "sha256": "9937753ae04c29f47164ebec7c8410a810caf48b9dd5b55e7fccbdf8b5c5c270"
+    },
+    {
+      "sourceID": "SRC-EB34C15CFA44A832",
+      "resourceName": "SRC-EB34C15CFA44A832",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC-2024-Paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 104374,
+      "sha256": "e35154e548f0665d04f83fd18335a44703d955bb6cd15292af39baf4135d3ee0"
+    },
+    {
+      "sourceID": "SRC-55C780C1A2E541E3",
+      "resourceName": "SRC-55C780C1A2E541E3",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC15_QP_A4.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 104950,
+      "sha256": "6e03d3f86f498fc84bebac984c40742acf915320f18a454197e7fe83b4e65cce"
+    },
+    {
+      "sourceID": "SRC-7522176A3A6A95A1",
+      "resourceName": "SRC-7522176A3A6A95A1",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC2018_paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 158529,
+      "sha256": "78b417110223e6c51bcb12504e37bf5e4c228183d8c38f1614248874321d3812"
+    },
+    {
+      "sourceID": "SRC-9776A679F31FF777",
+      "resourceName": "SRC-9776A679F31FF777",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC_2019_Paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 259503,
+      "sha256": "84ea59b9c71b9af0d12fb666ff0a453cfb14e319a1800fe7061407f5996af486"
+    },
+    {
+      "sourceID": "SRC-C3FCA403CBE96CF2",
+      "resourceName": "SRC-C3FCA403CBE96CF2",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC_2020qp.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 149581,
+      "sha256": "602a50cad014f2b296b0f848c073923e446ccc54208482077d0dbdd42cd56ea4"
+    },
+    {
+      "sourceID": "SRC-047AA930DEB20E9C",
+      "resourceName": "SRC-047AA930DEB20E9C",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC_2021_paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 92070,
+      "sha256": "2ea1a63d52dc4a7a65eee99826eac0d3e8b6ee4c889b05c46e7ceb8064765c4c"
+    },
+    {
+      "sourceID": "SRC-FFC28DDBF7931554",
+      "resourceName": "SRC-FFC28DDBF7931554",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SMC_2025_paper.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 525880,
+      "sha256": "9866a6d35a63b0a4f3e29c1bf0c2ed4573695d9c62cefc688ec55590693166ce"
+    },
+    {
+      "sourceID": "SRC-A8EEC6FB51A7A56C",
+      "resourceName": "SRC-A8EEC6FB51A7A56C",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2017 Paper 1.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 801288,
+      "sha256": "a8c392aa8389fd5b9da096d8ff40df4f6b107206416bdad6251f57f3f8ecc438"
+    },
+    {
+      "sourceID": "SRC-E2609C48A191B76B",
+      "resourceName": "SRC-E2609C48A191B76B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2017 Paper 2.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 891115,
+      "sha256": "c24b42792763f609f2eb98e9cc9ee2bcb8088b85a5dbf590832407f6f2e76bb7"
+    },
+    {
+      "sourceID": "SRC-E8D3820E6E224F11",
+      "resourceName": "SRC-E8D3820E6E224F11",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2018 Paper 1.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 267881,
+      "sha256": "b3d0e5b525e07cec4e6dbbac3cd5073cc15cd918c797b3802770810e57b11134"
+    },
+    {
+      "sourceID": "SRC-6F1EAFB9122DE1FA",
+      "resourceName": "SRC-6F1EAFB9122DE1FA",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2018 Paper 2.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 213999,
+      "sha256": "09d26f8f6b943b9ce8cd807166195610a15b0da092f7a3b79e24f342fc0e6159"
+    },
+    {
+      "sourceID": "SRC-A64FC1F1F7B2EB61",
+      "resourceName": "SRC-A64FC1F1F7B2EB61",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2019 Paper 1.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 244158,
+      "sha256": "7806846df89e8317fc4382df170a11e6f776664ba00632b01cacf61a172b7e05"
+    },
+    {
+      "sourceID": "SRC-7F1E50669A41CED8",
+      "resourceName": "SRC-7F1E50669A41CED8",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2019 Paper 2.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 736397,
+      "sha256": "452355628f3b5f09150963a15c6e8c332064021004cd28bf9102cd16556ab1e1"
+    },
+    {
+      "sourceID": "SRC-71CF5BC2E344F0E3",
+      "resourceName": "SRC-71CF5BC2E344F0E3",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2020 Paper 1.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 255999,
+      "sha256": "0c80eadb9b4cba634a43190bfeae4fa8a014bc23df1603edea1b6f8b6ccf830e"
+    },
+    {
+      "sourceID": "SRC-4E63F1CAF9A4E1AD",
+      "resourceName": "SRC-4E63F1CAF9A4E1AD",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2020 Paper 2.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 277195,
+      "sha256": "63ffbf4f6e3144bebb599a1a663c999dc5bf69a12adda1c9e5f80fb21f438eac"
+    },
+    {
+      "sourceID": "SRC-774BFC53B01BF0F8",
+      "resourceName": "SRC-774BFC53B01BF0F8",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2021 Paper 1.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 263335,
+      "sha256": "77d3241be81c3bcb81ede9921887e60a8933c69f9e50874f2bfea6b8d1b1a59f"
+    },
+    {
+      "sourceID": "SRC-631A2E1654F2FFC5",
+      "resourceName": "SRC-631A2E1654F2FFC5",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2021 Paper 2.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 221455,
+      "sha256": "144e0a2d421b61b80b26ca41e8c01c1b913fdd8191f76ba2d824c7d0dfd0efe2"
+    },
+    {
+      "sourceID": "SRC-81A511BCBEFC16CB",
+      "resourceName": "SRC-81A511BCBEFC16CB",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2022 Paper 1.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 247117,
+      "sha256": "1bb784bb85b38445fe64f12638d99de4f680f19e6793c488b1337522e4d30c1a"
+    },
+    {
+      "sourceID": "SRC-A89AF912575D9AC6",
+      "resourceName": "SRC-A89AF912575D9AC6",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA 2022 Paper 2.pdf",
+      "family": "TMUA Actual",
+      "pageCount": 25,
+      "byteCount": 252422,
+      "sha256": "86216bed26a87975ee5cfbcf85b8faf58dc7e9f8bff70da6c481a37455fcd398"
+    },
+    {
+      "sourceID": "SRC-B018A1EC7252221A",
+      "resourceName": "SRC-B018A1EC7252221A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Mock A.pdf",
+      "family": "TMUA Mock",
+      "pageCount": 15,
+      "byteCount": 382330,
+      "sha256": "da572f2a5a51dd9df64eab35b7637e14ae88fb0015bdb1e884fd6838038d1bb3"
+    },
+    {
+      "sourceID": "SRC-00AE9244977C8511",
+      "resourceName": "SRC-00AE9244977C8511",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Mock B.pdf",
+      "family": "TMUA Mock",
+      "pageCount": 15,
+      "byteCount": 334213,
+      "sha256": "590a0951320cde205cf92a0d3c08a2f3d06cb4244fbafd778b65053966fd4a4b"
+    },
+    {
+      "sourceID": "SRC-382EA61B69EFEB17",
+      "resourceName": "SRC-382EA61B69EFEB17",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Mock Set C.pdf",
+      "family": "TMUA Mock",
+      "pageCount": 17,
+      "byteCount": 533438,
+      "sha256": "a05bbe19aee4e491428c4e230f2e42926c1a47b63b651679f389a155abf75d63"
+    },
+    {
+      "sourceID": "SRC-F7558B7AAE31BFA5",
+      "resourceName": "SRC-F7558B7AAE31BFA5",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Mock Set D.pdf",
+      "family": "TMUA Mock",
+      "pageCount": 17,
+      "byteCount": 395492,
+      "sha256": "f89252cbfef58636c5b29e5a7fa4dba4196b300bae375ee4d0d6d1007ff27c70"
+    },
+    {
+      "sourceID": "SRC-67F3206874040100",
+      "resourceName": "SRC-67F3206874040100",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Practice Paper 1.pdf",
+      "family": "TMUA Practice",
+      "pageCount": 17,
+      "byteCount": 291491,
+      "sha256": "b4c06da03634f7f5e68eff1de542aa19a126f83afbab81457a87c8c9e1a02322"
+    },
+    {
+      "sourceID": "SRC-7F7EA4180BFB47B8",
+      "resourceName": "SRC-7F7EA4180BFB47B8",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Practice Paper 2.pdf",
+      "family": "TMUA Practice",
+      "pageCount": 21,
+      "byteCount": 335932,
+      "sha256": "b8cd5d8b5a7aa960f44734f9e05ceae592e9d329c2173a61ebc9fc3a460e9159"
+    },
+    {
+      "sourceID": "SRC-6E86625682AFF01D",
+      "resourceName": "SRC-6E86625682AFF01D",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA Specimen Paper 1.pdf",
+      "family": "TMUA Specimen",
+      "pageCount": 17,
+      "byteCount": 121889,
+      "sha256": "d2e826c828b6102024bddd49b5edb85cedde4b50f116a4e2e3a0b41cf6f04241"
+    },
+    {
+      "sourceID": "SRC-BB8493B543D27EFB",
+      "resourceName": "SRC-BB8493B543D27EFB",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA_Content_Specification(1).pdf",
+      "family": "Specification",
+      "pageCount": 18,
+      "byteCount": 3389778,
+      "sha256": "4e6ec1c29b795aa5e5002309c60988546bd16b6cfb6d237336bb414b5d5760b8"
+    },
+    {
+      "sourceID": "SRC-09C38CBD2E30F12E",
+      "resourceName": "SRC-09C38CBD2E30F12E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Yotta TMUA Paper 1.pdf",
+      "family": "TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 140271,
+      "sha256": "83d76a821d49d1ba8f5518fd470faa7cfa8f44ad8f119c46857ee006093e16cf"
+    },
+    {
+      "sourceID": "SRC-72E7E2AF1089EE1E",
+      "resourceName": "SRC-72E7E2AF1089EE1E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Yotta_P2_QP.pdf",
+      "family": "TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 144776,
+      "sha256": "8830b9353d4ccdc175923ad5b7897b2e0e954687fba9544fabe791d91ce0e3f0"
+    },
+    {
+      "sourceID": "SRC-69F194FE32B14718",
+      "resourceName": "SRC-69F194FE32B14718",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo-1975.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 160888,
+      "sha256": "5216481f6cf659d0b51e1607f752a6793a65a73a5950d7c053bc844f39c6bfa9"
+    },
+    {
+      "sourceID": "SRC-3AE0D41C036D58B8",
+      "resourceName": "SRC-3AE0D41C036D58B8",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo-1976.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 124706,
+      "sha256": "fdecbd1f2d1db60e4cec4d0f99cc02817e2e4bfdade2f4f06381ee7ecce060fd"
+    },
+    {
+      "sourceID": "SRC-6EDE53BDD525F303",
+      "resourceName": "SRC-6EDE53BDD525F303",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2014.pdf",
+      "family": "BMO",
+      "pageCount": 2,
+      "byteCount": 63032,
+      "sha256": "a420a0266878edb9779dfab7838e65044b49e555bd51625b786ce34c41e83abe"
+    },
+    {
+      "sourceID": "SRC-281A15F8C28E5094",
+      "resourceName": "SRC-281A15F8C28E5094",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2015.pdf",
+      "family": "BMO",
+      "pageCount": 2,
+      "byteCount": 65809,
+      "sha256": "1068686d094a348520edd181ba9f41d2893f7a09d1d36456414c603b8d9577e7"
+    },
+    {
+      "sourceID": "SRC-8B3724DB6AA640BD",
+      "resourceName": "SRC-8B3724DB6AA640BD",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2016.pdf",
+      "family": "BMO",
+      "pageCount": 2,
+      "byteCount": 70893,
+      "sha256": "87ba3e4066c14a4e0a7eb4aa9a4043afdba226f5af9093295799cd7a8a3c14cf"
+    },
+    {
+      "sourceID": "SRC-7FA9E5B5763B9DCD",
+      "resourceName": "SRC-7FA9E5B5763B9DCD",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2017.pdf",
+      "family": "BMO",
+      "pageCount": 2,
+      "byteCount": 67069,
+      "sha256": "151adeb6935513e6093a6ee591bc48b3113ec1918ca618b861f6a4b861c810ef"
+    },
+    {
+      "sourceID": "SRC-0B5E56F8327B4106",
+      "resourceName": "SRC-0B5E56F8327B4106",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2018.pdf",
+      "family": "BMO",
+      "pageCount": 2,
+      "byteCount": 58260,
+      "sha256": "b77517b52464f9b4ea51d04aff02bf1146afbed4696cdf4cbdd55a1ffd219364"
+    },
+    {
+      "sourceID": "SRC-3BFD9834FB6AFACC",
+      "resourceName": "SRC-3BFD9834FB6AFACC",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2019.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 189407,
+      "sha256": "0c110c569037a7c8d7fd681d16ec724d0411998cb50bc4cfb658392fa68f99ee"
+    },
+    {
+      "sourceID": "SRC-DA57B6C2562A9CF1",
+      "resourceName": "SRC-DA57B6C2562A9CF1",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2020.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 196118,
+      "sha256": "855ac272e47cb68ae175f3319eb94d1bdc4510180b51dc816089645a5cd09875"
+    },
+    {
+      "sourceID": "SRC-36E02BE058B9AFBE",
+      "resourceName": "SRC-36E02BE058B9AFBE",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2021.pdf",
+      "family": "BMO",
+      "pageCount": 4,
+      "byteCount": 191563,
+      "sha256": "70e21f0cef0f5d65fede513dda55eb085e17d3225c52bffcf81d880ee6468366"
+    },
+    {
+      "sourceID": "SRC-F26DC43665C9C761",
+      "resourceName": "SRC-F26DC43665C9C761",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2022.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 268136,
+      "sha256": "6d4beda556c8f26651d45ca454aebfb2e58ccd1582ca7cb3d11428cd3708c858"
+    },
+    {
+      "sourceID": "SRC-8C463E1A9E242017",
+      "resourceName": "SRC-8C463E1A9E242017",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2023.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 201984,
+      "sha256": "9d2c122e536b221349947392dba5af173dec4cce6e498db4aa68f71c07befc68"
+    },
+    {
+      "sourceID": "SRC-385D3DE51F5BA6A6",
+      "resourceName": "SRC-385D3DE51F5BA6A6",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2024.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 339851,
+      "sha256": "ee70106cd7617398787f203901054bab0fe4a123dbe175eb4c02a6fe22069935"
+    },
+    {
+      "sourceID": "SRC-82A409FAEABB4535",
+      "resourceName": "SRC-82A409FAEABB4535",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2025.pdf",
+      "family": "BMO",
+      "pageCount": 3,
+      "byteCount": 341840,
+      "sha256": "b54e2f256a6896937f75f411689ee2e729d99400720942c11aa6eefdf635cf27"
+    },
+    {
+      "sourceID": "SRC-1AA1221413F02332",
+      "resourceName": "SRC-1AA1221413F02332",
+      "resourceExtension": "pdf",
+      "expectedFilename": "bmo1-2026.pdf",
+      "family": "BMO",
+      "pageCount": 4,
+      "byteCount": 363501,
+      "sha256": "95253a59c52fe6e3eb586533a50c284a68035347d2edca701ed249cd3aa30571"
+    },
+    {
+      "sourceID": "SRC-5158E147F9C37DAC",
+      "resourceName": "SRC-5158E147F9C37DAC",
+      "resourceExtension": "pdf",
+      "expectedFilename": "maclaurin-2010-2014 (page 12).pdf",
+      "family": "Maclaurin",
+      "pageCount": 39,
+      "byteCount": 490470,
+      "sha256": "a35c6eb98c79a51dfcd8918ed7fd4fd05b228de4fcd407ce2dbcc8e7dcd86435"
+    },
+    {
+      "sourceID": "SRC-742C39AEBEC39B0B",
+      "resourceName": "SRC-742C39AEBEC39B0B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "sk-2011-2014-(page 22).pdf",
+      "family": "Senior Kangaroo",
+      "pageCount": 34,
+      "byteCount": 567415,
+      "sha256": "7dccfb75655857eda761218ca97fdececb9b7f8fa9661354fc3aa50b9ee7610c"
+    },
+    {
+      "sourceID": "SRC-BBDF8D1E2837E0B3",
+      "resourceName": "SRC-BBDF8D1E2837E0B3",
+      "resourceExtension": "pdf",
+      "expectedFilename": "smc-2013-q.pdf",
+      "family": "SMC",
+      "pageCount": 5,
+      "byteCount": 131270,
+      "sha256": "6d93960db8f6436ea715683a771a5af526d3e686f59729b9d1a217a699e2a7ee"
+    },
+    {
+      "sourceID": "SRC-725396A2FEA2258D",
+      "resourceName": "SRC-725396A2FEA2258D",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2013 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 8,
+      "byteCount": 82528,
+      "sha256": "f04c24bb63bf51ced3bb375e5a66c0e1f5cc06f0846b9f050201060834662eff"
+    },
+    {
+      "sourceID": "SRC-A919F74D73D6D8D8",
+      "resourceName": "SRC-A919F74D73D6D8D8",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2014 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 8,
+      "byteCount": 78335,
+      "sha256": "08ba287ec2b4b1e89030d8d2af84de3f52f1cd93adf020bbf3dbf04c4ec1e4a4"
+    },
+    {
+      "sourceID": "SRC-1DC8CF8B24535397",
+      "resourceName": "SRC-1DC8CF8B24535397",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2015 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 8,
+      "byteCount": 76699,
+      "sha256": "2ff85a29e5f1f4fbee3eca07615a9e4f5cdb2a9249d16505f120c613ebe21bf4"
+    },
+    {
+      "sourceID": "SRC-F9D692E0337D916B",
+      "resourceName": "SRC-F9D692E0337D916B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2016 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 687022,
+      "sha256": "145f7864534c71bd8ca7557bc50250f7f4b924af234852c8d9b98a6101cf4145"
+    },
+    {
+      "sourceID": "SRC-CEECB85016AA155B",
+      "resourceName": "SRC-CEECB85016AA155B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2017 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 141505,
+      "sha256": "7be78d3b37a003c59ccfdc4859d78c3c2e5dedfa4fc38c360c3a528506b58d3f"
+    },
+    {
+      "sourceID": "SRC-3ED219E7B00E9611",
+      "resourceName": "SRC-3ED219E7B00E9611",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2017 STEP 2.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 138918,
+      "sha256": "1610997615679056d0785d98af0603eaf7ad605970e185469f10b5d605451c69"
+    },
+    {
+      "sourceID": "SRC-AE1EE3EF30B0AEBE",
+      "resourceName": "SRC-AE1EE3EF30B0AEBE",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2018 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 169157,
+      "sha256": "3abc6b142603c165228b5795481406572be7a10b6d55701362d512899efced42"
+    },
+    {
+      "sourceID": "SRC-BC7AC2214FE64F78",
+      "resourceName": "SRC-BC7AC2214FE64F78",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2018 STEP 2.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 171933,
+      "sha256": "f05dc137e109dabca1bf20af8adfa9ac197db7a4cafd4052b44c2efd51afac7c"
+    },
+    {
+      "sourceID": "SRC-28523B1996112168",
+      "resourceName": "SRC-28523B1996112168",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2019 STEP 1.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 208782,
+      "sha256": "8ad66b8c3267bd681ade198f299bd3fedf75d62d53f95d80fd4452afbdeae4b1"
+    },
+    {
+      "sourceID": "SRC-1A2F7780D50790E5",
+      "resourceName": "SRC-1A2F7780D50790E5",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2019 STEP 2.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 196223,
+      "sha256": "f7cf6e263c8d405cffa2ee4f9b1cfb6623be680c69c87730db2dc228e13b4432"
+    },
+    {
+      "sourceID": "SRC-2E50D93250CFAA45",
+      "resourceName": "SRC-2E50D93250CFAA45",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2020 STEP 2.pdf",
+      "family": "STEP",
+      "pageCount": 12,
+      "byteCount": 1368997,
+      "sha256": "d6090511f13b1df79f3774fa3d59c34766998d241aba45b39a6e3c97b8b2aa3f"
+    },
+    {
+      "sourceID": "SRC-4E80AD31A7ABC188",
+      "resourceName": "SRC-4E80AD31A7ABC188",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2021 STEP 2.pdf",
+      "family": "STEP",
+      "pageCount": 17,
+      "byteCount": 561496,
+      "sha256": "4e275296dde53467183842e874ff133c4398d3a86dd2a7fd9b53157a90c42fdf"
+    },
+    {
+      "sourceID": "SRC-7D1210CBEDEB360B",
+      "resourceName": "SRC-7D1210CBEDEB360B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "2022 STEP 2.pdf",
+      "family": "STEP",
+      "pageCount": 16,
+      "byteCount": 213861,
+      "sha256": "2fdaf34d43f6afb19a313d9c73928c98a6e8226928aad3b090decc41ba6c7a8c"
+    },
+    {
+      "sourceID": "SRC-13EE6DD2E5EEE51F",
+      "resourceName": "SRC-13EE6DD2E5EEE51F",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_a_p1_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 845543,
+      "sha256": "98d2091c3a5aa21b0f7e7ce9a111706c4d0e5b98d4c13c61ea8fa9affcab8278"
+    },
+    {
+      "sourceID": "SRC-33BAEE82206D8013",
+      "resourceName": "SRC-33BAEE82206D8013",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_a_p2_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 844207,
+      "sha256": "70dfb13b37dc2ea68eecf6b3c995772187b59fb19f2d1f4020285ef73ed7de2e"
+    },
+    {
+      "sourceID": "SRC-11BE83CEABA48B06",
+      "resourceName": "SRC-11BE83CEABA48B06",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_b_p1_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 856079,
+      "sha256": "08970af74cf1fe885ef04f2ca4c8db0316f9b19a78e65bd7015d4091133cc7bd"
+    },
+    {
+      "sourceID": "SRC-49BCC8C8F82C125A",
+      "resourceName": "SRC-49BCC8C8F82C125A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_b_p2_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 869391,
+      "sha256": "326fcd1036bca5286b77d7a3edfd86acb3fbf0ee07e5539400c17fea2f54c05f"
+    },
+    {
+      "sourceID": "SRC-7F47B44A971E2C3E",
+      "resourceName": "SRC-7F47B44A971E2C3E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_c_p1_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 853585,
+      "sha256": "f9f3e685dd21bf8221e2e8f8ef5c5c46eacf8f1fae04255980248f9e6443e1b6"
+    },
+    {
+      "sourceID": "SRC-B4B6F2FC4936D28A",
+      "resourceName": "SRC-B4B6F2FC4936D28A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_c_p2_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 853125,
+      "sha256": "5e1aa4caf8a26e208d6cbce7c7dc92a5d3a221a8e9e54134491d27d88c7e78f1"
+    },
+    {
+      "sourceID": "SRC-64531D4DDE10BF96",
+      "resourceName": "SRC-64531D4DDE10BF96",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_d_p1_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 844493,
+      "sha256": "6fb67745b8bf10bf264c8a7c0ff15d400a47ce251e0a5ba457a9168a6cb6fcbc"
+    },
+    {
+      "sourceID": "SRC-453799EDFD788AE9",
+      "resourceName": "SRC-453799EDFD788AE9",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_d_p2_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 858083,
+      "sha256": "b80c3155325e801e8d0e1ccb3eec43d9ecca2c48373ae73ac328c78775bf0b86"
+    },
+    {
+      "sourceID": "SRC-D764D44ACD756D0A",
+      "resourceName": "SRC-D764D44ACD756D0A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_e_p1_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 860985,
+      "sha256": "227ec6ac729d4aa41fcd1a61023067464a984a5c0bae68cf116d793e5df1703b"
+    },
+    {
+      "sourceID": "SRC-5E5A5D0BE095DD53",
+      "resourceName": "SRC-5E5A5D0BE095DD53",
+      "resourceExtension": "pdf",
+      "expectedFilename": "jz_mock_e_p2_question.pdf",
+      "family": "JZ Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 850868,
+      "sha256": "a34a17e3afe949ababc295ee9957bb6f7ff6c079999d102a8556ed4d2ad4bc01"
+    },
+    {
+      "sourceID": "SRC-6C7EF0D1DE8BC232",
+      "resourceName": "SRC-6C7EF0D1DE8BC232",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 1 Paper 1_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 133677,
+      "sha256": "bd2120d6955ab775e390e78905b05a3c90770408e0565eff7fdbd517bffeafe3"
+    },
+    {
+      "sourceID": "SRC-5EB18947E3ACBAF5",
+      "resourceName": "SRC-5EB18947E3ACBAF5",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 1 Paper 2_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 129407,
+      "sha256": "208e9dbd068a733f8eb6392e1b6b18623f3bcb7663e522b779c7c805fc0a55cb"
+    },
+    {
+      "sourceID": "SRC-42D55087CB6D8315",
+      "resourceName": "SRC-42D55087CB6D8315",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 2 Paper 1_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 128916,
+      "sha256": "04995956a8a9eaadff51af89b94d95d61ea954c4da9c60cec4a95ed43599e35a"
+    },
+    {
+      "sourceID": "SRC-AA970B1EC4BA322E",
+      "resourceName": "SRC-AA970B1EC4BA322E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 2 Paper 2_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 129112,
+      "sha256": "f24c1057fd0db50d87756c8c4d94e9c3c1b99f9c4516d883d7e3d1a74038b930"
+    },
+    {
+      "sourceID": "SRC-49CA38DDC17C25C4",
+      "resourceName": "SRC-49CA38DDC17C25C4",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 3 Paper 1_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 147204,
+      "sha256": "70d8fef373f3c968ef3023726d639e907beca0d83f753b5e186ddd96be11e117"
+    },
+    {
+      "sourceID": "SRC-C31D09619322A96E",
+      "resourceName": "SRC-C31D09619322A96E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 3 Paper 2_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 139947,
+      "sha256": "5805677aeada21c9dbc0657bc8db658030396822bdf3ee4ebaac83fe0ede327f"
+    },
+    {
+      "sourceID": "SRC-6B2901BE55F67BE2",
+      "resourceName": "SRC-6B2901BE55F67BE2",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Beyond Horizon Set 4 Paper 1_QP.pdf",
+      "family": "Beyond Horizon TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 118952,
+      "sha256": "7d6d3326bbac2954d24fca29e36e2b8e8409245cc40fe50b18c48f2037716fee"
+    },
+    {
+      "sourceID": "SRC-5988F20AFA10D3EC",
+      "resourceName": "SRC-5988F20AFA10D3EC",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SET 1 Challenge Paper 1 TMUAFYI.pdf",
+      "family": "TMUA.fyi Challenge",
+      "pageCount": 26,
+      "byteCount": 131038,
+      "sha256": "e5a506a7dcfaeed826afc77a9a301f7dbf8f9e03bb4148b4be258d24eb07ae27"
+    },
+    {
+      "sourceID": "SRC-5F368F356B17B56A",
+      "resourceName": "SRC-5F368F356B17B56A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SET 1 Challenge Paper 2 TMUAFYI.pdf",
+      "family": "TMUA.fyi Challenge",
+      "pageCount": 25,
+      "byteCount": 91535,
+      "sha256": "22d0381d131d9b64e9e2777e180b2eff80553474c248fc6ec8c484e4fe4fb473"
+    },
+    {
+      "sourceID": "SRC-EF3231F28B138A5F",
+      "resourceName": "SRC-EF3231F28B138A5F",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SET 2 Challenge Paper 1 TMUAFYI.pdf",
+      "family": "TMUA.fyi Challenge",
+      "pageCount": 24,
+      "byteCount": 87232,
+      "sha256": "04b1eabe5913413d8d82b9044f1a20e847a9847b729be20b1c0813c8302c25d2"
+    },
+    {
+      "sourceID": "SRC-1AB7FC1BBB16FD6B",
+      "resourceName": "SRC-1AB7FC1BBB16FD6B",
+      "resourceExtension": "pdf",
+      "expectedFilename": "SET 2 Challenge Paper 2 TMUAFYI.pdf",
+      "family": "TMUA.fyi Challenge",
+      "pageCount": 24,
+      "byteCount": 85976,
+      "sha256": "6520ad871d52cedd5112b6515e215218cb667d608d7c18e044941e219a589a41"
+    },
+    {
+      "sourceID": "SRC-800E7BA1EBAADD78",
+      "resourceName": "SRC-800E7BA1EBAADD78",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MioMath 2024 Paper 1_QP.pdf",
+      "family": "MioMath TMUA Mock",
+      "pageCount": 10,
+      "byteCount": 836769,
+      "sha256": "7ab75dfe0fadca8e0e5312ef4420a5a6fe3c78188f7d8d544403c70a6a8274e0"
+    },
+    {
+      "sourceID": "SRC-5A86DBD0F0860AEC",
+      "resourceName": "SRC-5A86DBD0F0860AEC",
+      "resourceExtension": "pdf",
+      "expectedFilename": "MioMath 2024 Paper 2_QP.pdf",
+      "family": "MioMath TMUA Mock",
+      "pageCount": 10,
+      "byteCount": 995013,
+      "sha256": "1a044d6ba18b71edb32d7bdb15eef57e0f6db727cb4f360cdce4ed3a80424464"
+    },
+    {
+      "sourceID": "SRC-76308257979C5AD6",
+      "resourceName": "SRC-76308257979C5AD6",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA_Mock_Paper_1.pdf",
+      "family": "sed TMUA Mock",
+      "pageCount": 23,
+      "byteCount": 167174,
+      "sha256": "bb8c6174c17f075fe56a6410ece1fc89287e3dcbb5b345c0717e238f2139c7eb"
+    },
+    {
+      "sourceID": "SRC-82CF5A34A9CD08D7",
+      "resourceName": "SRC-82CF5A34A9CD08D7",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA_Mock_Paper_2.pdf",
+      "family": "sed TMUA Mock",
+      "pageCount": 23,
+      "byteCount": 168830,
+      "sha256": "7a705462aaa1d2c27671dad33873b8e98079cd887437c82356361b6899a8358e"
+    },
+    {
+      "sourceID": "SRC-E29687FAAA262C5F",
+      "resourceName": "SRC-E29687FAAA262C5F",
+      "resourceExtension": "pdf",
+      "expectedFilename": "euclid-r2drew2-p1-pdf.pdf",
+      "family": "R2DREW2 / TMUA Euclid",
+      "pageCount": 21,
+      "byteCount": 2444809,
+      "sha256": "6c39dda077b404f1eeb2b1ba7d8881d0a24c4e469e712ee342e620393d9e814d"
+    },
+    {
+      "sourceID": "SRC-D475EB66A3CA6BF0",
+      "resourceName": "SRC-D475EB66A3CA6BF0",
+      "resourceExtension": "pdf",
+      "expectedFilename": "euclid-sample-p2.pdf",
+      "family": "TMUA Euclid",
+      "pageCount": 21,
+      "byteCount": 735869,
+      "sha256": "f0ca72682c4a3fff7dd26d2f304db824db7f469654bc4bc8a5af9186f3c24bad"
+    },
+    {
+      "sourceID": "SRC-FC49CB01730BD5F6",
+      "resourceName": "SRC-FC49CB01730BD5F6",
+      "resourceExtension": "pdf",
+      "expectedFilename": "AF-TMUA-P1.pdf",
+      "family": "Asher Falcon TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 405233,
+      "sha256": "3ade00bef37fb05b781dde08868a6a0ef933053d50e2acd97e1310a9acf7f212"
+    },
+    {
+      "sourceID": "SRC-C470EFCEEE33E094",
+      "resourceName": "SRC-C470EFCEEE33E094",
+      "resourceExtension": "pdf",
+      "expectedFilename": "ascent-algebra-functions.pdf",
+      "family": "TMUA Euclid Ascent",
+      "pageCount": 10,
+      "byteCount": 336681,
+      "sha256": "45b4d3212099b631a41027ad81035a591a4ffd35a1352d6aff31d833165fd07f"
+    },
+    {
+      "sourceID": "SRC-DCEB2A736057DCB9",
+      "resourceName": "SRC-DCEB2A736057DCB9",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA_Zetta_Paper_1.pdf",
+      "family": "Zetta TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 405148,
+      "sha256": "377f58c05af8bb7c92ebdb497ab3474b2046b8838ae58b415dd5ff40dd9458c0"
+    },
+    {
+      "sourceID": "SRC-324DBD089C15A4FC",
+      "resourceName": "SRC-324DBD089C15A4FC",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA_Mock (2).pdf",
+      "family": "Zack TMUA Mock",
+      "pageCount": 22,
+      "byteCount": 149589,
+      "sha256": "763f34ba83b23f0b415d2b09494e0af916949400be185694aeb78dfe1642b019"
+    },
+    {
+      "sourceID": "SRC-A9647FB9BCDC1B7C",
+      "resourceName": "SRC-A9647FB9BCDC1B7C",
+      "resourceExtension": "pdf",
+      "expectedFilename": "James Chen TMUA paper.pdf",
+      "family": "James Chen TMUA Mock",
+      "pageCount": 19,
+      "byteCount": 300004,
+      "sha256": "49bd157912d59dddb9bfd9ab0c8779df08f98226676e975b6c38ceedc14bc5e6"
+    },
+    {
+      "sourceID": "SRC-2667D72A3CEE8569",
+      "resourceName": "SRC-2667D72A3CEE8569",
+      "resourceExtension": "pdf",
+      "expectedFilename": "mock_set1_p1_QP (2).pdf",
+      "family": "DπD Maths TMUA Mock",
+      "pageCount": 21,
+      "byteCount": 160401,
+      "sha256": "c90eb8f44c6d20d408034bb56982deb06b0484b3a60e8be3086a98149d7bc61b"
+    },
+    {
+      "sourceID": "SRC-7DA61DD23C6C832A",
+      "resourceName": "SRC-7DA61DD23C6C832A",
+      "resourceExtension": "pdf",
+      "expectedFilename": "UA Abstract Functions.pdf",
+      "family": "Tyler Topic Bank",
+      "pageCount": 6,
+      "byteCount": 193822,
+      "sha256": "95afcc48c8ab44d2ae73f37c50fac833bdecfadd3078af36451efe4fe41577ec"
+    },
+    {
+      "sourceID": "SRC-AC0E30474FAAB2CD",
+      "resourceName": "SRC-AC0E30474FAAB2CD",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Modulus Functions.pdf",
+      "family": "Tyler Topic Bank",
+      "pageCount": 9,
+      "byteCount": 345635,
+      "sha256": "dea8e913681e0bba905c68b1e34a20d3a9d695161cff3514c250642da2593543"
+    },
+    {
+      "sourceID": "SRC-BBF86634B52124CF",
+      "resourceName": "SRC-BBF86634B52124CF",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Probability.pdf",
+      "family": "Tyler Topic Bank",
+      "pageCount": 7,
+      "byteCount": 173343,
+      "sha256": "00ea5be21be68136f9497648624da18f412b33dc7aeac2cf6afbf1d7ef364f1b"
+    },
+    {
+      "sourceID": "SRC-D6266D6BC7170DFF",
+      "resourceName": "SRC-D6266D6BC7170DFF",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Number Theory.pdf",
+      "family": "Tyler Topic Bank",
+      "pageCount": 7,
+      "byteCount": 161919,
+      "sha256": "1473ce4d5fbe9af931eebfbf85d050921bbc34091b7aad22fb76b1b66985cb55"
+    },
+    {
+      "sourceID": "SRC-12AE5B5A39B5379E",
+      "resourceName": "SRC-12AE5B5A39B5379E",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Combinatorics v2.pdf",
+      "family": "Tyler Topic Bank",
+      "pageCount": 12,
+      "byteCount": 206621,
+      "sha256": "00d3bb09354c6c6952c32a4e5ccbdd731efd26a8992e78bcf342bb92a242bd53"
+    },
+    {
+      "sourceID": "SRC-A036EF7864003547",
+      "resourceName": "SRC-A036EF7864003547",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA - logic and proof only, from Jacqueline Tyler.pdf",
+      "family": "Tyler Topic Bank",
+      "pageCount": 9,
+      "byteCount": 177223,
+      "sha256": "d9840efd4cf2e9ecfdcdecbf18d9cd96cb029a67ffdc92bb0536037b1e1d76cf"
+    },
+    {
+      "sourceID": "SRC-43994D038FFEA079",
+      "resourceName": "SRC-43994D038FFEA079",
+      "resourceExtension": "pdf",
+      "expectedFilename": "Rosie TMUA papers Set A Paper 1 NEW.pdf",
+      "family": "Rosie TMUA Mock",
+      "pageCount": 11,
+      "byteCount": 479857,
+      "sha256": "d316043a70e25a7d713450a0b4d04da0155fc602e1b90e9eb13cbe517c7a26e4"
+    },
+    {
+      "sourceID": "SRC-F7E80C86D479D79F",
+      "resourceName": "SRC-F7E80C86D479D79F",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUADOTCODOTUK Solutions.pdf",
+      "family": "TMUA.co.uk R2Drew2",
+      "pageCount": 22,
+      "byteCount": 250033,
+      "sha256": "0ba156fffd964aeca37fac565d9feb5dd88251f482dd54d76e65f6e1af76084e"
+    },
+    {
+      "sourceID": "SRC-3817EB5A5EB663E5",
+      "resourceName": "SRC-3817EB5A5EB663E5",
+      "resourceExtension": "pdf",
+      "expectedFilename": "TMUA-Euclid-Cheat-Sheet.pdf",
+      "family": "Reference",
+      "pageCount": 7,
+      "byteCount": 261614,
+      "sha256": "ad5f520cc2e49e84fda1777261bc4dad10c2b3bcc64ec5e0dfba436756cf8a25"
+    },
+    {
+      "sourceID": "SRC-F0DCB41A711A2483",
+      "resourceName": "SRC-F0DCB41A711A2483",
+      "resourceExtension": "pdf",
+      "expectedFilename": "handbook 9.0.pdf",
+      "family": "Reference",
+      "pageCount": 33,
+      "byteCount": 182901,
+      "sha256": "64cf119f1b72caa490d6852e1c307c84fc25913dfd42dca3a15c0555887bd262"
+    }
+  ]
+}

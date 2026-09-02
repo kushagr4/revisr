@@ -1,0 +1,12 @@
+{
+  "sourceDocumentsExpected": 80,
+  "pdfFilesFound": 80,
+  "successfullyMatched": 80,
+  "bundledResourcesWritten": 80,
+  "bundledResourcesResolved": 80,
+  "missing": [],
+  "ambiguous": [],
+  "duplicateMappings": [],
+  "duplicateResourceIDs": [],
+  "totalPDFBytes": 24281111
+}

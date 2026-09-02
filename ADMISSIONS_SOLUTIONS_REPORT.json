@@ -1,0 +1,221 @@
+{
+  "suppliedPDFFiles": 69,
+  "processedPDFFiles": 69,
+  "canonicalUniquePDFFiles": 66,
+  "duplicateCopies": [
+    {
+      "duplicateFilename": "IMC-2021-Solutions (2).pdf",
+      "canonicalFilename": "IMC-2021-Solutions (1).pdf",
+      "reason": "identical extracted PDF content"
+    },
+    {
+      "duplicateFilename": "TMUA-early-specimen-paper-1-worked-answers.pdf",
+      "canonicalFilename": "TMUA Specimen Paper 1 Solutions.pdf",
+      "reason": "identical extracted PDF content"
+    },
+    {
+      "duplicateFilename": "TMUA-early-specimen-paper-2-worked-answers.pdf",
+      "canonicalFilename": "TMUA Specimen Paper 2 Solutions.pdf",
+      "reason": "identical extracted PDF content"
+    }
+  ],
+  "matchedCanonicalFiles": [
+    "imc-2015-s (1).pdf",
+    "imc-2016-s (1).pdf",
+    "imc-2017-s (2).pdf",
+    "imc-2018-s (1).pdf",
+    "imc-2019-s (1).pdf",
+    "IMC-2020-s.pdf",
+    "IMC-2021-Solutions (1).pdf",
+    "IMC-2023-Solutions- (1).pdf",
+    "IMC-2024-Solutions (1).pdf",
+    "IMC-2025-Solutions (1).pdf",
+    "MATsolutionsa.pdf",
+    "MATsolutionsb.pdf",
+    "MATwebsolutions07.pdf",
+    "MATwebsolutions08.pdf",
+    "MATwebsolutions10-2025.pdf",
+    "MATwebsolutions11_0.pdf",
+    "MATwebsolutions14_1.pdf",
+    "MATwebsolutions15_3.pdf",
+    "MATwebsolutions16 v2_1.pdf",
+    "MATwebsolutions17.pdf",
+    "MATwebsolutions18_2.pdf",
+    "MATwebsolutions19.pdf",
+    "MATwebsolutions20_2.pdf",
+    "MATwebsolutions21_0.pdf",
+    "MATwebsolutions22_2.pdf",
+    "SMC-2013-sol-extended.pdf",
+    "SMC-2015-sol-short.pdf",
+    "SMC-2016-sol-short.pdf",
+    "SMC-2017-sol-short.pdf",
+    "SMC-2021-Solutions.pdf",
+    "SMC-2022-Solutions.pdf",
+    "SMC-2023-Solutions.pdf",
+    "SMC2018_sol_short.pdf",
+    "SMC_2019_Solutions.pdf",
+    "SMC_2020_Solutions.pdf",
+    "SMC_2024_Solutions.pdf",
+    "SMC_2025_Solutions.pdf",
+    "TMUA Mock A Answers.pdf",
+    "TMUA Mock B Answers.pdf",
+    "TMUA Mock Set C Answers.pdf",
+    "TMUA Mock Set D Answers.pdf",
+    "TMUA Specimen Paper 1 Solutions.pdf",
+    "TMUA-2016-paper-1-worked-answers.pdf",
+    "TMUA-2016-paper-2-worked-answers.pdf",
+    "TMUA-2017-paper-1-worked-answers.pdf",
+    "TMUA-2017-paper-2-worked-answers.pdf",
+    "TMUA-2018-paper-1-worked-answers.pdf",
+    "TMUA-2018-paper-2-worked-answers.pdf",
+    "TMUA-2019-paper-1-worked-answers.pdf",
+    "TMUA-2019-paper-2-worked-answers.pdf",
+    "TMUA-2020-paper-1-worked-answers.pdf",
+    "TMUA-2020-paper-2-worked-answers.pdf",
+    "TMUA-2021-paper-1-worked-answers.pdf",
+    "TMUA-2021-paper-2-worked-answers.pdf",
+    "TMUA-2022-paper-1-worked-answers.pdf",
+    "TMUA-2022-paper-2-worked-answers.pdf"
+  ],
+  "unmatchedCanonicalFiles": [
+    "IMC-2022-Solutions.pdf",
+    "MATwebsolutions09_1.pdf",
+    "MATwebsolutions12.pdf",
+    "MATwebsolutions13_0.pdf",
+    "MATwebsolutions23_1.pdf",
+    "MATwebsolutions24.pdf",
+    "MATwebsolutions25.pdf",
+    "TMUA Specimen Paper 2 Solutions.pdf",
+    "TMUA-2023-paper-1-worked-answers.pdf",
+    "TMUA-2023-paper-2-worked-answers.pdf"
+  ],
+  "ambiguousMatches": [],
+  "newBundledSolutionDocuments": 66,
+  "existingCombinedDocumentsReferenced": 2,
+  "totalSolutionDocuments": 68,
+  "newBundledPDFBytes": 29027274,
+  "questionLinks": 1358,
+  "directQuestionMappings": 1328,
+  "sourceLevelMappings": 30,
+  "noDirectMappingQuestions": [
+    "MAT-2010-Q06",
+    "MAT-2011-Q07"
+  ],
+  "sourceCoverage": {
+    "available": 55,
+    "partial": 3,
+    "pendingSource": 21
+  },
+  "pendingQuestionCount": 213,
+  "pendingFamilies": [
+    "BMO",
+    "CSAT",
+    "Yotta"
+  ],
+  "familyBreakdown": {
+    "BMO": {
+      "sourceDocuments": 15,
+      "questions": 93,
+      "availableSources": 0,
+      "partialSources": 0,
+      "pendingSources": 15,
+      "directQuestionMappings": 0,
+      "sourceLevelMappings": 0
+    },
+    "CSAT": {
+      "sourceDocuments": 4,
+      "questions": 80,
+      "availableSources": 0,
+      "partialSources": 0,
+      "pendingSources": 4,
+      "directQuestionMappings": 0,
+      "sourceLevelMappings": 0
+    },
+    "IMC": {
+      "sourceDocuments": 10,
+      "questions": 250,
+      "availableSources": 10,
+      "partialSources": 0,
+      "pendingSources": 0,
+      "directQuestionMappings": 250,
+      "sourceLevelMappings": 0
+    },
+    "MAT": {
+      "sourceDocuments": 15,
+      "questions": 240,
+      "availableSources": 13,
+      "partialSources": 2,
+      "pendingSources": 0,
+      "directQuestionMappings": 238,
+      "sourceLevelMappings": 0
+    },
+    "Maclaurin": {
+      "sourceDocuments": 1,
+      "questions": 30,
+      "availableSources": 0,
+      "partialSources": 1,
+      "pendingSources": 0,
+      "directQuestionMappings": 0,
+      "sourceLevelMappings": 30
+    },
+    "SMC": {
+      "sourceDocuments": 12,
+      "questions": 300,
+      "availableSources": 12,
+      "partialSources": 0,
+      "pendingSources": 0,
+      "directQuestionMappings": 300,
+      "sourceLevelMappings": 0
+    },
+    "Senior Kangaroo": {
+      "sourceDocuments": 1,
+      "questions": 80,
+      "availableSources": 1,
+      "partialSources": 0,
+      "pendingSources": 0,
+      "directQuestionMappings": 80,
+      "sourceLevelMappings": 0
+    },
+    "TMUA Actual": {
+      "sourceDocuments": 12,
+      "questions": 240,
+      "availableSources": 12,
+      "partialSources": 0,
+      "pendingSources": 0,
+      "directQuestionMappings": 240,
+      "sourceLevelMappings": 0
+    },
+    "TMUA Mock": {
+      "sourceDocuments": 6,
+      "questions": 200,
+      "availableSources": 4,
+      "partialSources": 0,
+      "pendingSources": 2,
+      "directQuestionMappings": 160,
+      "sourceLevelMappings": 0
+    },
+    "TMUA Practice": {
+      "sourceDocuments": 2,
+      "questions": 40,
+      "availableSources": 2,
+      "partialSources": 0,
+      "pendingSources": 0,
+      "directQuestionMappings": 40,
+      "sourceLevelMappings": 0
+    },
+    "TMUA Specimen": {
+      "sourceDocuments": 1,
+      "questions": 20,
+      "availableSources": 1,
+      "partialSources": 0,
+      "pendingSources": 0,
+      "directQuestionMappings": 20,
+      "sourceLevelMappings": 0
+    }
+  },
+  "warnings": [
+    "No network sources were used.",
+    "Unmatched supplied documents are bundled and catalogued without invented source links.",
+    "Maclaurin links are source-section mappings because reliable per-question PDF pages are unavailable."
+  ]
+}

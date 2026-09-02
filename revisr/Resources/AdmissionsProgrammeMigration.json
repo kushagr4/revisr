@@ -1,0 +1,4452 @@
+{
+  "formatVersion": 1,
+  "programmeID": "TMUA-30-DAY-2026",
+  "baseProgrammeImportRevision": "b2e00ccf01cd5cb4ce03a030bf5926fce8dfa4f0d46059b1340e3998f6b7b9e6",
+  "preserveHistoryThroughDay": 3,
+  "examDate": "2026-10-16",
+  "flexDates": [
+    "2026-09-05",
+    "2026-09-12",
+    "2026-09-26",
+    "2026-10-03",
+    "2026-10-10",
+    "2026-10-13"
+  ],
+  "unavailableWeekdays": [
+    "Thursday",
+    "Sunday"
+  ],
+  "days": [
+    {
+      "dayNumber": 1,
+      "focus": "Algebra & functions",
+      "studyBrief": "Complete algebra/function gaps; prioritise discriminants, factor/remainder theorem, simultaneous equations and inequalities.",
+      "allocatedQuestionCount": 16,
+      "expectedQuestionMinutes": 79,
+      "expectedReviewMinutes": 35,
+      "dailyTarget": "Close specification gaps; ≥85% after review",
+      "notes": "Accuracy first; look for structural shortcuts.",
+      "scheduleOffsetDays": 0,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 2,
+      "focus": "Sequences + coordinate geometry",
+      "studyBrief": "Sequences/series, recurrences, lines, circles and intersections.",
+      "allocatedQuestionCount": 16,
+      "expectedQuestionMinutes": 77,
+      "expectedReviewMinutes": 35,
+      "dailyTarget": "Close specification gaps; ≥85% after review",
+      "notes": "Write one-line recognition notes after each miss.",
+      "scheduleOffsetDays": 1,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 3,
+      "focus": "Trigonometry",
+      "studyBrief": "Exact values, radians, trig graphs/equations, sine/cosine rules and 2D/3D reasoning.",
+      "allocatedQuestionCount": 15,
+      "expectedQuestionMinutes": 71,
+      "expectedReviewMinutes": 35,
+      "dailyTarget": "Close specification gaps; ≥85% after review",
+      "notes": "No calculator; sketch before solving.",
+      "scheduleOffsetDays": 2,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 4,
+      "focus": "Graphs + existing error repair",
+      "studyBrief": "Recall graph features, then practise transformations, asymptotes, intercepts, range and sketching. Finish by correcting graph-related errors.",
+      "allocatedQuestionCount": 12,
+      "expectedQuestionMinutes": 90,
+      "expectedReviewMinutes": 45,
+      "dailyTarget": "Sketch from structure, not appearance.",
+      "notes": "Review: mark methods, record the initiating idea, and flag any graph still based on guessing.",
+      "scheduleOffsetDays": 9,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 5,
+      "focus": "Calculus, area + interpretation",
+      "studyBrief": "Repair signed-area interpretation and practise compact graph/calculus recognition rather than a broad calculus syllabus.",
+      "allocatedQuestionCount": 10,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 45,
+      "dailyTarget": "Explain the geometry before integrating.",
+      "notes": "Tuesday work starts after 14:00. Review signs, regions, tangent/curve order and faster recognition.",
+      "scheduleOffsetDays": 10,
+      "earliestStartMinute": 840
+    },
+    {
+      "dayNumber": 6,
+      "focus": "Statistics + probability foundations",
+      "studyBrief": "Build reliable probability, counting and data foundations, then finish with a short SMC efficiency set.",
+      "allocatedQuestionCount": 12,
+      "expectedQuestionMinutes": 85,
+      "expectedReviewMinutes": 40,
+      "dailyTarget": "Use systematic cases and state the sample space.",
+      "notes": "The SMC block is deliberately short: spotting and economy, not a second syllabus.",
+      "scheduleOffsetDays": 11,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 7,
+      "focus": "Third-party Paper 1 diagnostic",
+      "studyBrief": "Sit the Euclid R2DREW2 Paper 1 under timed conditions, then complete a structured error and timing analysis.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete one representative Paper 1 and analyse every loss.",
+      "notes": "Use the local verified-page mark scheme. Do not create a result until the paper is actually attempted.",
+      "scheduleOffsetDays": 13,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 8,
+      "focus": "Paper 2 logic foundations",
+      "studyBrief": "Practise implication, converse, contrapositive, necessary/sufficient conditions and counterexamples with explanation-first work.",
+      "allocatedQuestionCount": 10,
+      "expectedQuestionMinutes": 70,
+      "expectedReviewMinutes": 50,
+      "dailyTarget": "State the logical form before calculating.",
+      "notes": "Prioritise understanding and counterexamples over volume.",
+      "scheduleOffsetDays": 16,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 9,
+      "focus": "CSAT introduction",
+      "studyBrief": "Think aloud through a small set of unfamiliar CSAT, STEP I and MAT problems. Explain decomposition, failed approaches and adaptation.",
+      "allocatedQuestionCount": 4,
+      "expectedQuestionMinutes": 95,
+      "expectedReviewMinutes": 45,
+      "dailyTarget": "Explain the approach aloud before finalising it.",
+      "notes": "Tuesday work starts after 14:00. This is deliberately not another TMUA multiple-choice session.",
+      "scheduleOffsetDays": 17,
+      "earliestStartMinute": 840
+    },
+    {
+      "dayNumber": 10,
+      "focus": "Geometry, coordinate geometry + trig repair",
+      "studyBrief": "Target circles, coordinates and efficient geometry alongside exact values, radians/degrees, periods and transformed trig graphs.",
+      "allocatedQuestionCount": 12,
+      "expectedQuestionMinutes": 85,
+      "expectedReviewMinutes": 45,
+      "dailyTarget": "Use exact structure before numerical or visual guessing.",
+      "notes": "Review the known coordinate-geometry and trig errors explicitly.",
+      "scheduleOffsetDays": 18,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 11,
+      "focus": "Third-party Paper 2 diagnostic",
+      "studyBrief": "Sit the Euclid Sample Paper 2 under timed conditions, then analyse logical form, approach choice and time use.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete one representative Paper 2 and explain each error.",
+      "notes": "Use the local verified-page mark scheme; this is diagnostic, not an extreme challenge paper.",
+      "scheduleOffsetDays": 20,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 12,
+      "focus": "Number, ratio + bounds",
+      "studyBrief": "Practise ratio, scaling, bounds and number structure, then use a short SMC observation set for speed.",
+      "allocatedQuestionCount": 12,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 40,
+      "dailyTarget": "Look for structure before expanding arithmetic.",
+      "notes": "Retain useful ratio work while keeping the SMC segment modest.",
+      "scheduleOffsetDays": 23,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 13,
+      "focus": "Functions, graphs + recurrences",
+      "studyBrief": "Connect functions, transformations, sequences and recurrences, then solve two deeper CSAT-style problems with written reflection.",
+      "allocatedQuestionCount": 10,
+      "expectedQuestionMinutes": 85,
+      "expectedReviewMinutes": 45,
+      "dailyTarget": "Name the structure and recurrence before manipulating it.",
+      "notes": "Tuesday work starts after 14:00; finish by explaining one unfamiliar problem aloud.",
+      "scheduleOffsetDays": 24,
+      "earliestStartMinute": 840
+    },
+    {
+      "dayNumber": 14,
+      "focus": "Statistics + probability intensive",
+      "studyBrief": "Consolidate counting, conditional probability and data interpretation, ending with a timed mixed section.",
+      "allocatedQuestionCount": 14,
+      "expectedQuestionMinutes": 95,
+      "expectedReviewMinutes": 50,
+      "dailyTarget": "Make cases exhaustive and avoid hidden double-counting.",
+      "notes": "Mechanics is intentionally omitted because it is not the current repair priority.",
+      "scheduleOffsetDays": 25,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 15,
+      "focus": "Official TMUA 2017 Paper 1",
+      "studyBrief": "Sit the complete official 2017 Paper 1 under exam conditions, then review topic, timing and approach errors.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete and fully review the official Paper 1 benchmark.",
+      "notes": "Assignments are created now; attempts and results are recorded only when the paper is actually done.",
+      "scheduleOffsetDays": 27,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 16,
+      "focus": "Official TMUA 2017 Paper 2",
+      "studyBrief": "Sit the complete official 2017 Paper 2 under exam conditions and give logic/approach errors a full review.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete and fully review the official Paper 2 benchmark.",
+      "notes": "Paper 2 receives deliberate early benchmark exposure because it is the relative weakness.",
+      "scheduleOffsetDays": 28,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 17,
+      "focus": "Benchmark analysis + repair",
+      "studyBrief": "Use the current Needs Review/Redo set and known graph, trig, probability and approach weaknesses as the deterministic repair seed.",
+      "allocatedQuestionCount": 10,
+      "expectedQuestionMinutes": 70,
+      "expectedReviewMinutes": 55,
+      "dailyTarget": "Redo without looking, then write the initiating idea.",
+      "notes": "Later benchmark-driven repair requires a plan refresh; this migration does not fabricate future performance.",
+      "scheduleOffsetDays": 30,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 18,
+      "focus": "CSAT + STEP/MAT + small BMO",
+      "studyBrief": "Think aloud through a small Cambridge-focused mix. State assumptions, react to hints, explain failed routes and summarise each argument.",
+      "allocatedQuestionCount": 5,
+      "expectedQuestionMinutes": 100,
+      "expectedReviewMinutes": 45,
+      "dailyTarget": "Prioritise explanation and adaptation over question count.",
+      "notes": "Tuesday work starts after 14:00. BMO is limited to one suitable problem.",
+      "scheduleOffsetDays": 31,
+      "earliestStartMinute": 840
+    },
+    {
+      "dayNumber": 19,
+      "focus": "Official TMUA 2018 Paper 1",
+      "studyBrief": "Sit official 2018 Paper 1 under timed conditions and complete substantial method, error and timing review.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete and review the official Paper 1 benchmark.",
+      "notes": "No fake attempts or results are created by migration.",
+      "scheduleOffsetDays": 32,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 20,
+      "focus": "Official TMUA 2018 Paper 2",
+      "studyBrief": "Sit official 2018 Paper 2 under timed conditions and complete substantial logic, error and timing review.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete and review the official Paper 2 benchmark.",
+      "notes": "No fake attempts or results are created by migration.",
+      "scheduleOffsetDays": 34,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 21,
+      "focus": "Official TMUA 2019 full simulation",
+      "studyBrief": "Run both official 2019 papers in exam conditions with a proper break, then capture post-simulation notes and begin analysis.",
+      "allocatedQuestionCount": 40,
+      "expectedQuestionMinutes": 150,
+      "expectedReviewMinutes": 90,
+      "dailyTarget": "Complete both papers; preserve exam conditions and the break.",
+      "notes": "This is an intentionally exceptional long day. Analysis may continue on Day 22.",
+      "scheduleOffsetDays": 37,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 22,
+      "focus": "Simulation analysis + light CSAT",
+      "studyBrief": "Analyse the 2019 simulation first, repair recurring topic/time/approach errors, then add only a light CSAT reasoning block.",
+      "allocatedQuestionCount": 8,
+      "expectedQuestionMinutes": 60,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Turn each recurring error into a concrete rule or repair action.",
+      "notes": "Tuesday work starts after 14:00. Paper analysis takes priority over the light CSAT block.",
+      "scheduleOffsetDays": 38,
+      "earliestStartMinute": 840
+    },
+    {
+      "dayNumber": 23,
+      "focus": "Hard Paper 2 mastery",
+      "studyBrief": "Use a coherent hard JZ/Challenge Paper 2 set for logic, counterexamples, subtle structure and pressure handling.",
+      "allocatedQuestionCount": 12,
+      "expectedQuestionMinutes": 90,
+      "expectedReviewMinutes": 55,
+      "dailyTarget": "Stay precise under stretch difficulty; stop and analyse rather than grind.",
+      "notes": "This is a selected hard set, not a wholesale challenge bank.",
+      "scheduleOffsetDays": 39,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 24,
+      "focus": "SMC/BMO + CSAT reasoning",
+      "studyBrief": "Combine a short SMC speed set, two deeper BMO problems and two unfamiliar CSAT problems for controlled mathematical flexibility.",
+      "allocatedQuestionCount": 10,
+      "expectedQuestionMinutes": 85,
+      "expectedReviewMinutes": 55,
+      "dailyTarget": "Solve efficiently, then explain the deeper arguments clearly.",
+      "notes": "TMUA remains the priority; the crossover workload is deliberately bounded.",
+      "scheduleOffsetDays": 41,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 25,
+      "focus": "Official TMUA 2020 Paper 1",
+      "studyBrief": "Sit official 2020 Paper 1 under timed conditions and complete substantial review.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete and review the official Paper 1 benchmark.",
+      "notes": "The paper remains unavailable to automatic practice before today.",
+      "scheduleOffsetDays": 44,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 26,
+      "focus": "Official TMUA 2020 Paper 2",
+      "studyBrief": "Sit official 2020 Paper 2 under timed conditions and complete substantial review.",
+      "allocatedQuestionCount": 20,
+      "expectedQuestionMinutes": 75,
+      "expectedReviewMinutes": 75,
+      "dailyTarget": "Complete and review the official Paper 2 benchmark.",
+      "notes": "Tuesday work starts after 14:00; the paper remains protected before today.",
+      "scheduleOffsetDays": 45,
+      "earliestStartMinute": 840
+    },
+    {
+      "dayNumber": 27,
+      "focus": "Error repair + exam efficiency",
+      "studyBrief": "Repair recurring error classes and practise question selection, abandonment/return decisions, exact values and fast structural recognition.",
+      "allocatedQuestionCount": 10,
+      "expectedQuestionMinutes": 70,
+      "expectedReviewMinutes": 50,
+      "dailyTarget": "Choose a method quickly and define when to move on.",
+      "notes": "No large fresh paper: this is controlled efficiency and repair work.",
+      "scheduleOffsetDays": 46,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 28,
+      "focus": "Official TMUA 2021 full simulation",
+      "studyBrief": "Run both official 2021 papers as the final exhausting simulation, with a proper break and planned analysis.",
+      "allocatedQuestionCount": 40,
+      "expectedQuestionMinutes": 150,
+      "expectedReviewMinutes": 90,
+      "dailyTarget": "Complete the final two-paper simulation under exam conditions.",
+      "notes": "This is the last major full simulation; no result is created until the work is actually done.",
+      "scheduleOffsetDays": 48,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 29,
+      "focus": "Final targeted repair",
+      "studyBrief": "Use the strongest current evidence—error notes, Needs Review/Redo and recurring weak topics—for a small final repair set.",
+      "allocatedQuestionCount": 8,
+      "expectedQuestionMinutes": 55,
+      "expectedReviewMinutes": 55,
+      "dailyTarget": "Resolve remaining repeatable errors; do not chase novelty.",
+      "notes": "Later benchmark data can replace priorities through a future explicit plan refresh.",
+      "scheduleOffsetDays": 51,
+      "earliestStartMinute": null
+    },
+    {
+      "dayNumber": 30,
+      "focus": "Final consolidation + strategy",
+      "studyBrief": "Use a very small seen-question set alongside logic forms, exact trig, graph, probability, algebra and timing reminders.",
+      "allocatedQuestionCount": 6,
+      "expectedQuestionMinutes": 35,
+      "expectedReviewMinutes": 55,
+      "dailyTarget": "Finish the personal error log and exam decision rules.",
+      "notes": "No exhausting new material. Thursday is rest; Friday is the stored exam date.",
+      "scheduleOffsetDays": 53,
+      "earliestStartMinute": null
+    }
+  ],
+  "assignments": [
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TYLER-C-P1-Q06",
+      "dayNumber": 1,
+      "questionID": "TYLER-C-P1-Q06",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TYLER-B-P1-Q06",
+      "dayNumber": 1,
+      "questionID": "TYLER-B-P1-Q06",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TYLER-A-P1-Q09",
+      "dayNumber": 1,
+      "questionID": "TYLER-A-P1-Q09",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-YOTTA-P1-Q11",
+      "dayNumber": 1,
+      "questionID": "YOTTA-P1-Q11",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-YOTTA-P1-Q06",
+      "dayNumber": 1,
+      "questionID": "YOTTA-P1-Q06",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TYLER-D-P2-Q08",
+      "dayNumber": 1,
+      "questionID": "TYLER-D-P2-Q08",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TSPEC-P1-Q09",
+      "dayNumber": 1,
+      "questionID": "TSPEC-P1-Q09",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-MAT-2022-Q1E",
+      "dayNumber": 1,
+      "questionID": "MAT-2022-Q1E",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-MAT-2020-Q1G",
+      "dayNumber": 1,
+      "questionID": "MAT-2020-Q1G",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-MAT-2019-Q1D",
+      "dayNumber": 1,
+      "questionID": "MAT-2019-Q1D",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TPRA-P1-Q02",
+      "dayNumber": 1,
+      "questionID": "TPRA-P1-Q02",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TPRA-P1-Q01",
+      "dayNumber": 1,
+      "questionID": "TPRA-P1-Q01",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-SMC-2025-Q14",
+      "dayNumber": 1,
+      "questionID": "SMC-2025-Q14",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-SMC-2020-Q17",
+      "dayNumber": 1,
+      "questionID": "SMC-2020-Q17",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-SMC-2018-Q16",
+      "dayNumber": 1,
+      "questionID": "SMC-2018-Q16",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D01-TSPEC-P1-Q13",
+      "dayNumber": 1,
+      "questionID": "TSPEC-P1-Q13",
+      "block": "Questions",
+      "purpose": "Algebra fluency, parameter manipulation and efficient factorisation",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TYLER-D-P1-Q06",
+      "dayNumber": 2,
+      "questionID": "TYLER-D-P1-Q06",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TYLER-C-P1-Q07",
+      "dayNumber": 2,
+      "questionID": "TYLER-C-P1-Q07",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TYLER-B-P1-Q07",
+      "dayNumber": 2,
+      "questionID": "TYLER-B-P1-Q07",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TYLER-A-P1-Q07",
+      "dayNumber": 2,
+      "questionID": "TYLER-A-P1-Q07",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TYLER-D-P2-Q03",
+      "dayNumber": 2,
+      "questionID": "TYLER-D-P2-Q03",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TYLER-C-P1-Q05",
+      "dayNumber": 2,
+      "questionID": "TYLER-C-P1-Q05",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TPRA-P2-Q06",
+      "dayNumber": 2,
+      "questionID": "TPRA-P2-Q06",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TPRA-P1-Q14",
+      "dayNumber": 2,
+      "questionID": "TPRA-P1-Q14",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TPRA-P1-Q09",
+      "dayNumber": 2,
+      "questionID": "TPRA-P1-Q09",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-MAT-2020-Q1E",
+      "dayNumber": 2,
+      "questionID": "MAT-2020-Q1E",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-MAT-2018-Q1G",
+      "dayNumber": 2,
+      "questionID": "MAT-2018-Q1G",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TPRA-P2-Q12",
+      "dayNumber": 2,
+      "questionID": "TPRA-P2-Q12",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-SMC-2018-Q13",
+      "dayNumber": 2,
+      "questionID": "SMC-2018-Q13",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-MAT-2022-Q1D",
+      "dayNumber": 2,
+      "questionID": "MAT-2022-Q1D",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TSPEC-P1-Q19",
+      "dayNumber": 2,
+      "questionID": "TSPEC-P1-Q19",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D02-TSPEC-P1-Q03",
+      "dayNumber": 2,
+      "questionID": "TSPEC-P1-Q03",
+      "block": "Questions",
+      "purpose": "Sequences/series plus line-circle coordinate reasoning",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TYLER-D-P1-Q07",
+      "dayNumber": 3,
+      "questionID": "TYLER-D-P1-Q07",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TYLER-C-P2-Q06",
+      "dayNumber": 3,
+      "questionID": "TYLER-C-P2-Q06",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-YOTTA-P2-Q08",
+      "dayNumber": 3,
+      "questionID": "YOTTA-P2-Q08",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-YOTTA-P1-Q12",
+      "dayNumber": 3,
+      "questionID": "YOTTA-P1-Q12",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-YOTTA-P1-Q08",
+      "dayNumber": 3,
+      "questionID": "YOTTA-P1-Q08",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TYLER-B-P2-Q09",
+      "dayNumber": 3,
+      "questionID": "TYLER-B-P2-Q09",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TPRA-P1-Q10",
+      "dayNumber": 3,
+      "questionID": "TPRA-P1-Q10",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TPRA-P1-Q08",
+      "dayNumber": 3,
+      "questionID": "TPRA-P1-Q08",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-MAT-2017-Q1G",
+      "dayNumber": 3,
+      "questionID": "MAT-2017-Q1G",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-MAT-2017-Q1F",
+      "dayNumber": 3,
+      "questionID": "MAT-2017-Q1F",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TPRA-P2-Q03",
+      "dayNumber": 3,
+      "questionID": "TPRA-P2-Q03",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TPRA-P1-Q17",
+      "dayNumber": 3,
+      "questionID": "TPRA-P1-Q17",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-MAT-SPEC2-Q1E",
+      "dayNumber": 3,
+      "questionID": "MAT-SPEC2-Q1E",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TSPEC-P1-Q10",
+      "dayNumber": 3,
+      "questionID": "TSPEC-P1-Q10",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D03-TSPEC-P1-Q18",
+      "dayNumber": 3,
+      "questionID": "TSPEC-P1-Q18",
+      "block": "Questions",
+      "purpose": "Exact trig, equations, radians and geometric trig",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D04-GRAPH-REPAIR-MAT-2019-Q1D",
+      "dayNumber": 4,
+      "questionID": "MAT-2019-Q1D",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D04-GRAPH-REPAIR-MAT-2018-Q1G",
+      "dayNumber": 4,
+      "questionID": "MAT-2018-Q1G",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TYLER-A-P2-Q08",
+      "dayNumber": 4,
+      "questionID": "TYLER-A-P2-Q08",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TYLER-D-P1-Q08",
+      "dayNumber": 4,
+      "questionID": "TYLER-D-P1-Q08",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TYLER-D-P1-Q10",
+      "dayNumber": 4,
+      "questionID": "TYLER-D-P1-Q10",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-YOTTA-P1-Q09",
+      "dayNumber": 4,
+      "questionID": "YOTTA-P1-Q09",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TYLER-C-P1-Q16",
+      "dayNumber": 4,
+      "questionID": "TYLER-C-P1-Q16",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TYLER-C-P1-Q20",
+      "dayNumber": 4,
+      "questionID": "TYLER-C-P1-Q20",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TPRA-P1-Q11",
+      "dayNumber": 4,
+      "questionID": "TPRA-P1-Q11",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TPRA-P1-Q13",
+      "dayNumber": 4,
+      "questionID": "TPRA-P1-Q13",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TPRA-P2-Q07",
+      "dayNumber": 4,
+      "questionID": "TPRA-P2-Q07",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D04-TPRA-P2-Q14",
+      "dayNumber": 4,
+      "questionID": "TPRA-P2-Q14",
+      "block": "Graph repair",
+      "purpose": "Graph transformations, features and sketching from structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D05-AREA-AND-CALCULUS-MAT-2020-Q1E",
+      "dayNumber": 5,
+      "questionID": "MAT-2020-Q1E",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TYLER-A-P1-Q12",
+      "dayNumber": 5,
+      "questionID": "TYLER-A-P1-Q12",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TYLER-C-P1-Q11",
+      "dayNumber": 5,
+      "questionID": "TYLER-C-P1-Q11",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TYLER-D-P1-Q09",
+      "dayNumber": 5,
+      "questionID": "TYLER-D-P1-Q09",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TYLER-C-P1-Q17",
+      "dayNumber": 5,
+      "questionID": "TYLER-C-P1-Q17",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TYLER-D-P1-Q02",
+      "dayNumber": 5,
+      "questionID": "TYLER-D-P1-Q02",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TPRA-P1-Q15",
+      "dayNumber": 5,
+      "questionID": "TPRA-P1-Q15",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TPRA-P1-Q18",
+      "dayNumber": 5,
+      "questionID": "TPRA-P1-Q18",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-TPRA-P2-Q02",
+      "dayNumber": 5,
+      "questionID": "TPRA-P2-Q02",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D05-MAT-SPEC2-Q1F",
+      "dayNumber": 5,
+      "questionID": "MAT-SPEC2-Q1F",
+      "block": "Area and calculus",
+      "purpose": "Signed area, tangent/curve regions and calculus recognition",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-PROBABILITY-TYLER-COMBINATORICS-MIXED-Q06",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q06",
+      "block": "TMUA probability",
+      "purpose": "Conditional probability, replacement and sample-space foundations",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-PROBABILITY-TYLER-COMBINATORICS-MIXED-Q07",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q07",
+      "block": "TMUA probability",
+      "purpose": "Conditional probability, replacement and sample-space foundations",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-PROBABILITY-TYLER-COMBINATORICS-MIXED-Q08",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q08",
+      "block": "TMUA probability",
+      "purpose": "Conditional probability, replacement and sample-space foundations",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-PROBABILITY-TYLER-COMBINATORICS-MIXED-Q09",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q09",
+      "block": "TMUA probability",
+      "purpose": "Conditional probability, replacement and sample-space foundations",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-PROBABILITY-TYLER-COMBINATORICS-MIXED-Q10",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q10",
+      "block": "TMUA probability",
+      "purpose": "Conditional probability, replacement and sample-space foundations",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-STATISTICS-TYLER-PROBABILITY-Q07",
+      "dayNumber": 6,
+      "questionID": "TYLER-PROBABILITY-Q07",
+      "block": "TMUA statistics",
+      "purpose": "Means, medians, ranges and data interpretation",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-STATISTICS-TYLER-PROBABILITY-Q08",
+      "dayNumber": 6,
+      "questionID": "TYLER-PROBABILITY-Q08",
+      "block": "TMUA statistics",
+      "purpose": "Means, medians, ranges and data interpretation",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-COUNTING-TYLER-COMBINATORICS-COMBINATIONS-Q01",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-COMBINATIONS-Q01",
+      "block": "TMUA counting",
+      "purpose": "Systematic counting without hidden overlap",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-TMUA-COUNTING-TYLER-COMBINATORICS-COMBINATIONS-Q02",
+      "dayNumber": 6,
+      "questionID": "TYLER-COMBINATORICS-COMBINATIONS-Q02",
+      "block": "TMUA counting",
+      "purpose": "Systematic counting without hidden overlap",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-SMC-PROBABILITY-SMC-2021-Q15",
+      "dayNumber": 6,
+      "questionID": "SMC-2021-Q15",
+      "block": "SMC probability",
+      "purpose": "Short probability spotting segment",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-SMC-STATISTICS-SMC-2013-Q10",
+      "dayNumber": 6,
+      "questionID": "SMC-2013-Q10",
+      "block": "SMC statistics",
+      "purpose": "Short data observation segment",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D06-SMC-COUNTING-SMC-2013-Q12",
+      "dayNumber": 6,
+      "questionID": "SMC-2013-Q12",
+      "block": "SMC counting",
+      "purpose": "Short concise-counting segment",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q01",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q01",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q02",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q02",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q03",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q03",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q04",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q04",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q05",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q05",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q06",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q06",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q07",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q07",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q08",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q08",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q09",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q09",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q10",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q10",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q11",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q11",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q12",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q12",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q13",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q13",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q14",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q14",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q15",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q15",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q16",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q16",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q17",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q17",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q18",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q18",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q19",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q19",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D07-TIMED-DIAGNOSTIC-EUCLID-R2DREW2-P1-Q20",
+      "dayNumber": 7,
+      "questionID": "EUCLID-R2DREW2-P1-Q20",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 1 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q01",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q01",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q02",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q02",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q03",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q03",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q04",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q04",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q05",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q05",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q06",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q06",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q10",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q10",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q11",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q11",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q12",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q12",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D08-LOGIC-FOUNDATIONS-TYLER-LOGIC-Q25",
+      "dayNumber": 8,
+      "questionID": "TYLER-LOGIC-Q25",
+      "block": "Logic foundations",
+      "purpose": "Implication, necessary/sufficient conditions and counterexamples",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D09-CSAT-PROBLEMS-CSAT-S1-Q01",
+      "dayNumber": 9,
+      "questionID": "CSAT-S1-Q01",
+      "block": "CSAT problems",
+      "purpose": "Unfamiliar decomposition with think-aloud explanation",
+      "suggestedTimeCapMinutes": 22,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D09-CSAT-PROBLEMS-CSAT-S1-Q02",
+      "dayNumber": 9,
+      "questionID": "CSAT-S1-Q02",
+      "block": "CSAT problems",
+      "purpose": "Unfamiliar decomposition with think-aloud explanation",
+      "suggestedTimeCapMinutes": 22,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D09-STEP-I-CROSSOVER-STEP-2014-P1-PURE-MATHEMATICS-Q01",
+      "dayNumber": 9,
+      "questionID": "STEP-2014-P1-PURE-MATHEMATICS-Q01",
+      "block": "STEP I crossover",
+      "purpose": "Deep unfamiliar problem and approach explanation",
+      "suggestedTimeCapMinutes": 28,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D09-MAT-CROSSOVER-MAT-2007-Q02",
+      "dayNumber": 9,
+      "questionID": "MAT-2007-Q02",
+      "block": "MAT crossover",
+      "purpose": "Longer mathematical problem-solving and adaptation",
+      "suggestedTimeCapMinutes": 25,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D10-GEOMETRY-AND-TRIG-REPAIR-MAT-2017-Q1F",
+      "dayNumber": 10,
+      "questionID": "MAT-2017-Q1F",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D10-GEOMETRY-AND-TRIG-REPAIR-TSPEC-P1-Q18",
+      "dayNumber": 10,
+      "questionID": "TSPEC-P1-Q18",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D10-GEOMETRY-AND-TRIG-REPAIR-YOTTA-P2-Q08",
+      "dayNumber": 10,
+      "questionID": "YOTTA-P2-Q08",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D10-GEOMETRY-AND-TRIG-REPAIR-YOTTA-P1-Q08",
+      "dayNumber": 10,
+      "questionID": "YOTTA-P1-Q08",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D10-GEOMETRY-AND-TRIG-REPAIR-TPRA-P2-Q03",
+      "dayNumber": 10,
+      "questionID": "TPRA-P2-Q03",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-TYLER-A-P1-Q10",
+      "dayNumber": 10,
+      "questionID": "TYLER-A-P1-Q10",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-TYLER-C-P1-Q12",
+      "dayNumber": 10,
+      "questionID": "TYLER-C-P1-Q12",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-TYLER-D-P1-Q12",
+      "dayNumber": 10,
+      "questionID": "TYLER-D-P1-Q12",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-TYLER-D-P1-Q13",
+      "dayNumber": 10,
+      "questionID": "TYLER-D-P1-Q13",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-MAT-2021-Q1D",
+      "dayNumber": 10,
+      "questionID": "MAT-2021-Q1D",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-MAT-2021-Q1F",
+      "dayNumber": 10,
+      "questionID": "MAT-2021-Q1F",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D10-MAT-2022-Q1B",
+      "dayNumber": 10,
+      "questionID": "MAT-2022-Q1B",
+      "block": "Geometry and trig repair",
+      "purpose": "Coordinates, circles, exact values, periods and transformed trig graphs",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q01",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q01",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q02",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q02",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q03",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q03",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q04",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q04",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q05",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q05",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q06",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q06",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q07",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q07",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q08",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q08",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q09",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q09",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q10",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q10",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q11",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q11",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q12",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q12",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q13",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q13",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q14",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q14",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q15",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q15",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q16",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q16",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q17",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q17",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q18",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q18",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q19",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q19",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D11-TIMED-DIAGNOSTIC-EUCLID-SAMPLE-P2-Q20",
+      "dayNumber": 11,
+      "questionID": "EUCLID-SAMPLE-P2-Q20",
+      "block": "Timed diagnostic",
+      "purpose": "Representative third-party Paper 2 diagnostic",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-A-P1-Q06",
+      "dayNumber": 12,
+      "questionID": "TYLER-A-P1-Q06",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-C-P1-Q10",
+      "dayNumber": 12,
+      "questionID": "TYLER-C-P1-Q10",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-D-P2-Q07",
+      "dayNumber": 12,
+      "questionID": "TYLER-D-P2-Q07",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-D-P2-Q09",
+      "dayNumber": 12,
+      "questionID": "TYLER-D-P2-Q09",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-YOTTA-P1-Q13",
+      "dayNumber": 12,
+      "questionID": "YOTTA-P1-Q13",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-A-P2-Q03",
+      "dayNumber": 12,
+      "questionID": "TYLER-A-P2-Q03",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-A-P2-Q10",
+      "dayNumber": 12,
+      "questionID": "TYLER-A-P2-Q10",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-B-P2-Q11",
+      "dayNumber": 12,
+      "questionID": "TYLER-B-P2-Q11",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-TMUA-NUMBER-AND-RATIO-TYLER-C-P2-Q05",
+      "dayNumber": 12,
+      "questionID": "TYLER-C-P2-Q05",
+      "block": "TMUA number and ratio",
+      "purpose": "Ratio, scaling, bounds and number structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-SMC-EFFICIENCY-SMC-2013-Q06",
+      "dayNumber": 12,
+      "questionID": "SMC-2013-Q06",
+      "block": "SMC efficiency",
+      "purpose": "Short number and ratio observation segment",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-SMC-EFFICIENCY-SMC-2013-Q07",
+      "dayNumber": 12,
+      "questionID": "SMC-2013-Q07",
+      "block": "SMC efficiency",
+      "purpose": "Short number and ratio observation segment",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D12-SMC-EFFICIENCY-SMC-2015-Q10",
+      "dayNumber": 12,
+      "questionID": "SMC-2015-Q10",
+      "block": "SMC efficiency",
+      "purpose": "Short number and ratio observation segment",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q01",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q01",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q02",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q02",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q03",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q03",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q04",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q04",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q05",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q05",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q06",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q06",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q07",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q07",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-TMUA-FUNCTIONS-TYLER-ABSTRACT-FUNCTIONS-Q08",
+      "dayNumber": 13,
+      "questionID": "TYLER-ABSTRACT-FUNCTIONS-Q08",
+      "block": "TMUA functions",
+      "purpose": "Functions, graphs, sequences and recurrence structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-CSAT-CROSSOVER-CSAT-S2-Q01",
+      "dayNumber": 13,
+      "questionID": "CSAT-S2-Q01",
+      "block": "CSAT crossover",
+      "purpose": "Deeper unfamiliar problems with written reflection",
+      "suggestedTimeCapMinutes": 18,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D13-CSAT-CROSSOVER-CSAT-S3-Q01",
+      "dayNumber": 13,
+      "questionID": "CSAT-S3-Q01",
+      "block": "CSAT crossover",
+      "purpose": "Deeper unfamiliar problems with written reflection",
+      "suggestedTimeCapMinutes": 18,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-PROBABILITY-INTENSIVE-TYLER-COMBINATORICS-MIXED-Q11",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q11",
+      "block": "Probability intensive",
+      "purpose": "Conditional probability and careful case structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-PROBABILITY-INTENSIVE-TYLER-COMBINATORICS-MIXED-Q12",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q12",
+      "block": "Probability intensive",
+      "purpose": "Conditional probability and careful case structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-PROBABILITY-INTENSIVE-TYLER-COMBINATORICS-MIXED-Q13",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-MIXED-Q13",
+      "block": "Probability intensive",
+      "purpose": "Conditional probability and careful case structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-PROBABILITY-INTENSIVE-TYLER-PROBABILITY-Q01",
+      "dayNumber": 14,
+      "questionID": "TYLER-PROBABILITY-Q01",
+      "block": "Probability intensive",
+      "purpose": "Conditional probability and careful case structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-PROBABILITY-INTENSIVE-TYLER-PROBABILITY-Q02",
+      "dayNumber": 14,
+      "questionID": "TYLER-PROBABILITY-Q02",
+      "block": "Probability intensive",
+      "purpose": "Conditional probability and careful case structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-PROBABILITY-INTENSIVE-TYLER-PROBABILITY-Q03",
+      "dayNumber": 14,
+      "questionID": "TYLER-PROBABILITY-Q03",
+      "block": "Probability intensive",
+      "purpose": "Conditional probability and careful case structure",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-STATISTICS-INTENSIVE-IMC-2018-Q24",
+      "dayNumber": 14,
+      "questionID": "IMC-2018-Q24",
+      "block": "Statistics intensive",
+      "purpose": "Data interpretation and reliable statistical reasoning",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-STATISTICS-INTENSIVE-SK-2014-Q11",
+      "dayNumber": 14,
+      "questionID": "SK-2014-Q11",
+      "block": "Statistics intensive",
+      "purpose": "Data interpretation and reliable statistical reasoning",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-COUNTING-INTENSIVE-TYLER-COMBINATORICS-COMBINATIONS-Q03",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-COMBINATIONS-Q03",
+      "block": "Counting intensive",
+      "purpose": "Systematic counting and double-counting control",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-COUNTING-INTENSIVE-TYLER-COMBINATORICS-COMBINATIONS-Q04",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-COMBINATIONS-Q04",
+      "block": "Counting intensive",
+      "purpose": "Systematic counting and double-counting control",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-COUNTING-INTENSIVE-TYLER-COMBINATORICS-DISTINCT-DISTRIBUTIONS-Q01",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-DISTINCT-DISTRIBUTIONS-Q01",
+      "block": "Counting intensive",
+      "purpose": "Systematic counting and double-counting control",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-COUNTING-INTENSIVE-TYLER-COMBINATORICS-DISTINCT-DISTRIBUTIONS-Q02",
+      "dayNumber": 14,
+      "questionID": "TYLER-COMBINATORICS-DISTINCT-DISTRIBUTIONS-Q02",
+      "block": "Counting intensive",
+      "purpose": "Systematic counting and double-counting control",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-SMC-PROBABILITY-FINISH-SMC-2024-Q17",
+      "dayNumber": 14,
+      "questionID": "SMC-2024-Q17",
+      "block": "SMC probability finish",
+      "purpose": "Timed probability-efficiency finish",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D14-SMC-STATISTICS-FINISH-SMC-2018-Q14",
+      "dayNumber": 14,
+      "questionID": "SMC-2018-Q14",
+      "block": "SMC statistics finish",
+      "purpose": "Timed data-efficiency finish",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q01",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q01",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q02",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q02",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q03",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q03",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q04",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q04",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q05",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q05",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q06",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q06",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q07",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q07",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q08",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q08",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q09",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q09",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q10",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q10",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q11",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q11",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q12",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q12",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q13",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q13",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q14",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q14",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q15",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q15",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q16",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q16",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q17",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q17",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q18",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q18",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q19",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q19",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D15-OFFICIAL-BENCHMARK-TMUA-2017-P1-Q20",
+      "dayNumber": 15,
+      "questionID": "TMUA-2017-P1-Q20",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q01",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q01",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q02",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q02",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q03",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q03",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q04",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q04",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q05",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q05",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q06",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q06",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q07",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q07",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q08",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q08",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q09",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q09",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q10",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q10",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q11",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q11",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q12",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q12",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q13",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q13",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q14",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q14",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q15",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q15",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q16",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q16",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q17",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q17",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q18",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q18",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q19",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q19",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D16-OFFICIAL-BENCHMARK-TMUA-2017-P2-Q20",
+      "dayNumber": 16,
+      "questionID": "TMUA-2017-P2-Q20",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2017 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-MAT-2017-Q1F",
+      "dayNumber": 17,
+      "questionID": "MAT-2017-Q1F",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-TSPEC-P1-Q18",
+      "dayNumber": 17,
+      "questionID": "TSPEC-P1-Q18",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-TYLER-C-P1-Q07",
+      "dayNumber": 17,
+      "questionID": "TYLER-C-P1-Q07",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-YOTTA-P1-Q11",
+      "dayNumber": 17,
+      "questionID": "YOTTA-P1-Q11",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-YOTTA-P2-Q08",
+      "dayNumber": 17,
+      "questionID": "YOTTA-P2-Q08",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-TYLER-B-P2-Q09",
+      "dayNumber": 17,
+      "questionID": "TYLER-B-P2-Q09",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D17-DETERMINISTIC-REPAIR-TYLER-C-P1-Q05",
+      "dayNumber": 17,
+      "questionID": "TYLER-C-P1-Q05",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D17-TYLER-B-P1-Q17",
+      "dayNumber": 17,
+      "questionID": "TYLER-B-P1-Q17",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D17-TYLER-C-P1-Q14",
+      "dayNumber": 17,
+      "questionID": "TYLER-C-P1-Q14",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D17-TYLER-C-P2-Q10",
+      "dayNumber": 17,
+      "questionID": "TYLER-C-P2-Q10",
+      "block": "Deterministic repair",
+      "purpose": "Current Needs Review/Redo and evidenced weak-area repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D18-CSAT-REASONING-CSAT-S1-Q03",
+      "dayNumber": 18,
+      "questionID": "CSAT-S1-Q03",
+      "block": "CSAT reasoning",
+      "purpose": "Think-aloud decomposition and explanation",
+      "suggestedTimeCapMinutes": 22,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D18-CSAT-REASONING-CSAT-S1-Q04",
+      "dayNumber": 18,
+      "questionID": "CSAT-S1-Q04",
+      "block": "CSAT reasoning",
+      "purpose": "Think-aloud decomposition and explanation",
+      "suggestedTimeCapMinutes": 22,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D18-STEP-I-REASONING-STEP-2014-P1-PURE-MATHEMATICS-Q02",
+      "dayNumber": 18,
+      "questionID": "STEP-2014-P1-PURE-MATHEMATICS-Q02",
+      "block": "STEP I reasoning",
+      "purpose": "Explain assumptions, failed routes and final structure",
+      "suggestedTimeCapMinutes": 28,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D18-MAT-REASONING-MAT-2008-Q02",
+      "dayNumber": 18,
+      "questionID": "MAT-2008-Q02",
+      "block": "MAT reasoning",
+      "purpose": "Long-form mathematical adaptation",
+      "suggestedTimeCapMinutes": 25,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D18-BMO-PROOF-BMO-1975-Q01",
+      "dayNumber": 18,
+      "questionID": "BMO-1975-Q01",
+      "block": "BMO proof",
+      "purpose": "One bounded proof-structure problem",
+      "suggestedTimeCapMinutes": 28,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q01",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q01",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q02",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q02",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q03",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q03",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q04",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q04",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q05",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q05",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q06",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q06",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q07",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q07",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q08",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q08",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q09",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q09",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q10",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q10",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q11",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q11",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q12",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q12",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q13",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q13",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q14",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q14",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q15",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q15",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q16",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q16",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q17",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q17",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q18",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q18",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q19",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q19",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D19-OFFICIAL-BENCHMARK-TMUA-2018-P1-Q20",
+      "dayNumber": 19,
+      "questionID": "TMUA-2018-P1-Q20",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q01",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q01",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q02",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q02",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q03",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q03",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q04",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q04",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q05",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q05",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q06",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q06",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q07",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q07",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q08",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q08",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q09",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q09",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q10",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q10",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q11",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q11",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q12",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q12",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q13",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q13",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q14",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q14",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q15",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q15",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q16",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q16",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q17",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q17",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q18",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q18",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q19",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q19",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D20-OFFICIAL-BENCHMARK-TMUA-2018-P2-Q20",
+      "dayNumber": 20,
+      "questionID": "TMUA-2018-P2-Q20",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2018 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q01",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q01",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q02",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q02",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q03",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q03",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q04",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q04",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q05",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q05",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q06",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q06",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q07",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q07",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q08",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q08",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q09",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q09",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q10",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q10",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q11",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q11",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q12",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q12",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q13",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q13",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q14",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q14",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q15",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q15",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q16",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q16",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q17",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q17",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q18",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q18",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q19",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q19",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-1-TMUA-2019-P1-Q20",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P1-Q20",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2019 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q01",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q01",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 20
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q02",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q02",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 21
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q03",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q03",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 22
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q04",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q04",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 23
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q05",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q05",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 24
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q06",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q06",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 25
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q07",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q07",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 26
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q08",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q08",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 27
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q09",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q09",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 28
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q10",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q10",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 29
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q11",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q11",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 30
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q12",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q12",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 31
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q13",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q13",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 32
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q14",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q14",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 33
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q15",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q15",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 34
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q16",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q16",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 35
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q17",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q17",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 36
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q18",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q18",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 37
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q19",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q19",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 38
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D21-FULL-SIMULATION-PAPER-2-TMUA-2019-P2-Q20",
+      "dayNumber": 21,
+      "questionID": "TMUA-2019-P2-Q20",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2019 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 39
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-SIMULATION-REPAIR-MAT-2019-Q1D",
+      "dayNumber": 22,
+      "questionID": "MAT-2019-Q1D",
+      "block": "Simulation repair",
+      "purpose": "Recurring topic, timing and approach-error repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-SIMULATION-REPAIR-MAT-2020-Q1E",
+      "dayNumber": 22,
+      "questionID": "MAT-2020-Q1E",
+      "block": "Simulation repair",
+      "purpose": "Recurring topic, timing and approach-error repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-SIMULATION-REPAIR-TSPEC-P1-Q19",
+      "dayNumber": 22,
+      "questionID": "TSPEC-P1-Q19",
+      "block": "Simulation repair",
+      "purpose": "Recurring topic, timing and approach-error repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-SIMULATION-REPAIR-TYLER-C-P1-Q07",
+      "dayNumber": 22,
+      "questionID": "TYLER-C-P1-Q07",
+      "block": "Simulation repair",
+      "purpose": "Recurring topic, timing and approach-error repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-SIMULATION-REPAIR-TYLER-A-P1-Q08",
+      "dayNumber": 22,
+      "questionID": "TYLER-A-P1-Q08",
+      "block": "Simulation repair",
+      "purpose": "Recurring topic, timing and approach-error repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-SIMULATION-REPAIR-TYLER-A-P1-Q13",
+      "dayNumber": 22,
+      "questionID": "TYLER-A-P1-Q13",
+      "block": "Simulation repair",
+      "purpose": "Recurring topic, timing and approach-error repair",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-LIGHT-CSAT-CSAT-S2-Q02",
+      "dayNumber": 22,
+      "questionID": "CSAT-S2-Q02",
+      "block": "Light CSAT",
+      "purpose": "Light unfamiliar reasoning after simulation analysis",
+      "suggestedTimeCapMinutes": 16,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D22-LIGHT-CSAT-CSAT-S2-Q03",
+      "dayNumber": 22,
+      "questionID": "CSAT-S2-Q03",
+      "block": "Light CSAT",
+      "purpose": "Light unfamiliar reasoning after simulation analysis",
+      "suggestedTimeCapMinutes": 16,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-JZ-PAPER-2-STRETCH-JZ-A-P2-Q01",
+      "dayNumber": 23,
+      "questionID": "JZ-A-P2-Q01",
+      "block": "JZ Paper 2 stretch",
+      "purpose": "Hard logic, counterexample and algebraic-structure set",
+      "suggestedTimeCapMinutes": 8,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-JZ-PAPER-2-STRETCH-JZ-A-P2-Q03",
+      "dayNumber": 23,
+      "questionID": "JZ-A-P2-Q03",
+      "block": "JZ Paper 2 stretch",
+      "purpose": "Hard logic, counterexample and algebraic-structure set",
+      "suggestedTimeCapMinutes": 8,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-JZ-PAPER-2-STRETCH-JZ-A-P2-Q06",
+      "dayNumber": 23,
+      "questionID": "JZ-A-P2-Q06",
+      "block": "JZ Paper 2 stretch",
+      "purpose": "Hard logic, counterexample and algebraic-structure set",
+      "suggestedTimeCapMinutes": 8,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-JZ-PAPER-2-STRETCH-JZ-A-P2-Q07",
+      "dayNumber": 23,
+      "questionID": "JZ-A-P2-Q07",
+      "block": "JZ Paper 2 stretch",
+      "purpose": "Hard logic, counterexample and algebraic-structure set",
+      "suggestedTimeCapMinutes": 8,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-JZ-PAPER-2-STRETCH-JZ-A-P2-Q10",
+      "dayNumber": 23,
+      "questionID": "JZ-A-P2-Q10",
+      "block": "JZ Paper 2 stretch",
+      "purpose": "Hard logic, counterexample and algebraic-structure set",
+      "suggestedTimeCapMinutes": 8,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-JZ-PAPER-2-STRETCH-JZ-A-P2-Q11",
+      "dayNumber": 23,
+      "questionID": "JZ-A-P2-Q11",
+      "block": "JZ Paper 2 stretch",
+      "purpose": "Hard logic, counterexample and algebraic-structure set",
+      "suggestedTimeCapMinutes": 8,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-CHALLENGE-PAPER-2-STRETCH-TMUAFYI-C1-P2-Q01",
+      "dayNumber": 23,
+      "questionID": "TMUAFYI-C1-P2-Q01",
+      "block": "Challenge Paper 2 stretch",
+      "purpose": "Coherent difficult Paper 2 pressure-handling set",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-CHALLENGE-PAPER-2-STRETCH-TMUAFYI-C1-P2-Q02",
+      "dayNumber": 23,
+      "questionID": "TMUAFYI-C1-P2-Q02",
+      "block": "Challenge Paper 2 stretch",
+      "purpose": "Coherent difficult Paper 2 pressure-handling set",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-CHALLENGE-PAPER-2-STRETCH-TMUAFYI-C1-P2-Q03",
+      "dayNumber": 23,
+      "questionID": "TMUAFYI-C1-P2-Q03",
+      "block": "Challenge Paper 2 stretch",
+      "purpose": "Coherent difficult Paper 2 pressure-handling set",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-CHALLENGE-PAPER-2-STRETCH-TMUAFYI-C1-P2-Q04",
+      "dayNumber": 23,
+      "questionID": "TMUAFYI-C1-P2-Q04",
+      "block": "Challenge Paper 2 stretch",
+      "purpose": "Coherent difficult Paper 2 pressure-handling set",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-CHALLENGE-PAPER-2-STRETCH-TMUAFYI-C1-P2-Q05",
+      "dayNumber": 23,
+      "questionID": "TMUAFYI-C1-P2-Q05",
+      "block": "Challenge Paper 2 stretch",
+      "purpose": "Coherent difficult Paper 2 pressure-handling set",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D23-CHALLENGE-PAPER-2-STRETCH-TMUAFYI-C1-P2-Q06",
+      "dayNumber": 23,
+      "questionID": "TMUAFYI-C1-P2-Q06",
+      "block": "Challenge Paper 2 stretch",
+      "purpose": "Coherent difficult Paper 2 pressure-handling set",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-SMC-SPEED-SMC-2013-Q13",
+      "dayNumber": 24,
+      "questionID": "SMC-2013-Q13",
+      "block": "SMC speed",
+      "purpose": "Short timed speed and efficient-observation set",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-SMC-SPEED-SMC-2013-Q14",
+      "dayNumber": 24,
+      "questionID": "SMC-2013-Q14",
+      "block": "SMC speed",
+      "purpose": "Short timed speed and efficient-observation set",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-SMC-SPEED-SMC-2013-Q15",
+      "dayNumber": 24,
+      "questionID": "SMC-2013-Q15",
+      "block": "SMC speed",
+      "purpose": "Short timed speed and efficient-observation set",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-SMC-SPEED-SMC-2013-Q16",
+      "dayNumber": 24,
+      "questionID": "SMC-2013-Q16",
+      "block": "SMC speed",
+      "purpose": "Short timed speed and efficient-observation set",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-SMC-SPEED-SMC-2013-Q17",
+      "dayNumber": 24,
+      "questionID": "SMC-2013-Q17",
+      "block": "SMC speed",
+      "purpose": "Short timed speed and efficient-observation set",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-SMC-SPEED-SMC-2013-Q18",
+      "dayNumber": 24,
+      "questionID": "SMC-2013-Q18",
+      "block": "SMC speed",
+      "purpose": "Short timed speed and efficient-observation set",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-BMO-DEPTH-BMO-1975-Q02",
+      "dayNumber": 24,
+      "questionID": "BMO-1975-Q02",
+      "block": "BMO depth",
+      "purpose": "Selected proof structure and multi-step reasoning",
+      "suggestedTimeCapMinutes": 24,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-BMO-DEPTH-BMO-1975-Q03",
+      "dayNumber": 24,
+      "questionID": "BMO-1975-Q03",
+      "block": "BMO depth",
+      "purpose": "Selected proof structure and multi-step reasoning",
+      "suggestedTimeCapMinutes": 24,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-CSAT-FLEXIBILITY-CSAT-S2-Q04",
+      "dayNumber": 24,
+      "questionID": "CSAT-S2-Q04",
+      "block": "CSAT flexibility",
+      "purpose": "Unfamiliar decomposition and explanation",
+      "suggestedTimeCapMinutes": 20,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D24-CSAT-FLEXIBILITY-CSAT-S3-Q02",
+      "dayNumber": 24,
+      "questionID": "CSAT-S3-Q02",
+      "block": "CSAT flexibility",
+      "purpose": "Unfamiliar decomposition and explanation",
+      "suggestedTimeCapMinutes": 20,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q01",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q01",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q02",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q02",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q03",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q03",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q04",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q04",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q05",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q05",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q06",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q06",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q07",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q07",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q08",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q08",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q09",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q09",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q10",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q10",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q11",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q11",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q12",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q12",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q13",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q13",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q14",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q14",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q15",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q15",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q16",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q16",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q17",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q17",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q18",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q18",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q19",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q19",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D25-OFFICIAL-BENCHMARK-TMUA-2020-P1-Q20",
+      "dayNumber": 25,
+      "questionID": "TMUA-2020-P1-Q20",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q01",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q01",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q02",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q02",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q03",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q03",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q04",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q04",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q05",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q05",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q06",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q06",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q07",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q07",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q08",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q08",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q09",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q09",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q10",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q10",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q11",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q11",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q12",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q12",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q13",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q13",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q14",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q14",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q15",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q15",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q16",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q16",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q17",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q17",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q18",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q18",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q19",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q19",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D26-OFFICIAL-BENCHMARK-TMUA-2020-P2-Q20",
+      "dayNumber": 26,
+      "questionID": "TMUA-2020-P2-Q20",
+      "block": "Official benchmark",
+      "purpose": "Official TMUA 2020 Paper 2",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D27-TMUA-EFFICIENCY-TSPEC-P1-Q09",
+      "dayNumber": 27,
+      "questionID": "TSPEC-P1-Q09",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D27-TMUA-EFFICIENCY-TPRA-P2-Q03",
+      "dayNumber": 27,
+      "questionID": "TPRA-P2-Q03",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-IMC-2017-Q23",
+      "dayNumber": 27,
+      "questionID": "IMC-2017-Q23",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-IMC-2017-Q24",
+      "dayNumber": 27,
+      "questionID": "IMC-2017-Q24",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-IMC-2017-Q25",
+      "dayNumber": 27,
+      "questionID": "IMC-2017-Q25",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-IMC-2019-Q21",
+      "dayNumber": 27,
+      "questionID": "IMC-2019-Q21",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-SK-2011-Q09",
+      "dayNumber": 27,
+      "questionID": "SK-2011-Q09",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-SK-2012-Q10",
+      "dayNumber": 27,
+      "questionID": "SK-2012-Q10",
+      "block": "TMUA efficiency",
+      "purpose": "Question selection, exact values, structural recognition and logic traps",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-SMC-2019-Q16",
+      "dayNumber": 27,
+      "questionID": "SMC-2019-Q16",
+      "block": "SMC economy",
+      "purpose": "Fast observation and decision-making",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D27-SMC-2020-Q13",
+      "dayNumber": 27,
+      "questionID": "SMC-2020-Q13",
+      "block": "SMC economy",
+      "purpose": "Fast observation and decision-making",
+      "suggestedTimeCapMinutes": 5,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q01",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q01",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q02",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q02",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q03",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q03",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q04",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q04",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q05",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q05",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q06",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q06",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q07",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q07",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q08",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q08",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q09",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q09",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 8
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q10",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q10",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 9
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q11",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q11",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 10
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q12",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q12",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 11
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q13",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q13",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 12
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q14",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q14",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 13
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q15",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q15",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 14
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q16",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q16",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 15
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q17",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q17",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 16
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q18",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q18",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 17
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q19",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q19",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 18
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-1-TMUA-2021-P1-Q20",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P1-Q20",
+      "block": "Full simulation Paper 1",
+      "purpose": "Official TMUA 2021 Paper 1",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 19
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q01",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q01",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 20
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q02",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q02",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 21
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q03",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q03",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 22
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q04",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q04",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 23
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q05",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q05",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 24
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q06",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q06",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 25
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q07",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q07",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 26
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q08",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q08",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 27
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q09",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q09",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 28
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q10",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q10",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 29
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q11",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q11",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 30
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q12",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q12",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 31
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q13",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q13",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 32
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q14",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q14",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 33
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q15",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q15",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 34
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q16",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q16",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 35
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q17",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q17",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 36
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q18",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q18",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 37
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q19",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q19",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 38
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D28-FULL-SIMULATION-PAPER-2-TMUA-2021-P2-Q20",
+      "dayNumber": 28,
+      "questionID": "TMUA-2021-P2-Q20",
+      "block": "Full simulation Paper 2",
+      "purpose": "Official TMUA 2021 Paper 2 after a proper break",
+      "suggestedTimeCapMinutes": 4,
+      "displayOrder": 39
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D29-FINAL-REPAIR-MAT-2019-Q1D",
+      "dayNumber": 29,
+      "questionID": "MAT-2019-Q1D",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D29-FINAL-REPAIR-MAT-2020-Q1E",
+      "dayNumber": 29,
+      "questionID": "MAT-2020-Q1E",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D29-FINAL-REPAIR-TSPEC-P1-Q19",
+      "dayNumber": 29,
+      "questionID": "TSPEC-P1-Q19",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D29-FINAL-REPAIR-TPRA-P2-Q03",
+      "dayNumber": 29,
+      "questionID": "TPRA-P2-Q03",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D29-TYLER-A-P1-Q14",
+      "dayNumber": 29,
+      "questionID": "TYLER-A-P1-Q14",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D29-TYLER-A-P1-Q16",
+      "dayNumber": 29,
+      "questionID": "TYLER-A-P1-Q16",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 5
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D29-TYLER-A-P1-Q20",
+      "dayNumber": 29,
+      "questionID": "TYLER-A-P1-Q20",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 6
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-D29-TYLER-B-P1-Q14",
+      "dayNumber": 29,
+      "questionID": "TYLER-B-P1-Q14",
+      "block": "Final repair",
+      "purpose": "Current error notes and weakest remaining areas",
+      "suggestedTimeCapMinutes": 7,
+      "displayOrder": 7
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D30-SEEN-QUESTION-CONSOLIDATION-MAT-2017-Q1F",
+      "dayNumber": 30,
+      "questionID": "MAT-2017-Q1F",
+      "block": "Seen-question consolidation",
+      "purpose": "Low-volume recall, error-log and exam-strategy consolidation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 0
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D30-SEEN-QUESTION-CONSOLIDATION-TSPEC-P1-Q18",
+      "dayNumber": 30,
+      "questionID": "TSPEC-P1-Q18",
+      "block": "Seen-question consolidation",
+      "purpose": "Low-volume recall, error-log and exam-strategy consolidation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 1
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D30-SEEN-QUESTION-CONSOLIDATION-YOTTA-P1-Q11",
+      "dayNumber": 30,
+      "questionID": "YOTTA-P1-Q11",
+      "block": "Seen-question consolidation",
+      "purpose": "Low-volume recall, error-log and exam-strategy consolidation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 2
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D30-SEEN-QUESTION-CONSOLIDATION-YOTTA-P2-Q08",
+      "dayNumber": 30,
+      "questionID": "YOTTA-P2-Q08",
+      "block": "Seen-question consolidation",
+      "purpose": "Low-volume recall, error-log and exam-strategy consolidation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 3
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D30-SEEN-QUESTION-CONSOLIDATION-TYLER-B-P2-Q09",
+      "dayNumber": 30,
+      "questionID": "TYLER-B-P2-Q09",
+      "block": "Seen-question consolidation",
+      "purpose": "Low-volume recall, error-log and exam-strategy consolidation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 4
+    },
+    {
+      "externalAssignmentID": "TMUA-30-DAY-2026-CH4-D30-SEEN-QUESTION-CONSOLIDATION-TYLER-C-P1-Q07",
+      "dayNumber": 30,
+      "questionID": "TYLER-C-P1-Q07",
+      "block": "Seen-question consolidation",
+      "purpose": "Low-volume recall, error-log and exam-strategy consolidation",
+      "suggestedTimeCapMinutes": 6,
+      "displayOrder": 5
+    }
+  ],
+  "migrationRevision": "6cf15d8306ad208078c51ea181fe2674c73fdc09edc5a531aa34a0697f66b73e"
+}
