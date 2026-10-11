@@ -32,10 +32,14 @@ struct PublicPreparationSetupView: View {
             if editing {
                 setupForm
             } else if showingProgramme {
-                PublicRootTabView(settings: settings) {
-                    editing = true
-                    showingProgramme = false
-                }
+                PublicRootTabView(
+                    settings: settings,
+                    onEditSettings: {
+                        editing = true
+                        showingProgramme = false
+                    },
+                    onReturnToDiagnostics: { showingProgramme = false }
+                )
             } else {
                 DiagnosticHomeView(settings: settings, onEdit: { editing = true },
                                    onProgrammeGenerated: { showingProgramme = true })

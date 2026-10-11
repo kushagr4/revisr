@@ -61,3 +61,21 @@ Screenshots and the accessibility tree were inspected at the simulator's default
 - Source syntax parsing passed for 132 Swift files and `git diff --check` passed. Debug and Release generic builds both failed before Revisr source compilation during asset processing with `No available simulator runtimes for platform iphonesimulator`.
 
 No visual validation occurred in this continuation. Onboarding, diagnostic introduction/paper/report, Today, Plan, Progress, Topics, Settings and empty states still need screenshot inspection at small/large iPhone sizes, light/dark appearance, accessibility Dynamic Type, Reduce Motion and VoiceOver. Do not describe these as visually verified based on source review.
+
+## 11 October 2026 journey audit and source changes
+
+### Prioritized findings
+
+1. **P1 — Missing-programme recovery had no in-app action.** The public root only asked the student to reopen Revisr, even when completed diagnostics remained saved.
+2. **P1 — Today and Plan conflated rest days with days that had no assigned work.** Both labels hid whether the saved availability snapshot marked the weekday available.
+3. **P2 — Missing paper files produced contradictory task controls.** The task detail said it could not be completed without its paper, while the completion button only checked whether SwiftData records existed.
+
+### Changes
+
+- The missing-programme state now offers a native **Return to Diagnostics** button with an accessibility hint. It opens the saved assessment flow, where a completed diagnostic can retry programme generation.
+- Today and Plan now describe an unavailable weekday as a **Rest day** and an available weekday without generated work as **No tasks scheduled**, using the programme's saved availability snapshot. Exam-day and past-exam messages remain distinct. A focused XCTest covers saved weekday availability and a missing schedule entry; it has not run. A standalone Swift smoke test for the pure availability helper passed.
+- Question and full-paper completion controls are disabled when the bundled source PDF cannot be resolved, matching the visible unavailable-resource explanation.
+
+These changes do not alter planner output, examination scoring, SwiftData fields, task identities, completion history or attempt records. Native controls and text labels communicate the new states; no status depends on colour alone.
+
+All 132 Swift files passed syntax parsing, `git diff --check` passed, and a standalone Swift smoke test of the availability helper passed. The new availability XCTest and all other Swift tests remain unexecuted; simulator verification was unavailable. These source changes need iOS compilation and a runtime walkthrough, including unavailable-resource handling, rest/unassigned days and programme-retry navigation. No screenshot, VoiceOver, Dynamic Type, dark-mode or Reduce Motion result is claimed.

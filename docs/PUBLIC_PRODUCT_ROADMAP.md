@@ -68,6 +68,8 @@ Two targeted Phase 4 source defects were corrected: Plan now filters and groups 
 
 Phase 4 remains incomplete. Screenshots, simulator walkthroughs, accessibility behavior, cold launch, memory, PDF timing and Plan timing remain unverified. No performance improvement is claimed from source restructuring alone. See `PUBLIC_UX_AUDIT.md`, `PUBLIC_PERFORMANCE_BASELINE.md` and `POST_RECOVERY_VALIDATION.md` for evidence and the remaining validation backlog.
 
+The same source-only review also added an in-app return path from a missing programme to saved diagnostics, distinguishes rest days from available days without tasks using the saved programme availability, and prevents completion when the task's bundled paper PDF is unavailable. No planner, scoring, persistence or history semantics changed. Syntax parsing passed for all 132 Swift files, and a standalone Swift smoke test passed for the pure availability helper; the new XCTest and view paths remain uncompiled and runtime untested until the Xcode environment is usable.
+
 ### Phase 5: content and public-release readiness
 
 Add structured attribution and rights status for every source, solution and external resource. Verify author versus host, publication URL, licence and redistribution permission. Replace embedded solution-video experience with verified original creator channel links; exclude third-party MP4s from a public bundle absent permission. Preserve question/solution relationships and private-source history. Review signing/distribution only with explicit owner approval.

@@ -4,6 +4,7 @@ import SwiftUI
 struct PublicRootTabView: View {
     let settings: AppSettings
     let onEditSettings: () -> Void
+    let onReturnToDiagnostics: () -> Void
     @Query private var programmes: [PublicProgramme]
 
     private var programme: PublicProgramme? {
@@ -27,8 +28,16 @@ struct PublicRootTabView: View {
                         .tabItem { Label("Settings", systemImage: "gearshape") }
                 }
             } else {
-                ContentUnavailableView("Programme unavailable", systemImage: "calendar.badge.exclamationmark",
-                    description: Text("Your diagnostics remain saved. Reopen Revisr to retry the local programme."))
+                ContentUnavailableView {
+                    Label("Programme unavailable", systemImage: "calendar.badge.exclamationmark")
+                } description: {
+                    Text("Your diagnostics are saved. Return to Diagnostics to try generating your programme again.")
+                } actions: {
+                    Button("Return to Diagnostics", action: onReturnToDiagnostics)
+                        .buttonStyle(.borderedProminent)
+                        .tint(RevisrColors.accentTeal)
+                        .accessibilityHint("Opens your saved diagnostic papers so you can try programme generation again.")
+                }
             }
         }
         .tint(RevisrColors.accentTeal)
@@ -52,11 +61,29 @@ private struct PublicTodayView: View {
     private var examPassed: Bool {
         today > DateUtilities.appCalendar().startOfDay(for: programme.examDateSnapshot)
     }
+    private var todayIsAvailableStudyDay: Bool? {
+        PublicProgrammeAvailability.isAvailable(
+            on: today,
+            schedule: programme.availabilitySnapshot,
+            calendar: DateUtilities.appCalendar()
+        )
+    }
+    private var emptyDayTitle: String {
+        if examDay { return "Exam day" }
+        if examPassed { return "Preparation window ended" }
+        return todayIsAvailableStudyDay == false ? "Rest day" : "No tasks scheduled"
+    }
+    private var emptyDayDescription: String {
+        if examDay { return "Your revision programme ends before today. Use your own exam-day routine." }
+        if examPassed { return "Your saved plan remains available for review. Update the exam date in Settings to continue planning." }
+        if todayIsAvailableStudyDay == false { return "Your saved programme marks today as a rest day. Upcoming tasks are in Plan." }
+        return "Your saved programme has no mandatory work today. Upcoming tasks are in Plan."
+    }
     private var focusTitle: String {
         if let nextTask { return nextTask.topic }
         if examDay { return "Your examination is today" }
         if examPassed { return "Your examination date has passed" }
-        return "A clear day to reset"
+        return todayIsAvailableStudyDay == false ? "A planned rest day" : "No tasks scheduled today"
     }
 
     var body: some View {
@@ -72,7 +99,7 @@ private struct PublicTodayView: View {
                             .font(RevisrTypography.supporting).foregroundStyle(RevisrColors.secondaryLabel)
                         if tasks.isEmpty {
                             RevisrStatusLabel(
-                                title: examDay ? "Exam day" : examPassed ? "Preparation window ended" : "Rest or unfilled day",
+                                title: emptyDayTitle,
                                 systemImage: examDay ? "flag.checkered" : "leaf",
                                 color: examDay ? RevisrColors.warning : RevisrColors.secondaryLabel
                             )
@@ -109,13 +136,9 @@ private struct PublicTodayView: View {
                 if tasks.isEmpty {
                     Section {
                         ContentUnavailableView(
-                            examDay ? "Exam day" : examPassed ? "Preparation window ended" : "No mandatory work today",
+                            emptyDayTitle,
                             systemImage: examDay ? "flag.checkered" : "leaf",
-                            description: Text(examDay
-                                ? "Your revision programme ends before today. Use your own exam-day routine."
-                                : examPassed
-                                    ? "Your saved plan remains available for review. Update the exam date in Settings to continue planning."
-                                    : "This is an available rest or unfilled day. Your next planned tasks are in Plan."))
+                            description: Text(emptyDayDescription))
                     }
                 } else {
                     Section("Today's tasks") {
@@ -190,6 +213,11 @@ private struct PublicPlanView: View {
                 Section("Calendar") {
                     ForEach(dates, id: \.self) { date in
                         let dayTasks = tasksByDay[calendar.startOfDay(for: date)] ?? []
+                        let isAvailableStudyDay = PublicProgrammeAvailability.isAvailable(
+                            on: date,
+                            schedule: programme.availabilitySnapshot,
+                            calendar: calendar
+                        )
                         NavigationLink {
                             PublicProgrammeDayView(date: date, tasks: dayTasks)
                         } label: {
@@ -197,7 +225,8 @@ private struct PublicPlanView: View {
                                 VStack(alignment: .leading, spacing: 3) {
                                     Text(date.formatted(.dateTime.weekday(.wide).day().month(.abbreviated)))
                                         .font(.headline)
-                                    Text(dayTasks.isEmpty ? "Rest or no eligible task"
+                                    Text(dayTasks.isEmpty
+                                         ? (isAvailableStudyDay == false ? "Rest day" : "No tasks scheduled")
                                          : "\(dayTasks.count) tasks · \(dayTasks.reduce(0) { $0 + $1.allocatedMinutes }) estimated minutes")
                                         .font(.subheadline).foregroundStyle(.secondary)
                                 }
@@ -411,6 +440,10 @@ private struct PublicProgrammeTaskView: View {
     @State private var showingPDF = false
     @State private var errorMessage: String?
 
+    private var availablePaperURL: URL? {
+        source.flatMap { SourceLibraryService.bundledURL(for: $0) }
+    }
+
     var body: some View {
         Form {
             Section {
@@ -420,7 +453,7 @@ private struct PublicProgrammeTaskView: View {
                 Text(task.reason).foregroundStyle(.secondary)
             }
             Section("Paper") {
-                if let source, let url = SourceLibraryService.bundledURL(for: source) {
+                if let source, let url = availablePaperURL {
                     Button(task.questionID == nil ? "Open complete paper" : "Open question in paper") {
                         showingPDF = true
                     }
@@ -461,7 +494,7 @@ private struct PublicProgrammeTaskView: View {
                             SolutionAccessView(question: question, resolutions: resolutions)
                         }
                         Button("Save completed question") { completeQuestion() }
-                            .disabled(question == nil || source == nil)
+                            .disabled(question == nil || availablePaperURL == nil)
                     } header: {
                         Text("Record your work")
                     } footer: {
@@ -472,7 +505,7 @@ private struct PublicProgrammeTaskView: View {
                         TextField("Notes about your paper", text: $notes, axis: .vertical)
                             .lineLimit(2...5)
                         Button("Mark paper session complete") { completePaper() }
-                            .disabled(source == nil)
+                            .disabled(availablePaperURL == nil)
                     } header: {
                         Text("Complete paper")
                     } footer: {

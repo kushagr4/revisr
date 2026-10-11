@@ -35,3 +35,17 @@ enum PublicAssessmentStyle: Equatable, Sendable {
     case multipleChoice
     case writtenMarksAndSelfAssessment
 }
+
+enum PublicProgrammeAvailability {
+    /// Returns nil when a saved schedule has no entry for the date's weekday.
+    static func isAvailable(
+        on date: Date,
+        schedule: [DayAvailability],
+        calendar: Calendar
+    ) -> Bool? {
+        guard let weekday = Weekday(rawValue: calendar.component(.weekday, from: date)) else {
+            return nil
+        }
+        return schedule.first { $0.weekday == weekday }?.isAvailable
+    }
+}

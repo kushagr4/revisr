@@ -134,4 +134,16 @@ final class PublicProgrammeServiceTests: XCTestCase {
         XCTAssertEqual(snapshot.activeTaskCount, 2)
         XCTAssertEqual(snapshot.completedAttemptIDs, [attemptID])
     }
+
+    func testSavedAvailabilityDistinguishesRestDayFromMissingScheduleEntry() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let sunday = calendar.date(from: DateComponents(year: 2026, month: 10, day: 11))!
+        let schedule = [DayAvailability(weekday: .sunday, isAvailable: false)]
+
+        XCTAssertEqual(PublicProgrammeAvailability.isAvailable(
+            on: sunday, schedule: schedule, calendar: calendar), false)
+        XCTAssertNil(PublicProgrammeAvailability.isAvailable(
+            on: sunday, schedule: [], calendar: calendar))
+    }
 }
