@@ -1,4 +1,6 @@
 {
+  "schema": "revisr-public-diagnostic-planner-parity",
+  "schemaVersion": 1,
   "fixtureVersion": 1,
   "verifiedOn": "2026-10-11",
   "provenance": {
@@ -9,13 +11,22 @@
     ],
     "compiler": "Apple Swift 6.3.3 from Xcode 26.6",
     "execution": "Native macOS standalone Swift harness; assertions passed.",
-    "limitations": "Synthetic input records were supplied by test-only in-memory value types where the app's model files depend on SwiftData. Production availability, diagnostic analysis, and planning functions ran directly. This does not verify SwiftData persistence, source selection, SwiftUI, or an iOS app build."
+    "limitations": "Synthetic input records were supplied by test-only in-memory value types where app model files depend on SwiftData. Production availability, diagnostic analysis, and planning functions ran directly. Executed boundaries include zero available days, one-day final review, one-question insufficient diagnostic evidence, failed diagnostic review and exclusion of unassessed diagnostic questions. This does not verify SwiftData persistence, source/catalogue selection, SwiftUI, or an iOS app build."
   },
   "studyAvailability": {
     "schedule": [
-      { "weekday": "monday", "available": true },
-      { "weekday": "wednesday", "available": true },
-      { "weekday": "sunday", "available": false }
+      {
+        "weekday": "monday",
+        "available": true
+      },
+      {
+        "weekday": "wednesday",
+        "available": true
+      },
+      {
+        "weekday": "sunday",
+        "available": false
+      }
     ],
     "dates": {
       "2026-10-12": true,
@@ -30,8 +41,20 @@
         "topic": "Algebra",
         "difficultyPerQuestion": 3,
         "papers": [
-          { "paperID": "tmua-1", "outcomes": ["incorrect", "incorrect"] },
-          { "paperID": "tmua-2", "outcomes": ["incorrect", "incorrect"] }
+          {
+            "paperID": "tmua-1",
+            "outcomes": [
+              "incorrect",
+              "incorrect"
+            ]
+          },
+          {
+            "paperID": "tmua-2",
+            "outcomes": [
+              "incorrect",
+              "incorrect"
+            ]
+          }
         ]
       },
       "expected": {
@@ -43,14 +66,26 @@
       }
     },
     "smcScoring": {
-      "input": { "correct": 2, "incorrect": 1, "unanswered": 1 },
-      "expected": { "displayScore": "32 / 125 self-marked SMC points" }
+      "input": {
+        "correct": 2,
+        "incorrect": 1,
+        "unanswered": 1
+      },
+      "expected": {
+        "displayScore": "32 / 125 self-marked SMC points"
+      }
     },
     "bmoSelfAssessment": {
       "input": {
-        "papers": ["bmo-1", "bmo-2"],
+        "papers": [
+          "bmo-1",
+          "bmo-2"
+        ],
         "topic": "Proof",
-        "selfEstimatedMarks": [3, 4],
+        "selfEstimatedMarks": [
+          3,
+          4
+        ],
         "marksPerQuestion": 10
       },
       "expected": {
@@ -62,6 +97,27 @@
         "paperProvenance": "Self-estimate only; no bundled examiner mark scheme. Each question carries 10 marks.",
         "topicExplanation": "Low self-estimated marks on 2 proofs; no examiner scheme is available."
       }
+    },
+    "tmuaLowEvidence": {
+      "input": {
+        "exam": "tmua",
+        "papers": [
+          {
+            "paperID": "tmua-low-1",
+            "ordinal": 1
+          }
+        ],
+        "topic": "Algebra",
+        "difficulty": 2,
+        "outcomes": [
+          "incorrect"
+        ]
+      },
+      "expected": {
+        "topicEvidence": "insufficient",
+        "assessedCount": 1,
+        "explanation": "1 assessed question; more evidence is needed."
+      }
     }
   },
   "planning": {
@@ -70,31 +126,55 @@
       "startDate": "2026-10-12",
       "examDateExclusive": "2026-10-15",
       "weeklyMinutes": 30,
-      "availableWeekdays": ["monday", "wednesday"],
+      "availableWeekdays": [
+        "monday",
+        "wednesday"
+      ],
       "diagnosticLevels": {
         "Geometry": "strongDifficulty",
         "Algebra": "insufficient"
       },
       "eligibleQuestions": [
         {
-          "id": "A-1", "sourceID": "SRC-A", "topic": "Algebra", "difficulty": 2,
-          "diagnostic": false, "latestOutcome": null, "latestAttemptDate": null,
-          "reviewFlag": false, "hasSolution": true
+          "id": "A-1",
+          "sourceID": "SRC-A",
+          "topic": "Algebra",
+          "difficulty": 2,
+          "diagnostic": false,
+          "latestOutcome": null,
+          "latestAttemptDate": null,
+          "reviewFlag": false,
+          "hasSolution": true
         },
         {
-          "id": "G-1", "sourceID": "SRC-G", "topic": "Geometry", "difficulty": 2,
-          "diagnostic": false, "latestOutcome": null, "latestAttemptDate": null,
-          "reviewFlag": false, "hasSolution": true
+          "id": "G-1",
+          "sourceID": "SRC-G",
+          "topic": "Geometry",
+          "difficulty": 2,
+          "diagnostic": false,
+          "latestOutcome": null,
+          "latestAttemptDate": null,
+          "reviewFlag": false,
+          "hasSolution": true
         },
         {
-          "id": "G-2", "sourceID": "SRC-G", "topic": "Geometry", "difficulty": 3,
-          "diagnostic": false, "latestOutcome": null, "latestAttemptDate": null,
-          "reviewFlag": false, "hasSolution": true
+          "id": "G-2",
+          "sourceID": "SRC-G",
+          "topic": "Geometry",
+          "difficulty": 3,
+          "diagnostic": false,
+          "latestOutcome": null,
+          "latestAttemptDate": null,
+          "reviewFlag": false,
+          "hasSolution": true
         }
       ]
     },
     "expected": {
-      "topicPriorityOrder": ["Geometry", "Algebra"],
+      "topicPriorityOrder": [
+        "Geometry",
+        "Algebra"
+      ],
       "tasks": [
         {
           "date": "2026-10-12",
@@ -117,6 +197,100 @@
       ],
       "availableStudyDays": 2,
       "unfilledDays": 0
+    },
+    "zeroAvailableDays": {
+      "input": {
+        "exam": "tmua",
+        "startDate": "2026-10-12",
+        "examDateExclusive": "2026-10-15",
+        "weeklyMinutes": 30,
+        "availableWeekdays": [],
+        "eligibleQuestions": [
+          "A-1"
+        ]
+      },
+      "expectedError": "noAvailableDays"
+    },
+    "shortPreparationWindow": {
+      "input": {
+        "exam": "tmua",
+        "startDate": "2026-10-12",
+        "examDateExclusive": "2026-10-13",
+        "weeklyMinutes": 30,
+        "availableWeekdays": [
+          "monday"
+        ],
+        "eligibleQuestions": [
+          {
+            "id": "fresh-short",
+            "topic": "Algebra",
+            "difficulty": 2
+          }
+        ]
+      },
+      "expected": {
+        "availableStudyDays": 1,
+        "unfilledDays": 0,
+        "tasks": [
+          {
+            "date": "2026-10-12",
+            "questionID": "fresh-short",
+            "sourceID": "SRC",
+            "topic": "Algebra",
+            "minutes": 15,
+            "activity": "finalReview",
+            "reason": "Light Algebra practice before the examination."
+          }
+        ]
+      }
+    },
+    "diagnosticQuestionEligibility": {
+      "input": {
+        "exam": "tmua",
+        "startDate": "2026-10-12",
+        "examDateExclusive": "2026-10-19",
+        "weeklyMinutes": 30,
+        "availableWeekdays": [
+          "monday"
+        ],
+        "questions": [
+          {
+            "id": "diagnostic-wrong",
+            "sourceID": "SRC",
+            "topic": "Algebra",
+            "difficulty": 2,
+            "diagnostic": true,
+            "latestOutcome": "incorrect",
+            "latestAttemptDate": "2026-10-01",
+            "reviewFlag": false
+          },
+          {
+            "id": "diagnostic-unassessed",
+            "sourceID": "SRC",
+            "topic": "Algebra",
+            "difficulty": 2,
+            "diagnostic": true,
+            "latestOutcome": null,
+            "latestAttemptDate": null,
+            "reviewFlag": false
+          }
+        ]
+      },
+      "expected": {
+        "assignedQuestionIDs": [
+          "diagnostic-wrong"
+        ],
+        "excludedQuestionIDs": [
+          "diagnostic-unassessed"
+        ],
+        "activity": "errorReview",
+        "reason": "Revisit Algebra after an earlier result or review flag."
+      }
+    },
+    "calendar": {
+      "identifier": "gregorian",
+      "timeZone": "UTC",
+      "dateConvention": "ISO-8601 civil dates; exam date is exclusive"
     }
   }
 }

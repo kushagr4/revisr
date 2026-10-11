@@ -40,23 +40,16 @@ CoreSimulatorService had become invalid; Xcode logged connection refused and ina
 
 ### Production Swift compiler findings
 
-To test independently executable code, a temporary native Swift harness directly compiled the production files `PublicPlanningEngine.swift`, `DiagnosticAnalysis.swift`, `PublicPreparation.swift`, `ModelEnums.swift` and `AdmissionsEnums.swift`. Swift 6.3.3 reported type-checking complexity errors in the topic-priority map expression and question-selection nil-coalescing expression. The production planner was minimally rewritten to use an explicit priority loop and intermediate selection value. The policy, ordering, selection precedence and generated tasks are unchanged. The production files then compiled and the smoke assertions passed.
+To test independently executable code, a native Swift harness directly compiled the production files `PublicPlanningEngine.swift`, `DiagnosticAnalysis.swift`, `PublicPreparation.swift`, `ModelEnums.swift` and `AdmissionsEnums.swift`. Swift 6.3.3 reported type-checking complexity errors in the topic-priority map expression and question-selection nil-coalescing expression. The production planner was minimally rewritten to use an explicit priority loop and intermediate selection value. The policy, ordering, selection precedence and generated tasks are unchanged. The production files then compiled and the smoke assertions passed. The harness is now preserved at `docs/fixtures/production-logic-smoke.swift` and its runner at `docs/fixtures/run-production-logic-smoke.sh`.
 
-The successful invocation was:
+The original standalone compile used `swiftc -module-cache-path /private/tmp/revisr-swift-module-cache -o /private/tmp/revisr-production-logic-smoke` with the five production files listed above and `/private/tmp/revisr-production-engine-smoke.swift`. The expanded harness is now reproducible from the checkout with:
 
 ```sh
-swiftc -module-cache-path /private/tmp/revisr-swift-module-cache \
-  -o /private/tmp/revisr-production-logic-smoke \
-  revisr/Models/ModelEnums.swift \
-  revisr/Models/Admissions/AdmissionsEnums.swift \
-  revisr/Models/Admissions/PublicPreparation.swift \
-  revisr/Services/Admissions/PublicPlanningEngine.swift \
-  revisr/Services/Admissions/DiagnosticAnalysis.swift \
-  /private/tmp/revisr-production-engine-smoke.swift
-/private/tmp/revisr-production-logic-smoke
+docs/fixtures/run-production-logic-smoke.sh
+python3 docs/fixtures/validate-public-domain-fixture.py
 ```
 
-This native compile does not compile the SwiftUI views, the full app target, or SwiftData persistence. In-memory value types in the temporary harness stood in for SwiftData-backed input records and the paper-policy declaration; the production diagnostic and planner functions themselves ran directly. No harness file was added to the repository.
+This native compile does not compile the SwiftUI views, the full app target, or SwiftData persistence. In-memory value types in the harness stand in for SwiftData-backed input records and the paper-policy declaration; the production diagnostic and planner functions themselves run directly.
 
 ## Tests that executed
 
@@ -65,8 +58,9 @@ This native compile does not compile the SwiftUI views, the full app target, or 
 | `PublicProgrammeAvailability.isAvailable` | Passed | Synthetic Monday/Wednesday schedule verified available dates, a missing Tuesday schedule entry (`nil`), and an explicitly unavailable Sunday (`false`). The actual helper ran. |
 | `PublicPlanningEngine.generate` | Passed | Synthetic eligible questions and diagnostic levels verified priority order, exact task/date allocation, weekday bounds, durations, no duplicate question IDs, and no unfilled available days. The actual allocator ran. |
 | `DiagnosticAnalysis.report` | Passed | Synthetic paper/response/question records verified TMUA two-paper topic classification, SMC's 25 + 4/−1 score, and BMO self-estimated marks plus its evidence qualification. The actual analysis function ran. |
+| Planning/diagnostic boundaries | Passed | Actual planner returned the no-available-day error, allocated one 15-minute final-review task in a one-day window, allowed an assessed failed diagnostic question as error review, and excluded an unassessed diagnostic question. Actual analysis kept one assessed miss at insufficient evidence. |
 
-The fixture file [`docs/fixtures/public-diagnostic-planner-parity.v1.json`](fixtures/public-diagnostic-planner-parity.v1.json) records these deterministic inputs and outputs. It is verified for the named production functions and synthetic records. It is not evidence for source-paper selection, catalogue eligibility/import, PDF access, persistence, app navigation, or SwiftUI behavior.
+The fixture file [`docs/fixtures/public-diagnostic-planner-parity.v1.json`](fixtures/public-diagnostic-planner-parity.v1.json) records these deterministic inputs and outputs; `fixtureVersion` is its format version. Run `docs/fixtures/run-production-logic-smoke.sh` from the repo to rebuild and execute the assertions. The fixture is verified for the named production functions and synthetic records. It is not evidence for source-paper selection, catalogue eligibility/import, PDF access, persistence, app navigation, or SwiftUI behavior.
 
 No XCTest executed. The recent tests for retired-task history, empty progress, repeated attempts and saved availability still require the app's XCTest host. The `PublicProgrammeProgressSnapshot` uses SwiftData models and was not independently executed. The missing-PDF completion guard and Topics rationale ordering received source review but no UI regression test ran. The XCTest asserting planner priority order remains unexecuted; the standalone run exercised the production priority and allocation path separately.
 
