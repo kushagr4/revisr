@@ -135,6 +135,32 @@ final class PublicProgrammeServiceTests: XCTestCase {
         XCTAssertEqual(snapshot.completedAttemptIDs, [attemptID])
     }
 
+    func testEmptyProgressSnapshotHasNoArtificialDenominator() {
+        let snapshot = PublicProgrammeProgressSnapshot(tasks: [])
+
+        XCTAssertEqual(snapshot.plannedTaskCount, 0)
+        XCTAssertEqual(snapshot.completedTaskCount, 0)
+        XCTAssertEqual(snapshot.activeTaskCount, 0)
+        XCTAssertTrue(snapshot.completedAttemptIDs.isEmpty)
+    }
+
+    func testRepeatedQuestionWorkKeepsSeparateTaskAndAttemptCounts() {
+        let planned = PublicPlannedTask(date: today, questionID: "Q-1", sourceID: "SRC-1",
+            topic: "Algebra", minutes: 15, activity: .targeted, reason: "Review recorded work")
+        let first = PublicProgrammeTask(stableID: "repeat-1", programmeID: "P", task: planned)
+        first.completedAt = today
+        first.completionAttemptID = UUID()
+        let second = PublicProgrammeTask(stableID: "repeat-2", programmeID: "P", task: planned)
+        second.completedAt = today.addingTimeInterval(60)
+        second.completionAttemptID = UUID()
+
+        let snapshot = PublicProgrammeProgressSnapshot(tasks: [first, second])
+
+        XCTAssertEqual(snapshot.plannedTaskCount, 2)
+        XCTAssertEqual(snapshot.completedTaskCount, 2)
+        XCTAssertEqual(snapshot.completedAttemptIDs.count, 2)
+    }
+
     func testSavedAvailabilityDistinguishesRestDayFromMissingScheduleEntry() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!

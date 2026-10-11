@@ -319,21 +319,29 @@ private struct PublicProgressView: View {
         let programmeTasks = allTasks.filter { $0.programmeID == programme.stableID }
         let progress = PublicProgrammeProgressSnapshot(tasks: programmeTasks)
         let attempts = allAttempts.filter { progress.completedAttemptIDs.contains($0.id) }
+        let remainingTaskCount = programmeTasks.filter { $0.isActive && $0.completedAt == nil }.count
 
         return NavigationStack {
             List {
-                Section("Programme work") {
-                    LabeledContent("Completed tasks", value: "\(progress.completedTaskCount)")
-                    LabeledContent("Active tasks", value: "\(progress.activeTaskCount)")
-                    LabeledContent("Recorded question attempts", value: "\(attempts.count)")
-                    ProgressView(value: Double(progress.completedTaskCount),
-                                 total: Double(max(1, progress.plannedTaskCount))) {
-                        Text("Programme completion")
+                if progress.plannedTaskCount == 0 {
+                    Section("Programme work") {
+                        ContentUnavailableView("No programme work to summarise", systemImage: "chart.bar",
+                            description: Text("Your current plan has no assigned or completed tasks yet."))
                     }
-                    .tint(RevisrColors.accentTeal)
-                    .accessibilityValue("\(progress.completedTaskCount) of \(progress.plannedTaskCount) planned tasks complete")
-                    Text("Scheduled work counts as progress only after you complete it.")
-                        .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
+                } else {
+                    Section("Programme work") {
+                        LabeledContent("Completed tasks", value: "\(progress.completedTaskCount)")
+                        LabeledContent("Remaining tasks", value: "\(remainingTaskCount)")
+                        LabeledContent("Linked question attempts", value: "\(attempts.count)")
+                        ProgressView(value: Double(progress.completedTaskCount),
+                                     total: Double(progress.plannedTaskCount)) {
+                            Text("Programme tasks complete")
+                        }
+                        .tint(RevisrColors.accentTeal)
+                        .accessibilityValue("\(progress.completedTaskCount) of \(progress.plannedTaskCount) tracked tasks complete")
+                        Text("Counts include completed tasks retained from earlier plan revisions and exclude retired incomplete tasks. Repeating a question creates another attempt. Task completion records work, not mastery.")
+                            .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
+                    }
                 }
                 if attempts.isEmpty {
                     Section {
@@ -341,7 +349,14 @@ private struct PublicProgressView: View {
                             description: Text("Complete a planned question to see practice outcomes here."))
                     }
                 } else {
-                    Section("Recorded outcomes") {
+                    Section(programme.exam == .bmo ? "Self-assessed outcomes" : "Self-marked outcomes") {
+                        if programme.exam == .bmo {
+                            Text("These outcomes are self-assessed and are not examiner-verified.")
+                                .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
+                        } else {
+                            Text("These outcomes are based on your own marking.")
+                                .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
+                        }
                         ForEach(QuestionAttemptOutcome.allCases) { outcome in
                             LabeledContent(outcome.title,
                                 value: "\(attempts.filter { $0.outcome == outcome }.count)")
@@ -371,21 +386,29 @@ private struct PublicTopicsView: View {
     }
 
     var body: some View {
+        let topics = Dictionary(grouping: tasks, by: \.topic)
+            .map { key, values in
+                (key, values.sorted {
+                    if $0.scheduledDate != $1.scheduledDate { return $0.scheduledDate < $1.scheduledDate }
+                    return $0.stableID < $1.stableID
+                })
+            }
+            .sorted { $0.0 < $1.0 }
+
         NavigationStack {
             List {
                 Section {
-                    Text("Topic focus comes from assessed diagnostics and recorded practice. Areas with little evidence receive exploratory work.")
+                    Text("This screen summarises scheduled topic work, not mastery. Your diagnostic report shows the baseline; Progress shows recorded practice outcomes.")
                         .foregroundStyle(RevisrColors.secondaryLabel)
                 }
-                Section("Planned topics") {
-                    ForEach(Dictionary(grouping: tasks, by: \.topic)
-                        .map { ($0.key, $0.value) }.sorted { $0.0 < $1.0 }, id: \.0) { topic in
+                Section("Scheduled topic focus") {
+                    ForEach(topics, id: \.0) { topic in
                         VStack(alignment: .leading, spacing: 4) {
                             Text(topic.0).font(.headline)
-                            Text("\(topic.1.filter { $0.completedAt != nil }.count) of \(topic.1.count) tasks complete")
+                            Text("\(topic.1.filter { $0.completedAt != nil }.count) of \(topic.1.count) scheduled tasks complete")
                                 .font(.subheadline).foregroundStyle(.secondary)
-                            if let reason = topic.1.first?.reason {
-                                Text(reason).font(.footnote).foregroundStyle(.secondary)
+                            if let nextTask = topic.1.first(where: { $0.completedAt == nil }) ?? topic.1.first {
+                                Text("Next task · \(nextTask.reason)").font(.footnote).foregroundStyle(.secondary)
                             }
                         }
                     }

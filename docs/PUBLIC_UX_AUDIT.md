@@ -53,6 +53,23 @@ Combined task rows expose their text, but completion state is carried mainly by 
 
 Screenshots and the accessibility tree were inspected at the simulator's default text size in light appearance. VoiceOver rotor order, Dynamic Type extremes, dark mode, Reduce Motion, small-device layout and memory profiling require dedicated follow-up runs. The Phase 4A `xcodebuild` retry still loses CoreSimulatorService during startup; the previously completed Phase 3 targeted tests remain the reliable automated baseline until that service is stable.
 
+## 11 October 2026 Progress and Topics evidence review
+
+### Findings
+
+- Progress labelled assigned work “Active tasks,” although completed assignments can remain active in the saved plan. It showed a 0-of-1 bar when there were no tracked assignments.
+- The attempt total did not say that repeated work on one question is recorded as separate attempts. BMO outcomes needed an explicit self-assessment and non-verification statement at the point of presentation.
+- Topics displayed the first task reason in fetch order, so the rationale could change between renders. The page also needed to distinguish scheduled topic workload from diagnostic baseline and mastery.
+
+### Source changes
+
+- Progress now shows completed and remaining tasks, linked question attempts, and an honest empty state when no task history or current assignment exists. Its explanation says completed history is retained, retired incomplete tasks are excluded, repeated questions add attempts, and completion is not mastery.
+- Outcome sections say “Self-assessed” for BMO and explicitly state those outcomes are not examiner-verified. TMUA and SMC outcomes are labelled self-marked.
+- Topics now explains that scheduled workload is not mastery, points students to the diagnostic baseline and recorded outcomes, and chooses the next incomplete task's reason in stable date/ID order.
+- Added focused snapshot tests for an empty plan and two completed assignments for the same question, preserving distinct attempt counts.
+
+No score, classification, scheduling, stable ID, schema or persisted user data semantics changed. These changes have source and test review only. XCTest, simulator screenshots, accessibility interaction, light/dark appearance and Dynamic Type remain unverified until Xcode can compile and run the app.
+
 ## 11 October 2026 source review
 
 - Plan's task filter and date grouping now run once per `body` evaluation, outside the lazy date rows. This removes repeated whole-list grouping at each row; runtime scrolling measurements are still required to quantify impact.
