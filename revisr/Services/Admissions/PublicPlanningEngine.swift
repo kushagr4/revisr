@@ -128,7 +128,8 @@ enum PublicPlanningEngine {
 
         let signals = Dictionary(uniqueKeysWithValues: input.diagnosticSignals.map { ($0.name, $0) })
         let groups = Dictionary(grouping: input.questions, by: \.topic)
-        let priorities = groups.keys.map { topic -> PublicTopicPriority in
+        var priorities: [PublicTopicPriority] = []
+        for topic in groups.keys {
             let signal = signals[topic]
             let recent = groups[topic, default: []].filter { question in
                 guard let date = question.latestAttemptDate else { return false }
@@ -154,8 +155,12 @@ enum PublicPlanningEngine {
                 reason = "\(topic) had too little assessed diagnostic evidence, so this is exploratory practice."
             }
             let recentRank = min(8, misses * 3) - min(4, successes * 2)
-            return PublicTopicPriority(topic: topic, rank: evidenceRank + recentRank, reason: reason)
-        }.sorted { $0.rank == $1.rank ? $0.topic < $1.topic : $0.rank > $1.rank }
+            let combinedRank = evidenceRank + recentRank
+            priorities.append(PublicTopicPriority(topic: topic, rank: combinedRank, reason: reason))
+        }
+        priorities.sort { lhs, rhs in
+            lhs.rank == rhs.rank ? lhs.topic < rhs.topic : lhs.rank > rhs.rank
+        }
 
         let questionByID = Dictionary(uniqueKeysWithValues: input.questions.map { ($0.id, $0) })
         let questionOrder: (PublicPlanningQuestion, PublicPlanningQuestion) -> Bool = { lhs, rhs in
@@ -244,8 +249,10 @@ enum PublicPlanningEngine {
                     if left != right { return left < right }
                     return questionOrder(lhs, rhs)
                 }
-                guard let selected = (slot == 0 ? reviewPool.first : nil)
-                    ?? freshPool.first ?? reviewPool.first ?? anyFresh.first else { break }
+                let preferredReview = slot == 0 ? reviewPool.first : nil
+                let selectedQuestion = preferredReview ?? freshPool.first
+                    ?? reviewPool.first ?? anyFresh.first
+                guard let selected = selectedQuestion else { break }
                 let isReview = selected.latestOutcome != nil || selected.diagnostic || selected.reviewFlag
                 let effectiveActivity: PublicPlanningActivity = isReview ? .errorReview : activity
                 let reason: String
