@@ -5,6 +5,62 @@ import SwiftData
 enum SeedDataService {
     static let currentSeedVersion = 4
 
+    /// App entry point. Historical stores retain the old seed/migration path;
+    /// clean stores import the catalogue without the owner's personal plan.
+    static func bootstrapForLaunch(in context: ModelContext) throws -> AppSettings {
+        let records = try context.fetch(FetchDescriptor<AppSettings>())
+        if let settings = canonicalSettings(from: records), settings.publicOnboardingStage != nil {
+            try seedNewInstallation(in: context, existingSettings: settings)
+            return settings
+        }
+
+        var hasLegacyData = !records.isEmpty
+        if !hasLegacyData {
+            let programmeCount = try context.fetchCount(FetchDescriptor<AdmissionsProgramme>())
+            let attemptCount = try context.fetchCount(FetchDescriptor<QuestionAttempt>())
+            let sessionCount = try context.fetchCount(FetchDescriptor<StudySession>())
+            let resultCount = try context.fetchCount(FetchDescriptor<StudyResult>())
+            let subjectCount = try context.fetchCount(FetchDescriptor<Subject>())
+            hasLegacyData = [programmeCount, attemptCount, sessionCount, resultCount, subjectCount]
+                .contains(where: { $0 > 0 })
+        }
+        if hasLegacyData {
+            try seedIfNeeded(in: context)
+        } else {
+            try seedNewInstallation(in: context, existingSettings: nil)
+        }
+        guard let settings = canonicalSettings(from: try context.fetch(FetchDescriptor<AppSettings>())) else {
+            throw BootstrapError.missingSettings
+        }
+        return settings
+    }
+
+    private static func seedNewInstallation(
+        in context: ModelContext,
+        existingSettings: AppSettings?
+    ) throws {
+        if existingSettings == nil {
+            let settings = AppSettings(
+                tmuaExamDate: .now,
+                availability: AppSettings.publicDefaultAvailability,
+                weeklyTargetMinutes: 600,
+                usesLegacyProgrammeStartDate: false,
+                appliedSeedVersion: currentSeedVersion
+            )
+            settings.publicOnboardingStage = .profile
+            context.insert(settings)
+        }
+        if try context.fetch(FetchDescriptor<StudyTimerState>()).isEmpty {
+            context.insert(StudyTimerState())
+        }
+        if context.hasChanges { try context.save() }
+        try AdmissionsImportService.seedBundledManifestIfNeeded(
+            in: context,
+            importPersonalProgramme: false
+        )
+        try AdmissionsSolutionsImportService.seedBundledManifestIfNeeded(in: context)
+    }
+
     static func seedIfNeeded(in context: ModelContext) throws {
         let settingsRecords = try context.fetch(FetchDescriptor<AppSettings>())
         let settings: AppSettings
@@ -106,4 +162,8 @@ enum SeedDataService {
             context.insert(StudyModule(name: "Paper 2", displayOrder: 1, subject: tmua))
         }
     }
+}
+
+private enum BootstrapError: Error {
+    case missingSettings
 }

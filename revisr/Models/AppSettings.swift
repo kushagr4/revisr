@@ -16,6 +16,13 @@ final class AppSettings {
     /// Added additively so older local stores migrate without rewriting settings.
     var activeAdmissionsTestRawValue: String? = nil
     var tmuaProgrammeStartDate: Date? = nil
+    /// Nil identifies a pre-public-installation store. Its personal settings and
+    /// programme are never interpreted as a new student's onboarding choices.
+    var publicOnboardingStageRawValue: String? = nil
+    var publicExamRawValue: String? = nil
+    var publicExamDate: Date? = nil
+    var publicWeeklyTargetMinutes: Int? = nil
+    var publicAvailabilityData: Data? = nil
     /// Enables additive seed migrations without recreating content the user deleted.
     var appliedSeedVersion: Int
 
@@ -34,6 +41,27 @@ final class AppSettings {
         set { activeAdmissionsTestRawValue = newValue.rawValue }
     }
 
+    var publicOnboardingStage: PublicOnboardingStage? {
+        get {
+            guard let rawValue = publicOnboardingStageRawValue else { return nil }
+            return PublicOnboardingStage(rawValue: rawValue) ?? .profile
+        }
+        set { publicOnboardingStageRawValue = newValue?.rawValue }
+    }
+
+    var publicExam: PublicExamKind {
+        get { publicExamRawValue.flatMap(PublicExamKind.init(rawValue:)) ?? .tmua }
+        set { publicExamRawValue = newValue.rawValue }
+    }
+
+    var publicAvailability: [DayAvailability] {
+        get {
+            publicAvailabilityData.flatMap { try? JSONDecoder().decode([DayAvailability].self, from: $0) }
+                ?? Self.publicDefaultAvailability
+        }
+        set { publicAvailabilityData = try? JSONEncoder().encode(newValue) }
+    }
+
     var effectiveTMUAProgrammeStartDate: Date {
         tmuaProgrammeStartDate ?? Self.makeDefaultProgrammeStartDate()
     }
@@ -50,6 +78,7 @@ final class AppSettings {
         weeklyTargetMinutes: Int = 2_040,
         activeAdmissionsTest: AdmissionsTestKind = .tmua,
         tmuaProgrammeStartDate: Date? = nil,
+        usesLegacyProgrammeStartDate: Bool = true,
         appliedSeedVersion: Int = 0
     ) {
         self.id = id
@@ -62,7 +91,8 @@ final class AppSettings {
         self.tmuaPaper2Target = tmuaPaper2Target
         self.weeklyTargetMinutes = weeklyTargetMinutes
         self.activeAdmissionsTestRawValue = activeAdmissionsTest.rawValue
-        self.tmuaProgrammeStartDate = tmuaProgrammeStartDate ?? Self.makeDefaultProgrammeStartDate()
+        self.tmuaProgrammeStartDate = tmuaProgrammeStartDate
+            ?? (usesLegacyProgrammeStartDate ? Self.makeDefaultProgrammeStartDate() : nil)
         self.appliedSeedVersion = appliedSeedVersion
     }
 
@@ -75,6 +105,10 @@ final class AppSettings {
         DayAvailability(weekday: .saturday, isAvailable: true),
         DayAvailability(weekday: .sunday, isAvailable: false)
     ]
+
+    static let publicDefaultAvailability: [DayAvailability] = Weekday.displayOrder.map {
+        DayAvailability(weekday: $0, isAvailable: true)
+    }
 
     static func makeDefaultExamDate(calendar: Calendar = .autoupdatingCurrent) -> Date {
         var components = DateComponents()

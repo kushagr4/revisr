@@ -5,7 +5,10 @@ import SwiftData
 enum AdmissionsImportService {
     static let supportedFormatVersions = 1...2
 
-    static func seedBundledManifestIfNeeded(in context: ModelContext) throws {
+    static func seedBundledManifestIfNeeded(
+        in context: ModelContext,
+        importPersonalProgramme: Bool = true
+    ) throws {
         let manifest = try AdmissionsManifest.bundled()
         guard supportedFormatVersions.contains(manifest.formatVersion) else {
             throw AdmissionsImportError.unsupportedFormat(manifest.formatVersion)
@@ -16,29 +19,37 @@ enum AdmissionsImportService {
         if let state = states.first,
            state.importRevision == manifest.importRevision,
            state.questionCount == manifest.questions.count,
-           state.assignmentCount == manifest.programme.assignments.count,
+           state.assignmentCount == (importPersonalProgramme ? manifest.programme.assignments.count : 0),
            state.sourceCount == manifest.sources.count {
             ensureAttemptTimer(in: context)
             return
         }
 
-        try upsert(manifest, in: context)
+        try upsert(manifest, in: context, importPersonalProgramme: importPersonalProgramme)
     }
 
-    static func upsert(_ manifest: AdmissionsManifest, in context: ModelContext) throws {
+    static func upsert(
+        _ manifest: AdmissionsManifest,
+        in context: ModelContext,
+        importPersonalProgramme: Bool = true
+    ) throws {
         guard supportedFormatVersions.contains(manifest.formatVersion) else {
             throw AdmissionsImportError.unsupportedFormat(manifest.formatVersion)
         }
         try validate(manifest)
         do {
-            try performUpsert(manifest, in: context)
+            try performUpsert(manifest, in: context, importPersonalProgramme: importPersonalProgramme)
         } catch {
             context.rollback()
             throw error
         }
     }
 
-    private static func performUpsert(_ manifest: AdmissionsManifest, in context: ModelContext) throws {
+    private static func performUpsert(
+        _ manifest: AdmissionsManifest,
+        in context: ModelContext,
+        importPersonalProgramme: Bool
+    ) throws {
         var profiles = Dictionary(
             uniqueKeysWithValues: try context.fetch(FetchDescriptor<AdmissionsTestProfile>())
                 .map { ($0.kindRawValue, $0) }
@@ -173,98 +184,100 @@ enum AdmissionsImportService {
             topic.isImportedActive = true
         }
 
-        guard let manifestStart = dayFormatter.date(from: manifest.programme.startDate) else {
-            throw AdmissionsImportError.invalidStartDate(manifest.programme.startDate)
-        }
-        let existingProgrammes = try context.fetch(FetchDescriptor<AdmissionsProgramme>())
-        existingProgrammes.forEach { $0.isImportedActive = false }
-        var programmes = Dictionary(
-            uniqueKeysWithValues: existingProgrammes.map { ($0.externalProgrammeID, $0) }
-        )
-        let programme = programmes[manifest.programme.externalProgrammeID]
-            ?? AdmissionsProgramme(
-                externalProgrammeID: manifest.programme.externalProgrammeID,
-                admissionsTest: manifest.programme.admissionsTest,
-                name: manifest.programme.name,
-                startDate: manifestStart,
-                importRevision: manifest.programme.importRevision
+        if importPersonalProgramme {
+            guard let manifestStart = dayFormatter.date(from: manifest.programme.startDate) else {
+                throw AdmissionsImportError.invalidStartDate(manifest.programme.startDate)
+            }
+            let existingProgrammes = try context.fetch(FetchDescriptor<AdmissionsProgramme>())
+            existingProgrammes.forEach { $0.isImportedActive = false }
+            var programmes = Dictionary(
+                uniqueKeysWithValues: existingProgrammes.map { ($0.externalProgrammeID, $0) }
             )
-        if programmes[manifest.programme.externalProgrammeID] == nil {
-            context.insert(programme)
-            programmes[manifest.programme.externalProgrammeID] = programme
-        }
-        programme.admissionsTest = manifest.programme.admissionsTest
-        programme.name = manifest.programme.name
-        programme.importRevision = manifest.programme.importRevision
-        programme.isImportedActive = true
-        // startDate becomes user-owned after first import, so reimport preserves it.
-
-        let existingDays = try context.fetch(FetchDescriptor<ProgrammeDay>())
-        existingDays.forEach { $0.isImportedActive = false }
-        var days = Dictionary(uniqueKeysWithValues: existingDays.map { ($0.externalDayID, $0) })
-        var daysByNumber: [Int: ProgrammeDay] = [:]
-        for record in manifest.programme.days {
-            let externalID = "\(manifest.programme.externalProgrammeID)-D\(String(format: "%02d", record.dayNumber))"
-            let day = days[externalID]
-                ?? ProgrammeDay(
-                    externalDayID: externalID,
-                    dayNumber: record.dayNumber,
-                    focus: record.focus,
-                    studyBrief: record.studyBrief,
-                    allocatedQuestionCount: record.allocatedQuestionCount,
-                    expectedQuestionMinutes: record.expectedQuestionMinutes,
-                    expectedReviewMinutes: record.expectedReviewMinutes,
-                    programme: programme
+            let programme = programmes[manifest.programme.externalProgrammeID]
+                ?? AdmissionsProgramme(
+                    externalProgrammeID: manifest.programme.externalProgrammeID,
+                    admissionsTest: manifest.programme.admissionsTest,
+                    name: manifest.programme.name,
+                    startDate: manifestStart,
+                    importRevision: manifest.programme.importRevision
                 )
-            if days[externalID] == nil {
-                context.insert(day)
-                days[externalID] = day
+            if programmes[manifest.programme.externalProgrammeID] == nil {
+                context.insert(programme)
+                programmes[manifest.programme.externalProgrammeID] = programme
             }
-            day.dayNumber = record.dayNumber
-            day.focus = record.focus
-            day.studyBrief = record.studyBrief
-            day.allocatedQuestionCount = record.allocatedQuestionCount
-            day.expectedQuestionMinutes = record.expectedQuestionMinutes
-            day.expectedReviewMinutes = record.expectedReviewMinutes
-            day.dailyTarget = record.dailyTarget
-            day.notes = record.notes
-            if let value = record.scheduleOffsetDays { day.scheduleOffsetDays = value }
-            if let value = record.earliestStartMinute { day.earliestStartMinute = value }
-            day.programme = programme
-            day.isImportedActive = true
-            daysByNumber[record.dayNumber] = day
-        }
+            programme.admissionsTest = manifest.programme.admissionsTest
+            programme.name = manifest.programme.name
+            programme.importRevision = manifest.programme.importRevision
+            programme.isImportedActive = true
+            // startDate becomes user-owned after first import, so reimport preserves it.
 
-        let existingAssignments = try context.fetch(FetchDescriptor<ProgrammeAssignment>())
-        existingAssignments.forEach { $0.isImportedActive = false }
-        var assignments = Dictionary(
-            uniqueKeysWithValues: existingAssignments.map { ($0.externalAssignmentID, $0) }
-        )
-        for record in manifest.programme.assignments {
-            guard let question = questions[record.questionID] else {
-                throw AdmissionsImportError.unresolvedAssignment(record.externalAssignmentID)
+            let existingDays = try context.fetch(FetchDescriptor<ProgrammeDay>())
+            existingDays.forEach { $0.isImportedActive = false }
+            var days = Dictionary(uniqueKeysWithValues: existingDays.map { ($0.externalDayID, $0) })
+            var daysByNumber: [Int: ProgrammeDay] = [:]
+            for record in manifest.programme.days {
+                let externalID = "\(manifest.programme.externalProgrammeID)-D\(String(format: "%02d", record.dayNumber))"
+                let day = days[externalID]
+                    ?? ProgrammeDay(
+                        externalDayID: externalID,
+                        dayNumber: record.dayNumber,
+                        focus: record.focus,
+                        studyBrief: record.studyBrief,
+                        allocatedQuestionCount: record.allocatedQuestionCount,
+                        expectedQuestionMinutes: record.expectedQuestionMinutes,
+                        expectedReviewMinutes: record.expectedReviewMinutes,
+                        programme: programme
+                    )
+                if days[externalID] == nil {
+                    context.insert(day)
+                    days[externalID] = day
+                }
+                day.dayNumber = record.dayNumber
+                day.focus = record.focus
+                day.studyBrief = record.studyBrief
+                day.allocatedQuestionCount = record.allocatedQuestionCount
+                day.expectedQuestionMinutes = record.expectedQuestionMinutes
+                day.expectedReviewMinutes = record.expectedReviewMinutes
+                day.dailyTarget = record.dailyTarget
+                day.notes = record.notes
+                if let value = record.scheduleOffsetDays { day.scheduleOffsetDays = value }
+                if let value = record.earliestStartMinute { day.earliestStartMinute = value }
+                day.programme = programme
+                day.isImportedActive = true
+                daysByNumber[record.dayNumber] = day
             }
-            guard let day = daysByNumber[record.dayNumber] else {
-                throw AdmissionsImportError.unresolvedProgrammeDay(record.dayNumber)
+
+            let existingAssignments = try context.fetch(FetchDescriptor<ProgrammeAssignment>())
+            existingAssignments.forEach { $0.isImportedActive = false }
+            var assignments = Dictionary(
+                uniqueKeysWithValues: existingAssignments.map { ($0.externalAssignmentID, $0) }
+            )
+            for record in manifest.programme.assignments {
+                guard let question = questions[record.questionID] else {
+                    throw AdmissionsImportError.unresolvedAssignment(record.externalAssignmentID)
+                }
+                guard let day = daysByNumber[record.dayNumber] else {
+                    throw AdmissionsImportError.unresolvedProgrammeDay(record.dayNumber)
+                }
+                let assignment = assignments[record.externalAssignmentID]
+                    ?? ProgrammeAssignment(
+                        externalAssignmentID: record.externalAssignmentID,
+                        displayOrder: record.displayOrder,
+                        programmeDay: day,
+                        question: question
+                    )
+                if assignments[record.externalAssignmentID] == nil {
+                    context.insert(assignment)
+                    assignments[record.externalAssignmentID] = assignment
+                }
+                assignment.block = record.block
+                assignment.purpose = record.purpose
+                assignment.suggestedTimeCapMinutes = record.suggestedTimeCapMinutes
+                assignment.displayOrder = record.displayOrder
+                assignment.programmeDay = day
+                assignment.question = question
+                assignment.isImportedActive = true
             }
-            let assignment = assignments[record.externalAssignmentID]
-                ?? ProgrammeAssignment(
-                    externalAssignmentID: record.externalAssignmentID,
-                    displayOrder: record.displayOrder,
-                    programmeDay: day,
-                    question: question
-                )
-            if assignments[record.externalAssignmentID] == nil {
-                context.insert(assignment)
-                assignments[record.externalAssignmentID] = assignment
-            }
-            assignment.block = record.block
-            assignment.purpose = record.purpose
-            assignment.suggestedTimeCapMinutes = record.suggestedTimeCapMinutes
-            assignment.displayOrder = record.displayOrder
-            assignment.programmeDay = day
-            assignment.question = question
-            assignment.isImportedActive = true
         }
 
         let states = try context.fetch(FetchDescriptor<AdmissionsImportState>())
@@ -272,14 +285,14 @@ enum AdmissionsImportService {
             ?? AdmissionsImportState(
                 importRevision: manifest.importRevision,
                 questionCount: manifest.questions.count,
-                assignmentCount: manifest.programme.assignments.count,
+                assignmentCount: importPersonalProgramme ? manifest.programme.assignments.count : 0,
                 sourceCount: manifest.sources.count
             )
         if states.isEmpty { context.insert(state) }
         for duplicate in states.dropFirst() { context.delete(duplicate) }
         state.importRevision = manifest.importRevision
         state.questionCount = manifest.questions.count
-        state.assignmentCount = manifest.programme.assignments.count
+        state.assignmentCount = importPersonalProgramme ? manifest.programme.assignments.count : 0
         state.sourceCount = manifest.sources.count
         state.lastImportedAt = .now
 

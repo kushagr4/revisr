@@ -46,38 +46,48 @@ private struct StartupView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var didAttemptSeeding = false
     @State private var startupError: StartupError?
+    @State private var settings: AppSettings?
 
     var body: some View {
-        RootTabView()
-            .task {
-                guard !didAttemptSeeding else { return }
-                didAttemptSeeding = true
-
-                do {
-                    try PerformanceProbe.measure("launch_seed_and_import") {
-                        try SeedDataService.seedIfNeeded(in: modelContext)
-                    }
-#if DEBUG
-                    try DebugTodayScenarioService.applyIfRequested(in: modelContext)
-                    try DebugPlanScenarioService.applyIfRequested(in: modelContext)
-                    try DebugProgressScenarioService.applyIfRequested(in: modelContext)
-                    try DebugTopicsScenarioService.applyIfRequested(in: modelContext)
-#endif
-                } catch {
-                    startupError = StartupError(message: error.localizedDescription)
+        Group {
+            if let settings {
+                if settings.publicOnboardingStage != nil {
+                    PublicPreparationSetupView(settings: settings)
+                } else {
+                    RootTabView()
                 }
-            }
-            .alert(item: $startupError) { error in
-                Alert(
-                    title: Text("Couldn’t Prepare Revisr"),
-                    message: Text(error.message),
-                    dismissButton: .default(Text("OK"))
+            } else if let startupError {
+                ContentUnavailableView(
+                    "Couldn’t Prepare Revisr",
+                    systemImage: "externaldrive.badge.exclamationmark",
+                    description: Text(startupError.message)
                 )
+            } else {
+                ProgressView("Preparing Revisr")
             }
+        }
+        .task {
+            guard !didAttemptSeeding else { return }
+            didAttemptSeeding = true
+
+            do {
+                let preparedSettings = try PerformanceProbe.measure("launch_seed_and_import") {
+                    try SeedDataService.bootstrapForLaunch(in: modelContext)
+                }
+#if DEBUG
+                try DebugTodayScenarioService.applyIfRequested(in: modelContext)
+                try DebugPlanScenarioService.applyIfRequested(in: modelContext)
+                try DebugProgressScenarioService.applyIfRequested(in: modelContext)
+                try DebugTopicsScenarioService.applyIfRequested(in: modelContext)
+#endif
+                settings = preparedSettings
+            } catch {
+                startupError = StartupError(message: error.localizedDescription)
+            }
+        }
     }
 }
 
-private struct StartupError: Identifiable {
-    let id = UUID()
+private struct StartupError {
     let message: String
 }

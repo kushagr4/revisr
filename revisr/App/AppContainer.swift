@@ -23,7 +23,12 @@ enum AppContainer {
         QuestionAttempt.self,
         AdmissionsTopicState.self,
         QuestionAttemptTimerState.self,
-        AdmissionsImportState.self
+        AdmissionsImportState.self,
+        DiagnosticAssessment.self,
+        DiagnosticPaperRecord.self,
+        DiagnosticResponse.self,
+        PublicProgramme.self,
+        PublicProgrammeTask.self
     ])
 
     static func make(isStoredInMemoryOnly: Bool = false) throws -> ModelContainer {

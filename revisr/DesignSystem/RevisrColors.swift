@@ -11,9 +11,14 @@ enum RevisrColors {
     static let background = Color(uiColor: .systemBackground)
     static let secondaryBackground = Color(uiColor: .secondarySystemBackground)
     static let tertiaryBackground = Color(uiColor: .tertiarySystemBackground)
+    static let elevatedSurface = Color(uiColor: .systemBackground)
+    static let tintedSurface = accentTeal.opacity(0.09)
     static let separator = Color(uiColor: .separator)
     static let primaryLabel = Color(uiColor: .label)
     static let secondaryLabel = Color(uiColor: .secondaryLabel)
+    static let success = Color(uiColor: .systemGreen)
+    static let warning = Color(uiColor: .systemOrange)
+    static let critical = Color(uiColor: .systemRed)
 
     static func subjectAccent(_ identifier: SubjectAccentID?) -> Color {
         switch identifier {
