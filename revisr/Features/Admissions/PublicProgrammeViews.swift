@@ -144,26 +144,20 @@ private struct PublicPlanView: View {
     @State private var showingRefreshConfirmation = false
     @State private var refreshError: String?
 
-    private var tasks: [PublicProgrammeTask] {
-        allTasks.filter { $0.programmeID == programme.stableID && $0.isActive }
-    }
-    private var tasksByDay: [Date: [PublicProgrammeTask]] {
+    var body: some View {
         let calendar = DateUtilities.appCalendar()
-        return Dictionary(grouping: tasks) { calendar.startOfDay(for: $0.scheduledDate) }
-    }
-    private var dates: [Date] {
-        let calendar = DateUtilities.appCalendar()
+        let tasks = allTasks.filter { $0.programmeID == programme.stableID && $0.isActive }
+        let tasksByDay = Dictionary(grouping: tasks) {
+            calendar.startOfDay(for: $0.scheduledDate)
+        }
         let start = calendar.startOfDay(for: programme.generatedAt)
         let end = calendar.startOfDay(for: programme.examDateSnapshot)
-        let count = max(0, min(730, calendar.dateComponents([.day], from: start, to: end).day ?? 0))
-        return (0..<count).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
-    }
-    private var completedSinceRefresh: Int {
-        tasks.filter { $0.completedAt != nil }.count - programme.completedCountAtRefresh
-    }
+        let dateCount = max(0, min(730, calendar.dateComponents([.day], from: start, to: end).day ?? 0))
+        let dates = (0..<dateCount).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
+        let completedSinceRefresh = tasks.filter { $0.completedAt != nil }.count
+            - programme.completedCountAtRefresh
 
-    var body: some View {
-        NavigationStack {
+        return NavigationStack {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: RevisrSpacing.small) {
@@ -195,7 +189,7 @@ private struct PublicPlanView: View {
                 }
                 Section("Calendar") {
                     ForEach(dates, id: \.self) { date in
-                        let dayTasks = tasksByDay[DateUtilities.appCalendar().startOfDay(for: date)] ?? []
+                        let dayTasks = tasksByDay[calendar.startOfDay(for: date)] ?? []
                         NavigationLink {
                             PublicProgrammeDayView(date: date, tasks: dayTasks)
                         } label: {
@@ -292,25 +286,23 @@ private struct PublicProgressView: View {
     @Query private var allTasks: [PublicProgrammeTask]
     @Query private var allAttempts: [QuestionAttempt]
 
-    private var tasks: [PublicProgrammeTask] {
-        allTasks.filter { $0.programmeID == programme.stableID }
-    }
-    private var completed: [PublicProgrammeTask] { tasks.filter { $0.completedAt != nil } }
-    private var attemptIDs: Set<UUID> { Set(completed.compactMap(\.completionAttemptID)) }
-    private var attempts: [QuestionAttempt] { allAttempts.filter { attemptIDs.contains($0.id) } }
-
     var body: some View {
-        NavigationStack {
+        let programmeTasks = allTasks.filter { $0.programmeID == programme.stableID }
+        let progress = PublicProgrammeProgressSnapshot(tasks: programmeTasks)
+        let attempts = allAttempts.filter { progress.completedAttemptIDs.contains($0.id) }
+
+        return NavigationStack {
             List {
                 Section("Programme work") {
-                    LabeledContent("Completed tasks", value: "\(completed.count)")
-                    LabeledContent("Active tasks", value: "\(tasks.filter(\.isActive).count)")
+                    LabeledContent("Completed tasks", value: "\(progress.completedTaskCount)")
+                    LabeledContent("Active tasks", value: "\(progress.activeTaskCount)")
                     LabeledContent("Recorded question attempts", value: "\(attempts.count)")
-                    ProgressView(value: Double(completed.count), total: Double(max(1, tasks.count))) {
+                    ProgressView(value: Double(progress.completedTaskCount),
+                                 total: Double(max(1, progress.plannedTaskCount))) {
                         Text("Programme completion")
                     }
                     .tint(RevisrColors.accentTeal)
-                    .accessibilityValue("\(completed.count) of \(tasks.count) tasks complete")
+                    .accessibilityValue("\(progress.completedTaskCount) of \(progress.plannedTaskCount) planned tasks complete")
                     Text("Scheduled work counts as progress only after you complete it.")
                         .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
                 }
@@ -327,7 +319,9 @@ private struct PublicProgressView: View {
                         }
                     }
                     Section("Topics practised") {
-                        ForEach(Dictionary(grouping: completed.filter { $0.questionID != nil }, by: \.topic)
+                        ForEach(Dictionary(grouping: programmeTasks.filter {
+                            $0.completedAt != nil && $0.questionID != nil
+                        }, by: \.topic)
                             .map { ($0.key, $0.value.count) }.sorted { $0.0 < $1.0 }, id: \.0) { topic in
                             LabeledContent(topic.0, value: "\(topic.1) completed")
                         }

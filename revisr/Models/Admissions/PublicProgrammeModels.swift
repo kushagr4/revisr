@@ -70,3 +70,18 @@ final class PublicProgrammeTask {
         self.completionNote = ""
     }
 }
+
+struct PublicProgrammeProgressSnapshot {
+    let plannedTaskCount: Int
+    let completedTaskCount: Int
+    let activeTaskCount: Int
+    let completedAttemptIDs: Set<UUID>
+
+    init(tasks: [PublicProgrammeTask]) {
+        let trackedTasks = tasks.filter { $0.isActive || $0.completedAt != nil }
+        plannedTaskCount = trackedTasks.count
+        completedTaskCount = trackedTasks.filter { $0.completedAt != nil }.count
+        activeTaskCount = trackedTasks.filter(\.isActive).count
+        completedAttemptIDs = Set(trackedTasks.compactMap(\.completionAttemptID))
+    }
+}

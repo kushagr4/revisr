@@ -1,6 +1,6 @@
 # Revisr public product roadmap
 
-Updated 9 October 2026 through the Phase 4A/4B implementation pass. The Phase 0 inventory below describes the pre-foundation baseline; later phase sections record the current implementation. This document does not grant redistribution rights or change the private release status.
+Updated 11 October 2026 during source-level continuation on `codex/ios-completion`. The Phase 0 inventory below describes the pre-foundation baseline; later phase sections record the current implementation. This document does not grant redistribution rights or change the private release status.
 
 ## Phase 0: baseline inventory before public foundation
 
@@ -59,6 +59,14 @@ The audit found that the most valuable next work is visual consistency across th
 Phase 4A verification: `xcode-select` points to Xcode 26.6 and `xcodebuild -version` reports 26.6 (17F113). Both iOS 26.2 and 26.5 runtimes are installed, and `simctl` can enumerate devices intermittently. `xcodebuild -list`, `-showdestinations`, simulator builds and tests lose their CoreSimulatorService connection during startup and exit before selecting a destination. The same failure occurs for the separate Calculock project, so it is not Revisr-specific. Generic iOS compilation reaches asset processing but fails because the service reports no available simulator runtimes; no source compile diagnostics were emitted. A reversible Simulator-app quit/relaunch did not recover the service. A targeted privileged launch-service restart was approved but could not be executed because the environment rejected escalation review due its usage limit. The eight Phase 3 targeted tests remain the last successful automated run. Existing Phase 2 baseline remains 142 passing tests with 6 historical fixture skips.
 
 Acceptance: key journeys work on supported iPhones, with accessible labels and useful empty states; performance changes include before/after measurements where a simulator is available.
+
+#### 11 October 2026 source-level continuation
+
+The recovered Phase 1–3 implementation was audited without changing its scoring, scheduling policy, persistence schema, protection rules or legacy-store path. Public onboarding persists TMUA/SMC/BMO, date, weekly target and available days; diagnostics enforce two exam-specific papers and keep BMO self-estimation distinct; scheduling is deterministic, evidence-driven, preserves completed work and attempts, and refreshes only future incomplete work according to its freeze policy. These are source-review findings, not fresh runtime or migration verification. Six historical-store fixture tests remain unresolved because their original `.qa` stores are unavailable.
+
+Two targeted Phase 4 source defects were corrected: Plan now filters and groups active tasks once per body evaluation rather than once per lazy calendar row, and Progress excludes retired incomplete tasks from its completion denominator while retaining completed history and linked attempt IDs. Added a focused XCTest for retired-task handling. Verification available without CoreSimulator on 11 October: all 132 Swift files parse; `git diff --check` passes; two independent atomic-generation Python tests pass. The new XCTest and the complete Swift test suite have not run. Fresh unsigned generic Debug and Release builds both stop during asset processing because CoreSimulator reports no available iOS simulator runtimes; no Revisr source compilation result is available. A full Python discovery run also cannot complete because `.qa/chunk4/staging-v1/AdmissionsProgrammeMigration.json` is missing; two tests passed and two were skipped before the fixture setup error.
+
+Phase 4 remains incomplete. Screenshots, simulator walkthroughs, accessibility behavior, cold launch, memory, PDF timing and Plan timing remain unverified. No performance improvement is claimed from source restructuring alone. See `PUBLIC_UX_AUDIT.md`, `PUBLIC_PERFORMANCE_BASELINE.md` and `POST_RECOVERY_VALIDATION.md` for evidence and the remaining validation backlog.
 
 ### Phase 5: content and public-release readiness
 

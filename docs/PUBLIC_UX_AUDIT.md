@@ -1,6 +1,6 @@
 # Revisr public UX audit
 
-Updated 9 October 2026 during the Phase 4A/4B review. This audit covers the current public-user programme state on the isolated `Revisr Phase 3 QA` iOS 26.5 simulator and a source review of onboarding, diagnostics and persistence services. The simulator already contained a completed two-paper diagnostic and one completed programme question, so the clean onboarding and in-progress diagnostic screens were reviewed from source and existing automated coverage rather than reset destructively.
+Updated 11 October 2026. The evidence below records the 9 October simulator inspection; the latest addendum is source-only because CoreSimulatorService remains unavailable. The earlier simulator already contained a completed two-paper diagnostic and one completed programme question, so the clean onboarding and in-progress diagnostic screens were reviewed from source and existing automated coverage rather than reset destructively.
 
 ## Evidence captured in this run
 
@@ -52,3 +52,12 @@ Combined task rows expose their text, but completion state is carried mainly by 
 ## Accessibility and performance limits
 
 Screenshots and the accessibility tree were inspected at the simulator's default text size in light appearance. VoiceOver rotor order, Dynamic Type extremes, dark mode, Reduce Motion, small-device layout and memory profiling require dedicated follow-up runs. The Phase 4A `xcodebuild` retry still loses CoreSimulatorService during startup; the previously completed Phase 3 targeted tests remain the reliable automated baseline until that service is stable.
+
+## 11 October 2026 source review
+
+- Plan's task filter and date grouping now run once per `body` evaluation, outside the lazy date rows. This removes repeated whole-list grouping at each row; runtime scrolling measurements are still required to quantify impact.
+- Progress completion now counts active tasks and completed historical tasks. Retired incomplete tasks no longer inflate the planned-work denominator after an adaptation refresh. Completed task history and linked attempt IDs remain included.
+- A focused regression XCTest was added for active, completed, retired-incomplete and retired-completed tasks. It has not run because Xcode cannot discover usable simulator runtimes.
+- Source syntax parsing passed for 132 Swift files and `git diff --check` passed. Debug and Release generic builds both failed before Revisr source compilation during asset processing with `No available simulator runtimes for platform iphonesimulator`.
+
+No visual validation occurred in this continuation. Onboarding, diagnostic introduction/paper/report, Today, Plan, Progress, Topics, Settings and empty states still need screenshot inspection at small/large iPhone sizes, light/dark appearance, accessibility Dynamic Type, Reduce Motion and VoiceOver. Do not describe these as visually verified based on source review.

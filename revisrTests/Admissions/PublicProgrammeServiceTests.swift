@@ -112,4 +112,26 @@ final class PublicProgrammeServiceTests: XCTestCase {
             XCTAssertTrue(tasks.allSatisfy { $0.scheduledDate < settings.publicExamDate! })
         }
     }
+
+    func testProgressSnapshotExcludesRetiredIncompleteTasksAndKeepsCompletedHistory() {
+        let planned = PublicPlannedTask(date: today, questionID: "Q-1", sourceID: "SRC-1",
+            topic: "Algebra", minutes: 15, activity: .targeted, reason: "Diagnostic evidence")
+        let active = PublicProgrammeTask(stableID: "active", programmeID: "P", task: planned)
+        let completed = PublicProgrammeTask(stableID: "completed", programmeID: "P", task: planned)
+        completed.completedAt = today
+        let attemptID = UUID()
+        completed.completionAttemptID = attemptID
+        let retiredIncomplete = PublicProgrammeTask(stableID: "retired", programmeID: "P", task: planned)
+        retiredIncomplete.isActive = false
+        let retiredCompleted = PublicProgrammeTask(stableID: "retired-completed", programmeID: "P", task: planned)
+        retiredCompleted.isActive = false
+        retiredCompleted.completedAt = today
+
+        let snapshot = PublicProgrammeProgressSnapshot(tasks: [active, completed, retiredIncomplete, retiredCompleted])
+
+        XCTAssertEqual(snapshot.plannedTaskCount, 3)
+        XCTAssertEqual(snapshot.completedTaskCount, 2)
+        XCTAssertEqual(snapshot.activeTaskCount, 2)
+        XCTAssertEqual(snapshot.completedAttemptIDs, [attemptID])
+    }
 }
