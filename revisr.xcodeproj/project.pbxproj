@@ -14,11 +14,19 @@
 			remoteGlobalIDString = A00000000000000000000009;
 			remoteInfo = revisr;
 		};
+		A00000000000000000000027 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000010 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00000000000000000000009;
+			remoteInfo = revisr;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A00000000000000000000001 /* revisr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = revisr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00000000000000000000002 /* revisrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = revisrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00000000000000000000021 /* revisrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = revisrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,9 +40,21 @@
 			path = revisrTests;
 			sourceTree = "<group>";
 		};
+		A00000000000000000000022 /* revisrUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = revisrUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A00000000000000000000023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A00000000000000000000005 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -57,6 +77,7 @@
 			children = (
 				A00000000000000000000003 /* revisr */,
 				A00000000000000000000004 /* revisrTests */,
+				A00000000000000000000022 /* revisrUITests */,
 				A00000000000000000000008 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +87,7 @@
 			children = (
 				A00000000000000000000001 /* revisr.app */,
 				A00000000000000000000002 /* revisrTests.xctest */,
+				A00000000000000000000021 /* revisrUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,6 +95,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A00000000000000000000026 /* revisrUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0000000000000000000002B /* Build configuration list for PBXNativeTarget "revisrUITests" */;
+			buildPhases = (
+				A00000000000000000000024 /* Sources */,
+				A00000000000000000000023 /* Frameworks */,
+				A00000000000000000000025 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00000000000000000000028 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A00000000000000000000022 /* revisrUITests */,
+			);
+			name = revisrUITests;
+			packageProductDependencies = (
+			);
+			productName = revisrUITests;
+			productReference = A00000000000000000000021 /* revisrUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A00000000000000000000009 /* revisr */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A00000000000000000000018 /* Build configuration list for PBXNativeTarget "revisr" */;
@@ -136,6 +181,10 @@
 						CreatedOnToolsVersion = 26.6;
 						TestTargetID = A00000000000000000000009;
 					};
+					A00000000000000000000026 = {
+						CreatedOnToolsVersion = 27.1;
+						TestTargetID = A00000000000000000000009;
+					};
 				};
 			};
 			buildConfigurationList = A00000000000000000000017 /* Build configuration list for PBXProject "revisr" */;
@@ -154,11 +203,19 @@
 			targets = (
 				A00000000000000000000009 /* revisr */,
 				A0000000000000000000000A /* revisrTests */,
+				A00000000000000000000026 /* revisrUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A00000000000000000000025 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0000000000000000000000D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -199,6 +256,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A00000000000000000000024 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0000000000000000000000B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -221,9 +285,48 @@
 			target = A00000000000000000000009 /* revisr */;
 			targetProxy = A00000000000000000000011 /* PBXContainerItemProxy */;
 		};
+		A00000000000000000000028 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A00000000000000000000009 /* revisr */;
+			targetProxy = A00000000000000000000027 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		A00000000000000000000029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kushagra.revisrUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = revisr;
+			};
+			name = Debug;
+		};
+		A0000000000000000000002A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kushagra.revisrUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = revisr;
+			};
+			name = Release;
+		};
 		A00000000000000000000012 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -446,6 +549,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A0000000000000000000002B /* Build configuration list for PBXNativeTarget "revisrUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000029 /* Debug */,
+				A0000000000000000000002A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A00000000000000000000017 /* Build configuration list for PBXProject "revisr" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

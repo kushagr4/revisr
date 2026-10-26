@@ -76,8 +76,10 @@ struct TMUAOnboardingView: View {
                         .tint(RevisrColors.accentTeal)
                         .padding(.horizontal, RevisrSpacing.large)
                         .padding(.top, RevisrSpacing.small)
-                        .accessibilityLabel("Setup progress")
-                        .accessibilityValue("Step \(step.rawValue) of \(TMUAOnboardingStep.allCases.count - 1)")
+                        // Read as text: a bare progress bar is a tiny element with no action.
+                        .accessibilityRepresentation {
+                            Text("Setup step \(step.rawValue) of \(TMUAOnboardingStep.allCases.count - 1)")
+                        }
                 }
                 ScrollView {
                     Group {
@@ -105,6 +107,7 @@ struct TMUAOnboardingView: View {
                 if step != .welcome {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Back", systemImage: "chevron.left") { go(-1) }
+                            .accessibilityIdentifier("onboarding.back")
                     }
                 }
             }
@@ -163,6 +166,7 @@ struct TMUAOnboardingView: View {
             DatePicker("Examination date", selection: $examDate, in: tomorrow..., displayedComponents: .date)
                 .datePickerStyle(.graphical)
                 .tint(RevisrColors.accentTeal)
+                .accessibilityIdentifier("onboarding.examDate")
             HStack {
                 Label("\(days) day\(days == 1 ? "" : "s") to go", systemImage: "hourglass")
                     .font(.headline)
@@ -173,6 +177,7 @@ struct TMUAOnboardingView: View {
             .padding(RevisrSpacing.standard)
             .background(RevisrColors.tintedSurface, in: RoundedRectangle(cornerRadius: RevisrMetrics.standardCornerRadius))
             .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("onboarding.daysToGo")
             Text("Exam day itself is left free of revision tasks.")
                 .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
         }
@@ -193,12 +198,17 @@ struct TMUAOnboardingView: View {
                 Text(primaryTitle).lineLimit(1).minimumScaleFactor(0.5)
                     .frame(maxWidth: .infinity).padding(.vertical, 6)
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
             .controlSize(.large)
             .disabled(blockingHint != nil || isSaving)
+            .accessibilityIdentifier("onboarding.primary")
             if step == .welcome {
-                Button("Preparing for SMC or BMO instead?", action: onChooseOtherExam)
-                    .font(.footnote)
+                Button(action: onChooseOtherExam) {
+                    Text("Preparing for SMC or BMO instead?")
+                        .frame(maxWidth: .infinity, minHeight: RevisrMetrics.minimumTapTarget)
+                        .contentShape(Rectangle())
+                }
+                .font(.footnote)
             }
         }
         .padding(.horizontal, RevisrSpacing.large)
@@ -324,11 +334,12 @@ struct TMUAAvailabilityEditor: View {
                                 .font(.subheadline.weight(.semibold))
                                 .frame(maxWidth: .infinity, minHeight: RevisrMetrics.minimumTapTarget)
                                 .foregroundStyle(on ? Color.white : RevisrColors.primaryLabel)
-                                .background(on ? RevisrColors.accentStrong : RevisrColors.secondaryBackground,
+                                .background(on ? RevisrColors.accentFill : RevisrColors.secondaryBackground,
                                             in: RoundedRectangle(cornerRadius: RevisrMetrics.compactCornerRadius))
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(day.title)
+                        .accessibilityIdentifier("availability.day.\(day.title)")
                         .accessibilityValue(on ? "Study day" : "Rest day")
                         .accessibilityAddTraits(on ? .isSelected : [])
                     }
@@ -345,6 +356,7 @@ struct TMUAAvailabilityEditor: View {
                     }
                     .pickerStyle(.menu)
                     .labelsHidden()
+                    .accessibilityIdentifier("availability.session")
                 }
                 Text("Optional. Revisr never plans more than this on one day.")
                     .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
@@ -374,6 +386,7 @@ struct TMUAAvailabilityEditor: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(RevisrColors.tintedSurface, in: RoundedRectangle(cornerRadius: RevisrMetrics.standardCornerRadius))
             .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("availability.summary")
         }
     }
 
@@ -383,11 +396,12 @@ struct TMUAAvailabilityEditor: View {
                 .font(.body.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: RevisrMetrics.minimumTapTarget)
                 .foregroundStyle(selected ? Color.white : RevisrColors.primaryLabel)
-                .background(selected ? RevisrColors.accentStrong : RevisrColors.secondaryBackground,
+                .background(selected ? RevisrColors.accentFill : RevisrColors.secondaryBackground,
                             in: RoundedRectangle(cornerRadius: RevisrMetrics.standardCornerRadius))
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityIdentifier("availability.chip.\(title)")
     }
 }
 
@@ -446,7 +460,7 @@ private struct TMUALengthCard: View {
                         .font(.caption.weight(.semibold))
                         .padding(.horizontal, 8).padding(.vertical, 3)
                         .background(RevisrColors.accentTeal.opacity(0.15), in: Capsule())
-                        .foregroundStyle(RevisrColors.accentTeal)
+                        .foregroundStyle(RevisrColors.accentStrong)
                 }
                 Text("Paper 1: \(length.paperOneQuestions) · Paper 2: \(length.paperTwoQuestions) · about \(length.advisoryMinutes(for: .one) + length.advisoryMinutes(for: .two)) minutes")
                     .font(.subheadline.monospacedDigit())
@@ -471,5 +485,6 @@ private struct TMUALengthCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(selected ? .isSelected : [])
         .accessibilityHint(availability.isAvailable ? "Selects this diagnostic length" : "Unavailable in this build")
+        .accessibilityIdentifier("length.\(length.rawValue)")
     }
 }

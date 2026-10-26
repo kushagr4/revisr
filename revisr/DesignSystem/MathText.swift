@@ -213,12 +213,17 @@ enum MathMarkup {
     }
 
     private static let spokenCharacters: [Character: String] = [
-        "²": " squared ", "³": " cubed ", "√": " square root of ", "−": " minus ", "≤": " less than or equal to ",
+        "²": " squared ", "³": " cubed ", "√": " square root of ", "∛": " cube root of ", "∜": " fourth root of ",
+        "−": " minus ", "≤": " less than or equal to ", "≈": " approximately equal to ", "·": " times ",
         "≥": " greater than or equal to ", "≠": " not equal to ", "×": " times ", "÷": " divided by ",
         "±": " plus or minus ", "π": " pi ", "θ": " theta ", "∞": " infinity ", "⇒": " implies ",
         "⇔": " if and only if ", "∀": " for all ", "∃": " there exists ", "°": " degrees ", "ⁿ": " to the power n ",
         "ˣ": " to the power x ", "⁻": " minus ", "¹": " to the power 1 ", "⁰": " to the power 0 ",
-        "₁": " sub 1 ", "₂": " sub 2 ", "₀": " sub 0 ", "₋": " sub minus "
+        "₁": " sub 1 ", "₂": " sub 2 ", "₀": " sub 0 ", "₋": " sub minus ",
+        "⁴": " to the power 4 ", "⁵": " to the power 5 ", "⁶": " to the power 6 ", "⁷": " to the power 7 ",
+        "⁸": " to the power 8 ", "⁹": " to the power 9 ", "′": " prime ", "″": " double prime ",
+        "∠": " angle ", "⟂": " is perpendicular to ", "↔": " corresponds to ", "→": " to ", "∫": " integral of ",
+        "…": " and so on "
     ]
 
     static func spokenUnicode(_ text: String) -> String {

@@ -72,6 +72,8 @@ private struct TMUATodayView: View {
     let programme: PublicProgramme
     @Query(sort: \PublicProgrammeTask.scheduledDate) private var allTasks: [PublicProgrammeTask]
     @Query private var sections: [TMUADiagnosticSection]
+    @State private var errorMessage: String?
+    @ScaledMetric(relativeTo: .largeTitle) private var countdownSize: CGFloat = 48
 
     var body: some View {
         let calendar = DateUtilities.appCalendar()
@@ -88,6 +90,7 @@ private struct TMUATodayView: View {
         let completedSinceRefresh = programmeTasks.filter { $0.completedAt != nil }.count - programme.completedCountAtRefresh
         let restDay = PublicProgrammeAvailability.isAvailable(on: today, schedule: programme.availabilitySnapshot,
                                                               calendar: calendar) == false
+        let missed = programmeTasks.filter { $0.isActive && $0.completedAt == nil && $0.scheduledDate < today }.count
 
         NavigationStack {
             List {
@@ -95,7 +98,7 @@ private struct TMUATodayView: View {
                     VStack(alignment: .leading, spacing: RevisrSpacing.compact) {
                         HStack(alignment: .firstTextBaseline) {
                             Text(days > 0 ? "\(days)" : days == 0 ? "Today" : "Done")
-                                .font(.system(size: 48, weight: .bold, design: .rounded))
+                                .font(.system(size: countdownSize, weight: .bold, design: .rounded))
                             Text(days > 0 ? "day\(days == 1 ? "" : "s") until your TMUA" : days == 0 ? "is your TMUA" : "Your exam date has passed")
                                 .font(.headline).foregroundStyle(RevisrColors.secondaryLabel)
                         }
@@ -107,21 +110,23 @@ private struct TMUATodayView: View {
                         } else {
                             Text("\(complete) of \(tasks.count) tasks · \(minutes) minutes planned")
                                 .font(RevisrTypography.bodyEmphasized)
+                                .accessibilityIdentifier("today.summary")
+                            // The summary text above already reads "n of m tasks".
                             ProgressView(value: Double(complete), total: Double(tasks.count))
                                 .tint(RevisrColors.accentTeal)
-                                .accessibilityLabel("Today's progress")
-                                .accessibilityValue("\(complete) of \(tasks.count) complete")
+                                .accessibilityHidden(true)
                         }
                         if let next {
-                            NavigationLink {
-                                TMUATaskView(settings: settings, task: next)
-                            } label: {
+                            // Value-based links keep an open task fixed: when it is
+                            // completed, "next" moves on but the pushed screen must not.
+                            NavigationLink(value: TMUATaskRoute(id: next.stableID)) {
                                 Label(calendar.isDate(next.scheduledDate, inSameDayAs: today)
                                       ? "Next: \(next.activity.title) · \(next.topic)"
                                       : "Next on \(next.scheduledDate.formatted(.dateTime.weekday(.wide))): \(next.topic)",
                                       systemImage: "arrow.right.circle.fill")
                             }
-                            .buttonStyle(.borderedProminent)
+                            .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
+                            .accessibilityIdentifier("today.next")
                         } else if !tasks.isEmpty {
                             RevisrStatusLabel(title: "Everything for today is done", systemImage: "checkmark.seal.fill",
                                               color: RevisrColors.success)
@@ -138,6 +143,16 @@ private struct TMUATodayView: View {
                         }
                     }
                 }
+                if missed > 0 {
+                    Section {
+                        Label("\(missed) task\(missed == 1 ? "" : "s") from earlier days \(missed == 1 ? "was" : "were") not completed. Refreshing fits that practice back into your future plan; nothing you completed changes.",
+                              systemImage: "calendar.badge.exclamationmark")
+                            .font(.subheadline)
+                            .accessibilityIdentifier("today.missed")
+                        Button("Refresh my plan", systemImage: "arrow.triangle.2.circlepath", action: refresh)
+                            .accessibilityIdentifier("today.refresh")
+                    }
+                }
                 if TMUAProgrammeService.settingsChanged(programme, settings: settings) || completedSinceRefresh >= 5 {
                     Section {
                         Label(TMUAProgrammeService.settingsChanged(programme, settings: settings)
@@ -150,7 +165,7 @@ private struct TMUATodayView: View {
                 if !tasks.isEmpty {
                     Section("Today") {
                         ForEach(tasks, id: \.stableID) { task in
-                            NavigationLink { TMUATaskView(settings: settings, task: task) } label: {
+                            NavigationLink(value: TMUATaskRoute(id: task.stableID)) {
                                 TMUATaskRow(task: task)
                             }
                         }
@@ -174,6 +189,24 @@ private struct TMUATodayView: View {
             }
             .navigationTitle("Today")
             .tmuaSettingsButton()
+            .navigationDestination(for: TMUATaskRoute.self) { route in
+                if let task = programmeTasks.first(where: { $0.stableID == route.id }) {
+                    TMUATaskView(settings: settings, task: task)
+                }
+            }
+            .alert("Couldn’t Refresh", isPresented: Binding(
+                get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
+                Button("OK", role: .cancel) { errorMessage = nil }
+            } message: { Text(errorMessage ?? "") }
+        }
+    }
+
+    private func refresh() {
+        guard let content = TMUAContentStore.context() else { return }
+        do {
+            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, in: modelContext)
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }
@@ -196,6 +229,7 @@ struct TMUATaskRow: View {
             }
         }
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("task.row")
     }
 
     static func symbol(_ activity: PublicPlanningActivity) -> String {
@@ -235,6 +269,10 @@ private struct TMUAPlanView: View {
         let dates = (0..<count).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
         let weeks = Dictionary(grouping: dates) { calendar.dateInterval(of: .weekOfYear, for: $0)?.start ?? $0 }
         let changed = TMUAProgrammeService.settingsChanged(programme, settings: settings)
+        let contentSummary = TMUAProgrammeService.contentSummary(programme: programme,
+            tasks: allTasks.filter { $0.programmeID == programme.stableID },
+            seenStableIDs: TMUAProgrammeService.seenStableIDs(settings: settings, in: modelContext),
+            availability: programme.availabilitySnapshot, calendar: calendar)
 
         NavigationStack {
             List {
@@ -242,13 +280,21 @@ private struct TMUAPlanView: View {
                     VStack(alignment: .leading, spacing: RevisrSpacing.small) {
                         Text("\(tasks.filter { $0.isActive }.count) planned tasks · \(tasks.filter { $0.completedAt != nil }.count) complete")
                             .font(.headline)
+                            .accessibilityIdentifier("plan.summary")
                         Text("Last refreshed \(programme.refreshedAt.formatted(date: .abbreviated, time: .shortened)) · version \(programme.revision)")
                             .font(.subheadline).foregroundStyle(RevisrColors.secondaryLabel)
                         if let summary = programme.refreshSummary {
                             Text(summary).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
                         }
                     }
+                    if let notice = contentSummary.message {
+                        Label(notice, systemImage: "books.vertical")
+                            .font(.footnote)
+                            .foregroundStyle(RevisrColors.secondaryLabel)
+                            .accessibilityIdentifier("plan.contentNotice")
+                    }
                     Button("Refresh future plan", systemImage: "arrow.triangle.2.circlepath") { showingRefresh = true }
+                        .accessibilityIdentifier("plan.refresh")
                     Toggle("Show earlier days", isOn: $showPast)
                 } footer: {
                     Text(changed ? "Your settings changed, so all future incomplete tasks will be rebuilt. Completed work stays saved."
@@ -308,6 +354,7 @@ private struct TMUAPlanView: View {
             }
             .accessibilityElement(children: .combine)
         }
+        .accessibilityIdentifier(isToday ? "plan.day.today" : "plan.day")
     }
 
     private func refresh() {
@@ -342,6 +389,11 @@ private struct TMUADayView: View {
 
 // MARK: - Task and practice
 
+/// Navigation value for one planned task.
+struct TMUATaskRoute: Hashable {
+    let id: String
+}
+
 struct TMUATaskView: View {
     @Environment(\.modelContext) private var modelContext
     let settings: AppSettings
@@ -355,12 +407,23 @@ struct TMUATaskView: View {
             } else {
                 TMUADiagnosticHubView(settings: settings, embedded: true)
             }
+        } else if let id = task.questionID, isReserved(id) {
+            ContentUnavailableView("Finish your added diagnostic questions first", systemImage: "lock",
+                description: Text("This question is part of your open diagnostic round. Its practice task returns after you submit that round."))
         } else if let id = task.questionID, let item = TMUAContentStore.context()?.bank.latestItems.first(where: { $0.stableId == id }) {
+            // Practice state belongs to one task; never carry it to another.
             TMUAPracticeView(settings: settings, item: item, task: task)
+                .id(task.stableID)
         } else {
             ContentUnavailableView("Question unavailable", systemImage: "exclamationmark.triangle",
                 description: Text("This question is not available in this build. Refresh your plan to replace it; completed work is unchanged."))
         }
+    }
+
+    private func isReserved(_ id: String) -> Bool {
+        guard task.completedAt == nil,
+              let snapshot = try? TMUADiagnosticService.load(settings: settings, in: modelContext) else { return false }
+        return TMUAProgrammeService.reservedStableIDs(snapshot: snapshot).contains(id)
     }
 }
 
@@ -407,6 +470,7 @@ struct TMUAPracticeView: View {
                     Text(item.category.attributionTitle).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
                 }
                 MathText(item.stem, textStyle: .title3)
+                    .accessibilityIdentifier("question.stem")
                 VStack(spacing: RevisrSpacing.compact) {
                     ForEach(item.options, id: \.id) { option in
                         TMUAOptionButton(option: option, selected: shownSelection == option.id,
@@ -421,6 +485,7 @@ struct TMUAPracticeView: View {
                     RevisrStatusLabel(title: correct ? "Correct" : "Not this time — review the solution",
                                       systemImage: correct ? "checkmark.circle.fill" : "xmark.circle.fill",
                                       color: correct ? RevisrColors.success : RevisrColors.critical)
+                        .accessibilityIdentifier("practice.result")
                     TMUASolutionCard(solution: item.solution)
                 } else {
                     Button {
@@ -428,8 +493,9 @@ struct TMUAPracticeView: View {
                     } label: {
                         Text("Check answer").frame(maxWidth: .infinity).padding(.vertical, 6)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
                     .disabled(selection == nil)
+                    .accessibilityIdentifier("practice.check")
                 }
                 Toggle("Flag for later review", isOn: Binding(get: { flagged }, set: { setFlag($0) }))
                 if !history.isEmpty {
@@ -520,15 +586,16 @@ private struct TMUAProgressView: View {
                         Text("No tasks yet.").foregroundStyle(RevisrColors.secondaryLabel)
                     } else {
                         LabeledContent("Completed tasks", value: "\(progress.completedTaskCount) of \(progress.plannedTaskCount)")
+                            .accessibilityIdentifier("progress.completedTasks")
                         ProgressView(value: Double(progress.completedTaskCount), total: Double(progress.plannedTaskCount))
                             .tint(RevisrColors.accentTeal)
-                            .accessibilityLabel("Programme tasks complete")
-                            .accessibilityValue("\(progress.completedTaskCount) of \(progress.plannedTaskCount)")
+                            .accessibilityHidden(true)
                         LabeledContent("Mistake reviews completed", value: "\(reviews)")
                     }
                 }
                 Section {
                     LabeledContent("Question attempts", value: "\(attempts.count)")
+                        .accessibilityIdentifier("progress.attempts")
                     if !attempts.isEmpty {
                         LabeledContent("Correct", value: "\(correct) of \(attempts.count)")
                     }
@@ -544,6 +611,7 @@ private struct TMUAProgressView: View {
                 if let report = state.report {
                     Section("Diagnostic history") {
                         LabeledContent("\(report.length.title) diagnostic", value: report.combinedScore)
+                            .accessibilityIdentifier("progress.diagnostic")
                         if let snapshot = state.snapshot {
                             ForEach(Dictionary(grouping: snapshot.sections.filter { $0.status == .submitted }, by: \.round)
                                 .sorted { $0.key < $1.key }, id: \.key) { round, sections in
@@ -790,6 +858,7 @@ private struct TMUASettingsView: View {
                     NavigationLink("Diagnostic and results") {
                         TMUADiagnosticHubView(settings: settings, embedded: true)
                     }
+                    .accessibilityIdentifier("settings.diagnostic")
                 }
                 Section {
                     Toggle("Daily study reminder", isOn: Binding(get: { reminderEnabled }, set: { setReminder($0) }))
@@ -826,7 +895,9 @@ private struct TMUASettingsView: View {
             }
             .navigationTitle("Settings")
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done", action: onDone) }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done", action: onDone).accessibilityIdentifier("settings.done")
+                }
             }
             .sheet(isPresented: $editing) { editSheet }
             .alert("Preparation", isPresented: Binding(get: { message != nil }, set: { if !$0 { message = nil } })) {
@@ -919,6 +990,7 @@ private struct TMUASettingsButton: ViewModifier {
         content.toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Settings", systemImage: "gearshape", action: showSettings)
+                    .accessibilityIdentifier("settings.open")
             }
         }
     }

@@ -8,7 +8,16 @@ struct RevisrApp: App {
 
     init() {
         do {
+#if DEBUG
+            if let url = try DebugUITestSupport.isolatedStoreURL() {
+                container = try AppContainer.make(storeURL: url)
+                DebugUITestSupport.installFixtureBankIfRequested()
+            } else {
+                container = try AppContainer.make()
+            }
+#else
             container = try AppContainer.make()
+#endif
             persistenceInitializationFailed = false
         } catch {
             do {

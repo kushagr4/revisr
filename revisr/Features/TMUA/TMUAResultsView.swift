@@ -8,6 +8,7 @@ struct TMUAResultsView: View {
     @State private var showingExpansion = false
     @State private var errorMessage: String?
     @Query private var programmes: [PublicProgramme]
+    @ScaledMetric(relativeTo: .largeTitle) private var scoreSize: CGFloat = 44
 
     private var content: TMUAContentContext? { TMUAContentStore.context() }
 
@@ -48,8 +49,9 @@ struct TMUAResultsView: View {
         Section {
             VStack(alignment: .leading, spacing: RevisrSpacing.compact) {
                 Text("Raw score").font(RevisrTypography.label).foregroundStyle(RevisrColors.secondaryLabel)
-                Text(report.combinedScore).font(.system(size: 44, weight: .bold, design: .rounded))
+                Text(report.combinedScore).font(.system(size: scoreSize, weight: .bold, design: .rounded))
                     .accessibilityLabel("\(report.correct) correct out of \(report.questionCount)")
+                    .accessibilityIdentifier("results.rawScore")
                 HStack(spacing: RevisrSpacing.large) {
                     ForEach(report.papers, id: \.paper) { paper in
                         VStack(alignment: .leading, spacing: 2) {
@@ -57,6 +59,7 @@ struct TMUAResultsView: View {
                             Text(paper.rawScore).font(.title3.bold().monospacedDigit())
                         }
                         .accessibilityElement(children: .combine)
+                        .accessibilityIdentifier("results.score.P\(paper.paper.rawValue)")
                     }
                 }
                 Divider()
@@ -92,7 +95,9 @@ struct TMUAResultsView: View {
         Section("How much this tells us") {
             VStack(alignment: .leading, spacing: RevisrSpacing.small) {
                 RevisrStatusLabel(title: "\(report.length.title) diagnostic · \(report.length.confidenceTitle) evidence",
-                                  systemImage: "gauge.with.dots.needle.33percent", color: RevisrColors.accentTeal)
+                                  systemImage: "gauge.with.dots.needle.33percent", color: RevisrColors.accentStrong)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier("results.confidence")
                 Text(report.length.confidenceExplanation).font(.subheadline)
                 Text(report.timingNote).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
                 Text(report.compositionNote).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
@@ -171,10 +176,12 @@ struct TMUAResultsView: View {
                     Label("Generate my personalised plan", systemImage: "calendar.badge.plus")
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
+                .accessibilityIdentifier("results.generatePlan")
             }
             if snapshot.openSections.isEmpty, !snapshot.diagnostic.targetLength.expansionTargets.isEmpty {
                 Button("Improve my diagnostic accuracy") { showingExpansion = true }
+                    .accessibilityIdentifier("results.improve")
                 Text("Optional. Answer more questions to sample more of the syllabus; your earlier answers are kept.")
                     .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
             }
@@ -323,6 +330,7 @@ struct TMUAExpansionView: View {
                         }
                         .buttonStyle(.plain)
                         .disabled(!available)
+                        .accessibilityIdentifier("expansion.\(option.rawValue)")
                         .opacity(available ? 1 : 0.6)
                         .accessibilityAddTraits(target == option ? .isSelected : [])
                     }
@@ -337,6 +345,7 @@ struct TMUAExpansionView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Not now") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add questions") { expand() }.disabled(target == nil)
+                        .accessibilityIdentifier("expansion.confirm")
                 }
             }
             .alert("Couldn’t Add Questions", isPresented: Binding(
@@ -349,8 +358,8 @@ struct TMUAExpansionView: View {
     private func expand() {
         guard let target, let content = TMUAContentStore.context() else { return }
         do {
-            _ = try TMUADiagnosticService.expand(snapshot, to: target, settings: settings,
-                                                 content: content, in: modelContext)
+            _ = try TMUAProgrammeService.expandDiagnostic(snapshot, to: target, settings: settings,
+                                                          content: content, in: modelContext)
             dismiss()
         } catch {
             errorMessage = error.localizedDescription

@@ -97,6 +97,7 @@ struct TMUADiagnosticHubView: View {
                             .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
                     }
                     .tint(RevisrColors.accentTeal)
+                    .accessibilityRepresentation { Text("\(answered) of \(snapshot.items.count) answered") }
                 } else {
                     Text("Answer a mixture of TMUA-style questions so Revisr can shape your plan.")
                         .foregroundStyle(RevisrColors.secondaryLabel)
@@ -158,24 +159,32 @@ struct TMUADiagnosticHubView: View {
             switch section.status {
             case .notStarted:
                 Button(locked ? "Submit Paper 1 to unlock" : "Start \(section.paper.title)") { open(section) }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
                     .disabled(locked)
+                    .accessibilityIdentifier("hub.start.\(rowKey(section))")
             case .inProgress:
                 Text("\(answered) of \(items.count) answered · saved").font(.subheadline)
+                    .accessibilityIdentifier("hub.progress.\(rowKey(section))")
                 Button("Resume at question \(section.currentIndex + 1)") { open(section) }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
+                    .accessibilityIdentifier("hub.resume.\(rowKey(section))")
             case .submitted:
                 let correct = items.filter { $0.marking == .correct }.count
                 Text("Submitted · \(correct) / \(items.count) correct").font(.subheadline)
+                    .accessibilityIdentifier("hub.submitted.\(rowKey(section))")
             }
         }
         .padding(.vertical, RevisrSpacing.xSmall)
     }
 
+    private func rowKey(_ section: TMUADiagnosticSection) -> String {
+        "R\(section.round).P\(section.paperRawValue)"
+    }
+
     private func statusBadge(_ section: TMUADiagnosticSection, locked: Bool) -> some View {
         let (title, symbol, color): (String, String, Color) = switch section.status {
         case .notStarted: locked ? ("Locked", "lock.fill", RevisrColors.secondaryLabel)
-            : ("Ready", "circle", RevisrColors.accentTeal)
+            : ("Ready", "circle", RevisrColors.accentStrong)
         case .inProgress: ("Paused", "pause.circle.fill", RevisrColors.warning)
         case .submitted: ("Submitted", "checkmark.circle.fill", RevisrColors.success)
         }
@@ -190,6 +199,7 @@ struct TMUADiagnosticHubView: View {
             } label: {
                 Label("View your diagnostic results", systemImage: "chart.bar.doc.horizontal")
             }
+            .accessibilityIdentifier("hub.results")
             if !embedded {
                 Button {
                     generatePlan()
@@ -198,11 +208,13 @@ struct TMUADiagnosticHubView: View {
                           systemImage: "calendar.badge.plus")
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
                 .disabled(isGenerating)
+                .accessibilityIdentifier("hub.generatePlan")
             }
             if snapshot.openSections.isEmpty, !snapshot.diagnostic.targetLength.expansionTargets.isEmpty {
                 Button("Improve my diagnostic accuracy") { showingExpansion = true }
+                    .accessibilityIdentifier("hub.improve")
             }
         }
     }
@@ -313,6 +325,7 @@ struct TMUAAssessmentView: View {
     @State private var showingOverview = Self.debugOverview
     @State private var showingSubmit = false
     @State private var paused = false
+    @State private var pausedInBackground = false
     @State private var errorMessage: String?
     @State private var savedPulse = false
 
@@ -344,18 +357,26 @@ struct TMUAAssessmentView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Pause", systemImage: "pause.circle") { pause() }
                         .accessibilityHint("Stops the timer. Your answers stay saved.")
+                        .accessibilityIdentifier("assessment.pause")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Overview", systemImage: "square.grid.3x3") { showingOverview = true }
+                        .accessibilityIdentifier("assessment.overview")
                 }
             }
             .overlay { if paused { pausedOverlay } }
             .sheet(isPresented: $showingOverview) { overview }
             .sheet(isPresented: $showingSubmit) { submitSheet }
             .onChange(of: scenePhase) { _, phase in
-                if phase != .active { pauseTimer() }
+                // Leaving the app (Home, lock, app switcher, a call) stops the
+                // clock; the student resumes explicitly when they return.
+                guard phase != .active, section.status == .inProgress, !paused else { return }
+                pauseTimer()
+                pausedInBackground = true
+                paused = true
             }
             .onDisappear(perform: pauseTimer)
+            .task(id: paused) { await checkpointWhileRunning() }
             .alert("Couldn’t Save", isPresented: Binding(
                 get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
                 Button("OK", role: .cancel) { errorMessage = nil }
@@ -370,23 +391,29 @@ struct TMUAAssessmentView: View {
                 ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4)) : AnyLayout(HStackLayout())
             layout {
                 Text("Question \(index + 1) of \(items.count)").font(.subheadline.weight(.semibold))
+                    .accessibilityIdentifier("assessment.position")
                 if !dynamicTypeSize.isAccessibilitySize { Spacer() }
                 TimelineView(.periodic(from: .now, by: 1)) { context in
-                    Label(Self.clock(section.elapsed(at: context.date)), systemImage: "clock")
+                    let clock = Self.clock(section.elapsed(at: context.date))
+                    Label(clock, systemImage: "clock")
                         .font(.subheadline.monospacedDigit())
                         .foregroundStyle(RevisrColors.secondaryLabel)
+                        .accessibilityLabel("Active time")
+                        .accessibilityValue(clock)
+                        .accessibilityIdentifier("assessment.timer")
                 }
-                .accessibilityLabel("Active time")
                 Label(savedPulse ? "Saved" : "Saved", systemImage: "checkmark.icloud")
                     .labelStyle(.iconOnly)
                     .foregroundStyle(RevisrColors.success)
                     .accessibilityLabel("Answers saved on this iPhone")
+                    .accessibilityIdentifier("assessment.saved")
             }
             ProgressView(value: Double(items.filter { $0.selectedOptionID != nil }.count),
                          total: Double(max(1, items.count)))
                 .tint(RevisrColors.accentTeal)
-                .accessibilityLabel("Answered")
-                .accessibilityValue("\(items.filter { $0.selectedOptionID != nil }.count) of \(items.count)")
+                .accessibilityRepresentation {
+                    Text("\(items.filter { $0.selectedOptionID != nil }.count) of \(items.count) answered")
+                }
             if !dynamicTypeSize.isAccessibilitySize {
                 Text("Suggested time \(section.advisoryMinutes) minutes · nothing is submitted automatically")
                     .font(.caption2).foregroundStyle(RevisrColors.secondaryLabel)
@@ -406,9 +433,11 @@ struct TMUAAssessmentView: View {
                 if item.isFlagged {
                     Label("Flagged", systemImage: "flag.fill").font(.caption.weight(.semibold))
                         .foregroundStyle(RevisrColors.warning)
+                        .accessibilityIdentifier("assessment.flagged")
                 }
             }
             MathText(content.stem, textStyle: .title3)
+                .accessibilityIdentifier("question.stem")
             VStack(spacing: RevisrSpacing.compact) {
                 ForEach(content.options, id: \.id) { option in
                     TMUAOptionButton(option: option, selected: item.selectedOptionID == option.id) {
@@ -434,6 +463,7 @@ struct TMUAAssessmentView: View {
             .buttonStyle(.bordered)
             .disabled(index == 0)
             .accessibilityLabel("Previous question")
+            .accessibilityIdentifier("assessment.previous")
 
             Button {
                 if let item { flag(!item.isFlagged, item: item) }
@@ -444,6 +474,7 @@ struct TMUAAssessmentView: View {
                     .frame(minWidth: RevisrMetrics.minimumTapTarget, minHeight: RevisrMetrics.minimumTapTarget)
             }
             .buttonStyle(.bordered)
+            .accessibilityIdentifier("assessment.flag")
 
             Spacer()
 
@@ -455,10 +486,12 @@ struct TMUAAssessmentView: View {
                         .labelStyle(AdaptiveLabelStyle(iconOnly: dynamicTypeSize.isAccessibilitySize))
                         .frame(minWidth: 88, minHeight: RevisrMetrics.minimumTapTarget)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
+                .accessibilityIdentifier("assessment.next")
             } else {
                 Button("Review and submit") { showingSubmit = true }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
+                    .accessibilityIdentifier("assessment.review")
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
                     .frame(minHeight: RevisrMetrics.minimumTapTarget)
@@ -483,6 +516,7 @@ struct TMUAAssessmentView: View {
                                 overviewCell(offset: offset, item: row)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityIdentifier("overview.cell.\(offset + 1)")
                         }
                     }
                     VStack(alignment: .leading, spacing: 6) {
@@ -496,7 +530,7 @@ struct TMUAAssessmentView: View {
                         showingOverview = false
                         showingSubmit = true
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
                     .frame(maxWidth: .infinity)
                 }
                 .padding(RevisrSpacing.large)
@@ -504,7 +538,9 @@ struct TMUAAssessmentView: View {
             .navigationTitle("Question overview")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { showingOverview = false } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { showingOverview = false }.accessibilityIdentifier("overview.done")
+                }
             }
         }
         .presentationDetents([.medium, .large])
@@ -517,7 +553,7 @@ struct TMUAAssessmentView: View {
                 .font(.headline.monospacedDigit())
                 .frame(width: 52, height: 52)
                 .foregroundStyle(answered ? Color.white : RevisrColors.primaryLabel)
-                .background(answered ? RevisrColors.accentStrong : RevisrColors.secondaryBackground,
+                .background(answered ? RevisrColors.accentFill : RevisrColors.secondaryBackground,
                             in: RoundedRectangle(cornerRadius: RevisrMetrics.compactCornerRadius))
                 .overlay {
                     RoundedRectangle(cornerRadius: RevisrMetrics.compactCornerRadius)
@@ -544,9 +580,10 @@ struct TMUAAssessmentView: View {
             VStack(alignment: .leading, spacing: RevisrSpacing.large) {
                 Text("Submit \(section.paper.title)?").font(.title2.bold())
                 VStack(alignment: .leading, spacing: RevisrSpacing.small) {
-                    LabeledContent("Answered", value: "\(answered)")
+                    LabeledContent("Answered", value: "\(answered)").accessibilityIdentifier("submit.answered")
                     LabeledContent("Unanswered", value: "\(items.count - answered)")
-                    LabeledContent("Flagged", value: "\(flagged)")
+                        .accessibilityIdentifier("submit.unanswered")
+                    LabeledContent("Flagged", value: "\(flagged)").accessibilityIdentifier("submit.flagged")
                 }
                 .font(.body.monospacedDigit())
                 Text("Submitted answers are locked and marked. Unanswered questions score zero; there is no negative marking. Worked solutions become available after you submit.")
@@ -557,9 +594,11 @@ struct TMUAAssessmentView: View {
                 } label: {
                     Text("Submit and lock answers").frame(maxWidth: .infinity).padding(.vertical, 6)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
                 .controlSize(.large)
+                .accessibilityIdentifier("submit.confirm")
                 Button("Keep working") { showingSubmit = false }
+                    .accessibilityIdentifier("submit.keepWorking")
                     .frame(maxWidth: .infinity)
             }
             .padding(RevisrSpacing.large)
@@ -573,14 +612,17 @@ struct TMUAAssessmentView: View {
             VStack(spacing: RevisrSpacing.large) {
                 Image(systemName: "pause.circle.fill").font(.system(size: 56))
                     .foregroundStyle(RevisrColors.accentTeal).accessibilityHidden(true)
-                Text("Paused").font(.title.bold())
-                Text("The timer has stopped and your answers are saved. You can come back now or later, even after closing Revisr.")
+                Text("Paused").font(.title.bold()).accessibilityIdentifier("paused.title")
+                Text((pausedInBackground ? "Revisr paused your timer while you were away. " : "")
+                     + "The timer has stopped and your answers are saved. You can come back now or later, even after closing Revisr.")
                     .multilineTextAlignment(.center).foregroundStyle(RevisrColors.secondaryLabel)
-                Button("Resume") { resume() }.buttonStyle(.borderedProminent).controlSize(.large)
+                Button("Resume") { resume() }.buttonStyle(.borderedProminent).tint(RevisrColors.accentFill).controlSize(.large)
+                    .accessibilityIdentifier("paused.resume")
                 Button("Save and exit") {
                     paused = false
                     dismiss()
                 }
+                .accessibilityIdentifier("paused.exit")
             }
             .padding(RevisrSpacing.xLarge)
         }
@@ -613,9 +655,23 @@ struct TMUAAssessmentView: View {
     private func resume() {
         act { try TMUADiagnosticService.resume(section, in: modelContext) }
         paused = false
+        pausedInBackground = false
+    }
+
+    /// Saves a lightweight checkpoint while the clock runs, so an abnormal
+    /// termination loses at most one interval of active time.
+    private func checkpointWhileRunning() async {
+        guard !paused else { return }
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(TMUADiagnosticService.checkpointInterval))
+            guard !Task.isCancelled, scenePhase == .active else { continue }
+            try? TMUADiagnosticService.checkpoint(section, in: modelContext)
+        }
     }
 
     private func submit() {
+        // A second tap while the sheet is closing must not resubmit.
+        guard section.status == .inProgress else { return }
         act {
             try TMUADiagnosticService.submit(section, in: snapshot, in: modelContext)
             if snapshot.diagnostic.initialCompletedAt != nil, snapshot.currentRound > 0,
@@ -673,7 +729,8 @@ struct TMUAOptionButton: View {
                     .font(.headline)
                     .frame(width: 32, height: 32)
                     .foregroundStyle(selected ? Color.white : RevisrColors.primaryLabel)
-                    .background(selected ? accent : RevisrColors.tertiaryBackground, in: Circle())
+                    .background(selected ? (state == .neutral ? RevisrColors.accentFill : accent)
+                                : RevisrColors.tertiaryBackground, in: Circle())
                     .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] + 6 }
                 MathText(option.text, textStyle: .body)
                 if let symbol {
@@ -694,6 +751,7 @@ struct TMUAOptionButton: View {
         .accessibilityLabel("Option \(option.id): \(MathMarkup.spoken(option.text))")
         .accessibilityValue(accessibilityState)
         .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityIdentifier("option.\(option.id)")
     }
 
     private var accent: Color {
