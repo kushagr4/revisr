@@ -150,35 +150,54 @@ enum TMUADiagnosticService {
            first.status != .submitted {
             throw TMUADiagnosticError.sectionLocked
         }
+        let undo = Undo(sections: [section])
         section.status = .inProgress
         section.startedAt = date
         section.runningSince = date
         section.lastSavedAt = date
-        try save(context)
+        try save(context, undo: undo)
     }
 
     static func pause(_ section: TMUADiagnosticSection, at date: Date = .now, in context: ModelContext) throws {
         guard section.status == .inProgress, let since = section.runningSince else { return }
+        let undo = Undo(sections: [section])
         section.accumulatedSeconds += max(0, date.timeIntervalSince(since))
         section.runningSince = nil
         section.pauseCount += 1
         section.lastSavedAt = date
-        try save(context)
+        try save(context, undo: undo)
     }
 
     static func resume(_ section: TMUADiagnosticSection, at date: Date = .now, in context: ModelContext) throws {
         guard section.status == .inProgress else { throw TMUADiagnosticError.invalidState }
         guard section.runningSince == nil else { return }
+        let undo = Undo(sections: [section])
         section.runningSince = date
         section.lastSavedAt = date
-        try save(context)
+        try save(context, undo: undo)
     }
 
-    /// After a termination the app cannot know how long the student kept
-    /// working. A timer left running counts only up to the last saved
-    /// interaction; later wall-clock time is discarded.
+    /// How often an open, running section records that it is still on screen.
+    static let checkpointInterval: TimeInterval = 60
+
+    /// Records that a running section is still open in the foreground. It
+    /// changes only `lastSavedAt`, never answers or accumulated time.
+    static func checkpoint(_ section: TMUADiagnosticSection, at date: Date = .now,
+                           in context: ModelContext) throws {
+        guard section.status == .inProgress, section.runningSince != nil else { return }
+        let undo = Undo(sections: [section])
+        section.lastSavedAt = date
+        try save(context, undo: undo)
+    }
+
+    /// After an abnormal termination (a crash or power loss while the section
+    /// was on screen) the app cannot know how long the student kept working.
+    /// A timer left running counts only up to the last saved interaction or
+    /// checkpoint; later wall-clock time is discarded. Leaving the app normally
+    /// pauses the clock first, so nothing needs recovering in that case.
     static func recoverInterruptedTimers(_ snapshot: TMUADiagnosticSnapshot, in context: ModelContext) throws {
         var changed = false
+        let undo = Undo(sections: snapshot.sections)
         for section in snapshot.sections where section.status == .inProgress {
             guard let since = section.runningSince else { continue }
             let lastEvidence = max(since, section.lastSavedAt ?? since)
@@ -187,7 +206,7 @@ enum TMUADiagnosticService {
             section.recoveredInterruptionCount += 1
             changed = true
         }
-        if changed { try save(context) }
+        if changed { try save(context, undo: undo) }
     }
 
     static func select(_ optionID: String?, for item: TMUADiagnosticItem, in section: TMUADiagnosticSection,
@@ -198,26 +217,29 @@ enum TMUADiagnosticService {
                 throw TMUADiagnosticError.invalidAnswer
             }
         }
+        let undo = Undo(sections: [section], items: [item])
         item.selectedOptionID = optionID
         item.answeredAt = optionID == nil ? nil : date
         section.lastSavedAt = date
-        try save(context)
+        try save(context, undo: undo)
     }
 
     static func setFlag(_ flagged: Bool, for item: TMUADiagnosticItem, in section: TMUADiagnosticSection,
                         at date: Date = .now, in context: ModelContext) throws {
         try requireOpen(item, in: section)
+        let undo = Undo(sections: [section], items: [item])
         item.isFlagged = flagged
         section.lastSavedAt = date
-        try save(context)
+        try save(context, undo: undo)
     }
 
     static func move(_ section: TMUADiagnosticSection, to index: Int, count: Int,
                      at date: Date = .now, in context: ModelContext) throws {
         guard section.status == .inProgress else { throw TMUADiagnosticError.invalidState }
+        let undo = Undo(sections: [section])
         section.currentIndex = min(max(0, index), max(0, count - 1))
         section.lastSavedAt = date
-        try save(context)
+        try save(context, undo: undo)
     }
 
     /// Locks and marks a section from the pinned answer keys. A second call is
@@ -225,6 +247,7 @@ enum TMUADiagnosticService {
     static func submit(_ section: TMUADiagnosticSection, in snapshot: TMUADiagnosticSnapshot,
                        at date: Date = .now, in context: ModelContext) throws {
         guard section.status == .inProgress else { throw TMUADiagnosticError.invalidState }
+        let undo = Undo(sections: [section], items: snapshot.items(in: section), diagnostic: snapshot.diagnostic)
         if let since = section.runningSince {
             section.accumulatedSeconds += max(0, date.timeIntervalSince(since))
         }
@@ -246,7 +269,7 @@ enum TMUADiagnosticService {
         if allSubmitted && diagnostic.initialCompletedAt == nil {
             diagnostic.initialCompletedAt = date
         }
-        try save(context)
+        try save(context, undo: undo)
     }
 
     /// Adds only the extra questions needed to reach a longer cumulative
@@ -334,11 +357,18 @@ enum TMUADiagnosticService {
         let originals = items.filter { $0.category == .revisrOriginal }.count
         let past = items.filter { $0.category == .licensedPastPaper }.count
         let mocks = items.filter { $0.category == .licensedMock }.count
-        var parts = ["\(originals) original Revisr"]
+        let fixtures = items.filter { $0.category == .developmentFixture }.count
+        var parts: [String] = []
+        if originals > 0 || fixtures == 0 { parts.append("\(originals) original Revisr") }
         if past > 0 { parts.append("\(past) licensed past-paper") }
         if mocks > 0 { parts.append("\(mocks) licensed mock") }
+        if fixtures > 0 { parts.append("\(fixtures) synthetic test-fixture") }
         var note = parts.joined(separator: ", ") + " question\(items.count == 1 ? "" : "s")"
-        if let notice = sourceMix.studentNotice { note += ". " + notice }
+        if fixtures > 0 && fixtures == items.count {
+            note += ". Synthetic test content for automated testing, not real questions."
+        } else if let notice = sourceMix.studentNotice {
+            note += ". " + notice
+        }
         return note
     }
 
@@ -347,7 +377,70 @@ enum TMUADiagnosticService {
         guard section.status == .inProgress else { throw TMUADiagnosticError.invalidState }
     }
 
-    private static func save(_ context: ModelContext) throws {
-        do { try context.save() } catch { context.rollback(); throw error }
+    /// Test seam: when set, the next save fails with this error after the
+    /// change is applied, as a full disk or I/O error would. Nil in the app.
+    static var injectedSaveFailure: Error?
+
+    /// Saves one student action. On failure the in-memory models are put back
+    /// to their stored values (SwiftData's rollback discards pending changes
+    /// but leaves model properties as they were set), so the screen keeps
+    /// showing exactly what is saved.
+    private static func save(_ context: ModelContext, undo: Undo? = nil) throws {
+        do {
+            if let failure = injectedSaveFailure {
+                injectedSaveFailure = nil
+                throw failure
+            }
+            try context.save()
+        } catch {
+            context.rollback()
+            undo?.restore()
+            throw error
+        }
+    }
+
+    /// The mutable state of the records one action may change.
+    private struct Undo {
+        private var restorers: [() -> Void] = []
+
+        init(sections: [TMUADiagnosticSection] = [], items: [TMUADiagnosticItem] = [],
+             diagnostic: TMUADiagnostic? = nil) {
+            for section in sections {
+                let (status, index, seconds, running, started, submitted, saved, pauses, recovered) = (
+                    section.statusRawValue, section.currentIndex, section.accumulatedSeconds, section.runningSince,
+                    section.startedAt, section.submittedAt, section.lastSavedAt, section.pauseCount,
+                    section.recoveredInterruptionCount)
+                restorers.append {
+                    section.statusRawValue = status
+                    section.currentIndex = index
+                    section.accumulatedSeconds = seconds
+                    section.runningSince = running
+                    section.startedAt = started
+                    section.submittedAt = submitted
+                    section.lastSavedAt = saved
+                    section.pauseCount = pauses
+                    section.recoveredInterruptionCount = recovered
+                }
+            }
+            for item in items {
+                let (selected, answered, flagged, marking) = (item.selectedOptionID, item.answeredAt,
+                                                              item.isFlagged, item.markingRawValue)
+                restorers.append {
+                    item.selectedOptionID = selected
+                    item.answeredAt = answered
+                    item.isFlagged = flagged
+                    item.markingRawValue = marking
+                }
+            }
+            if let diagnostic {
+                let (last, completed) = (diagnostic.lastSubmittedAt, diagnostic.initialCompletedAt)
+                restorers.append {
+                    diagnostic.lastSubmittedAt = last
+                    diagnostic.initialCompletedAt = completed
+                }
+            }
+        }
+
+        func restore() { restorers.forEach { $0() } }
     }
 }

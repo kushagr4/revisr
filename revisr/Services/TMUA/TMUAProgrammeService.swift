@@ -65,6 +65,13 @@ enum TMUAProgrammeService {
         let evidence = try gatherEvidence(settings: settings, snapshot: snapshot, in: context)
         let report = TMUADiagnosticReportBuilder.build(snapshot: snapshot, syllabus: content.syllabus)
         let existingTasks = try tasks(settings: settings, in: context)
+        // Questions in an unsubmitted diagnostic round leave the plan, so
+        // practice can never show their solutions before they are answered.
+        let reserved = reservedStableIDs(snapshot: snapshot)
+        for task in existingTasks where task.isActive && task.completedAt == nil
+            && task.questionID.map(reserved.contains) == true {
+            task.isActive = false
+        }
         let refinement = refinementMinutes(snapshot: snapshot, settings: settings, content: content,
                                            existingTasks: existingTasks, in: context)
         return try PublicProgrammeService.applyPlan(
@@ -74,10 +81,31 @@ enum TMUAProgrammeService {
             in: context) { start, excluded in
             planningInput(settings: settings, content: content, report: report, evidence: evidence,
                           start: start, examDate: examDate, weeklyMinutes: weekly,
-                          excludedQuestionIDs: excluded, refinement: refinement.map {
+                          excludedQuestionIDs: excluded.union(reserved), refinement: refinement.map {
                               ($0, refinementSourceID(for: snapshot.diagnostic.targetLength)) },
                           calendar: calendar)
         }
+    }
+
+    /// Question identities waiting in an unsubmitted diagnostic section.
+    static func reservedStableIDs(snapshot: TMUADiagnosticSnapshot) -> Set<String> {
+        let open = Set(snapshot.openSections.map(\.stableID))
+        return Set(snapshot.items.filter { open.contains($0.sectionID) }.map(\.itemStableID))
+    }
+
+    /// Adds diagnostic questions and, when a plan exists, refreshes it at once
+    /// so planned practice of the newly reserved questions is retired.
+    @discardableResult
+    static func expandDiagnostic(_ snapshot: TMUADiagnosticSnapshot, to target: TMUADiagnosticLength,
+                                 settings: AppSettings, content: TMUAContentContext, today: Date = .now,
+                                 calendar: Calendar = DateUtilities.appCalendar(),
+                                 in context: ModelContext) throws -> TMUADiagnosticSnapshot {
+        let expanded = try TMUADiagnosticService.expand(snapshot, to: target, settings: settings,
+                                                        content: content, in: context)
+        if try load(settings: settings, in: context) != nil {
+            try generateOrRefresh(settings: settings, content: content, today: today, calendar: calendar, in: context)
+        }
+        return expanded
     }
 
     static func planningInput(
@@ -127,6 +155,8 @@ enum TMUAProgrammeService {
         var options = PublicPlanningOptions()
         options.dailyMinutesCap = settings.publicSessionMinutes
         options.paceFreshQuestions = true
+        options.balanceFallbackTopics = true
+        options.minimumOneTaskPerStudyDay = true
         options.spacedReviewIntervalDays = spacedReviewIntervalDays
         options.maximumSpacedRepeats = maximumSpacedRepeats(questionCount: questions.count, start: start,
             examDate: examDate, weeklyMinutes: weeklyMinutes, sessionMinutes: settings.publicSessionMinutes,
@@ -139,8 +169,11 @@ enum TMUAProgrammeService {
             calendar: calendar, options: options)
     }
 
-    /// Long windows with a small bank need more revisits per question to keep
-    /// later weeks useful; gaps still widen with each revisit.
+    /// Revisits per question: two, or three when the window has room. More
+    /// repeats of the same multiple-choice question add little, so a small
+    /// bank leaves honest gaps (reported by `contentSummary`) instead.
+    static let spacedRepeatLimit = 3
+
     static func maximumSpacedRepeats(questionCount: Int, start: Date, examDate: Date, weeklyMinutes: Int,
                                      sessionMinutes: Int?, availability: [DayAvailability],
                                      calendar: Calendar) -> Int {
@@ -150,7 +183,7 @@ enum TMUAProgrammeService {
         let perDay = min(weeklyMinutes / studyDays, sessionMinutes ?? .max)
         let slots = days * max(1, perDay / PublicPlanningPolicy.questionMinutes(for: .tmua))
         let needed = Int((Double(slots) / Double(max(1, questionCount))).rounded(.up)) - 1
-        return min(6, max(2, needed))
+        return min(spacedRepeatLimit, max(2, needed))
     }
 
     static func gatherEvidence(settings: AppSettings, snapshot: TMUADiagnosticSnapshot,
@@ -199,6 +232,7 @@ enum TMUAProgrammeService {
             guard task.isActive, task.completedAt == nil else { throw TMUAProgrammeError.taskAlreadyComplete }
             guard task.questionID == item.stableId else { throw TMUAProgrammeError.invalidTask }
         }
+        let previous = task.map { ($0.completedAt, $0.completionAttemptID, $0.completionNote) }
         let attempt = TMUAPracticeAttempt(profileSettingsID: settings.id, item: item,
             selectedOptionID: selectedOptionID, seconds: seconds,
             origin: task == nil ? .questionBank : .programme, programmeTaskID: task?.stableID, at: date)
@@ -208,22 +242,35 @@ enum TMUAProgrammeService {
             task.completionAttemptID = attempt.id
             task.completionNote = attempt.isCorrect ? "Correct" : "Incorrect"
         }
-        do { try context.save() } catch { context.rollback(); throw error }
+        do { try context.save() } catch {
+            // Rollback leaves model properties as set, so restore the task.
+            context.rollback()
+            if let task, let previous {
+                (task.completedAt, task.completionAttemptID, task.completionNote) = previous
+            }
+            throw error
+        }
         return attempt
     }
 
     static func setReviewFlag(_ flagged: Bool, itemStableID: String, settings: AppSettings,
                               at date: Date = .now, in context: ModelContext) throws {
         let id = "\(settings.id.uuidString)-\(itemStableID)"
-        if let existing = try context.fetch(FetchDescriptor<TMUAReviewFlag>(
-            predicate: #Predicate { $0.stableID == id })).first {
+        let existing = try context.fetch(FetchDescriptor<TMUAReviewFlag>(
+            predicate: #Predicate { $0.stableID == id })).first
+        let previous = existing.map { ($0.isFlagged, $0.updatedAt) }
+        if let existing {
             existing.isFlagged = flagged
             existing.updatedAt = date
         } else {
             context.insert(TMUAReviewFlag(profileSettingsID: settings.id, itemStableID: itemStableID,
                                           isFlagged: flagged, at: date))
         }
-        do { try context.save() } catch { context.rollback(); throw error }
+        do { try context.save() } catch {
+            context.rollback()
+            if let existing, let previous { (existing.isFlagged, existing.updatedAt) = previous }
+            throw error
+        }
     }
 
     static func flaggedStableIDs(settings: AppSettings, in context: ModelContext) throws -> Set<String> {
@@ -242,5 +289,77 @@ enum TMUAProgrammeService {
             task.completionNote = "Diagnostic extended"
         }
         if context.hasChanges { try context.save() }
+    }
+}
+
+/// What the current bank can honestly support in the remaining plan: how
+/// many study days have work and when previously unseen questions run out.
+struct TMUAPlanContentSummary: Equatable {
+    let studyDays: Int
+    let emptyStudyDays: Int
+    let distinctQuestions: Int
+    let lastNewQuestionDate: Date?
+    /// Days between the last newly introduced question and the exam.
+    let daysWithoutNewQuestions: Int
+
+    /// Unseen questions run out more than two weeks before the exam.
+    var newQuestionsRunOutEarly: Bool { daysWithoutNewQuestions > 14 }
+
+    var isContentLimited: Bool { emptyStudyDays > 0 || newQuestionsRunOutEarly }
+
+    var message: String? {
+        guard isContentLimited else { return nil }
+        var parts: [String] = []
+        if newQuestionsRunOutEarly {
+            parts.append(lastNewQuestionDate.map {
+                "Questions you have not seen before run out on \($0.formatted(date: .abbreviated, time: .omitted)). After that, your plan revisits earlier questions with widening gaps."
+            } ?? "There are no questions you have not seen before left in this build, so your plan revisits earlier questions with widening gaps.")
+        }
+        if emptyStudyDays > 0 {
+            parts.append("\(emptyStudyDays) of your \(studyDays) remaining study days have no task because Revisr’s question bank is not yet large enough to fill them.")
+        }
+        return parts.joined(separator: " ")
+    }
+}
+
+extension TMUAProgrammeService {
+    static func contentSummary(programme: PublicProgramme, tasks: [PublicProgrammeTask],
+                               seenStableIDs: Set<String>, availability: [DayAvailability],
+                               today: Date = .now, calendar: Calendar = DateUtilities.appCalendar()) -> TMUAPlanContentSummary {
+        let start = calendar.startOfDay(for: today)
+        let examDay = calendar.startOfDay(for: programme.examDateSnapshot)
+        let future = tasks.filter { $0.isActive && $0.scheduledDate >= start && $0.scheduledDate < examDay }
+            .sorted { $0.scheduledDate < $1.scheduledDate }
+        let busyDays = Set(future.map { calendar.startOfDay(for: $0.scheduledDate) })
+        var studyDays = 0
+        var empty = 0
+        var date = start
+        while date < examDay {
+            if PublicProgrammeAvailability.isAvailable(on: date, schedule: availability, calendar: calendar) == true {
+                studyDays += 1
+                if !busyDays.contains(date) { empty += 1 }
+            }
+            date = calendar.date(byAdding: .day, value: 1, to: date) ?? examDay
+        }
+        var seen = seenStableIDs
+        var lastNew: Date?
+        for task in future {
+            guard let id = task.questionID, !seen.contains(id) else { continue }
+            seen.insert(id)
+            lastNew = calendar.startOfDay(for: task.scheduledDate)
+        }
+        let gap = calendar.dateComponents([.day], from: lastNew ?? start, to: examDay).day ?? 0
+        return TMUAPlanContentSummary(studyDays: studyDays, emptyStudyDays: empty,
+                                      distinctQuestions: Set(future.compactMap(\.questionID)).count,
+                                      lastNewQuestionDate: lastNew, daysWithoutNewQuestions: gap)
+    }
+
+    /// Questions the student has met in a submitted diagnostic or in practice.
+    static func seenStableIDs(settings: AppSettings, in context: ModelContext) -> Set<String> {
+        let profile = settings.id
+        let attempts = (try? context.fetch(FetchDescriptor<TMUAPracticeAttempt>(
+            predicate: #Predicate { $0.profileSettingsID == profile }))) ?? []
+        let diagnostic = (try? TMUADiagnosticService.load(settings: settings, in: context))?.submittedItems ?? []
+        return Set(attempts.map(\.itemStableID)).union(diagnostic.map(\.itemStableID))
     }
 }

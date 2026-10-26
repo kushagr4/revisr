@@ -32,7 +32,7 @@ struct TMUADiagnosticReport {
     var combinedScore: String { "\(correct) / \(questionCount)" }
 
     var scoreDisclaimer: String {
-        "A raw count of correct answers out of the \(questionCount) questions you answered in Revisr's diagnostic. It is not a TMUA score, is not on the official 1–9 scale and cannot be converted to one."
+        "A raw count of correct answers out of the \(questionCount) questions in Revisr's diagnostic; skipped questions score zero. It is not a TMUA score, is not on the official 1–9 scale and cannot be converted to one."
             + (length.isFullLengthSections ? "" : " These were abbreviated sections, so the result is not comparable with a full-length paper.")
     }
 

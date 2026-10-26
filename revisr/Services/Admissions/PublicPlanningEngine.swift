@@ -34,6 +34,13 @@ struct PublicPlanningOptions: Equatable {
     var diagnosticRefinementSourceID = "diagnostic-expansion"
     /// Questions per task for this programme; nil keeps the exam default.
     var questionMinutes: Int?
+    /// When the preferred topic has nothing suitable, take the fallback from
+    /// the least-practised high-priority topic rather than always the top
+    /// one, so a small bank does not concentrate a short plan on one topic.
+    var balanceFallbackTopics = false
+    /// While unseen questions remain, pacing never leaves a study day empty:
+    /// one unseen question may be introduced early instead.
+    var minimumOneTaskPerStudyDay = false
 
     static let legacy = PublicPlanningOptions()
 }
@@ -302,11 +309,12 @@ enum PublicPlanningEngine {
                     !used.contains($0.id) && !$0.diagnostic && $0.latestOutcome == nil
                         && $0.topic == preferred.topic
                 }.sorted(by: questionOrder)
+                let fallbackOrder = options.balanceFallbackTopics ? ranked : priorities
                 let anyFresh = input.questions.filter {
                     !used.contains($0.id) && !$0.diagnostic && $0.latestOutcome == nil
                 }.sorted { lhs, rhs in
-                    let left = priorities.firstIndex(where: { $0.topic == lhs.topic }) ?? 0
-                    let right = priorities.firstIndex(where: { $0.topic == rhs.topic }) ?? 0
+                    let left = fallbackOrder.firstIndex(where: { $0.topic == lhs.topic }) ?? 0
+                    let right = fallbackOrder.firstIndex(where: { $0.topic == rhs.topic }) ?? 0
                     if left != right { return left < right }
                     return questionOrder(lhs, rhs)
                 }
@@ -344,6 +352,9 @@ enum PublicPlanningEngine {
                         let ahead = Int((Double(freshTotal) * Double(min(totalStudyDays, studyDayIndex + 6))
                             / Double(max(1, totalStudyDays))).rounded(.up))
                         if freshPlacedTotal < ahead { selectedQuestion = freshPool.first ?? anyFresh.first }
+                    }
+                    if selectedQuestion == nil, placed == 0, options.minimumOneTaskPerStudyDay {
+                        selectedQuestion = freshPool.first ?? anyFresh.first
                     }
                     // A missed or flagged question meeting its first revisit
                     // in this plan is error review; later revisits are spaced.
