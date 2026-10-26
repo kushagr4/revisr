@@ -10,6 +10,11 @@ enum SeedDataService {
     static func bootstrapForLaunch(in context: ModelContext) throws -> AppSettings {
         let records = try context.fetch(FetchDescriptor<AppSettings>())
         if let settings = canonicalSettings(from: records), settings.publicOnboardingStage != nil {
+            // A public profile that never saved its setup has no diagnostic
+            // history, so it can safely join the flexible TMUA journey.
+            if settings.publicOnboardingStage == .profile && settings.publicFlowVersion == nil {
+                settings.publicFlowVersion = 2
+            }
             try seedNewInstallation(in: context, existingSettings: settings)
             return settings
         }
@@ -48,6 +53,7 @@ enum SeedDataService {
                 appliedSeedVersion: currentSeedVersion
             )
             settings.publicOnboardingStage = .profile
+            settings.publicFlowVersion = 2
             context.insert(settings)
         }
         if try context.fetch(FetchDescriptor<StudyTimerState>()).isEmpty {

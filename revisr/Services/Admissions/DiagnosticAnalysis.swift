@@ -38,6 +38,17 @@ struct DiagnosticPaperResult {
     let provenance: String
 }
 
+/// One marked question outcome. `value` is nil when the response was not
+/// assessed; unanswered questions are never treated as incorrect evidence.
+struct DiagnosticEvidence {
+    let topic: String?
+    let skill: String?
+    let paperID: String
+    let difficulty: Int
+    let answered: Bool
+    let value: Double?
+}
+
 struct DiagnosticReport {
     let papers: [DiagnosticPaperResult]
     let topics: [DiagnosticTopicResult]
@@ -57,7 +68,7 @@ enum DiagnosticAnalysis {
             paperResult(exam: exam, paper: paper, responses: responsesByPaper[paper.stableID] ?? [])
         }
         let activePapers = Set(papers.map(\.stableID))
-        let evidence = responses.compactMap { response -> Evidence? in
+        let evidence = responses.compactMap { response -> DiagnosticEvidence? in
             guard activePapers.contains(response.paperID),
                   let question = questionByID[response.questionID] else { return nil }
             let answered = exam == .bmo ? response.wasAttempted : response.selectedOption != nil
@@ -71,7 +82,7 @@ enum DiagnosticAnalysis {
                 case .unassessed: value = nil
                 }
             }
-            return Evidence(
+            return DiagnosticEvidence(
                 topic: question.primaryTopic,
                 skill: question.reasoningSkill,
                 paperID: response.paperID,
@@ -87,14 +98,6 @@ enum DiagnosticAnalysis {
         )
     }
 
-    private struct Evidence {
-        let topic: String?
-        let skill: String?
-        let paperID: String
-        let difficulty: Int
-        let answered: Bool
-        let value: Double?
-    }
 
     private static func paperResult(
         exam: PublicExamKind,
@@ -145,10 +148,16 @@ enum DiagnosticAnalysis {
         )
     }
 
-    private static func aggregate(
-        _ evidence: [Evidence],
+    /// Classifies grouped question-level evidence. `requiredSources` says how
+    /// many distinct papers must contribute before a firm classification; the
+    /// default of two reproduces the original two-paper rule exactly. A topic
+    /// that is only examinable in one paper can pass `1` so the rule remains
+    /// satisfiable without lowering any count threshold.
+    static func aggregate(
+        _ evidence: [DiagnosticEvidence],
         exam: PublicExamKind,
-        key: KeyPath<Evidence, String?>
+        key: KeyPath<DiagnosticEvidence, String?>,
+        requiredSources: (String) -> Int = { _ in 2 }
     ) -> [DiagnosticTopicResult] {
         let groups = Dictionary(grouping: evidence) { $0[keyPath: key] ?? "" }
         return groups.compactMap { name, rows -> DiagnosticTopicResult? in
@@ -160,23 +169,25 @@ enum DiagnosticAnalysis {
             let low = assessed.filter { $0 <= 0.4 }.count
             let high = assessed.filter { $0 >= 0.8 }.count
             let missedOrdinary = rows.contains { $0.value.map { $0 <= 0.4 } == true && $0.difficulty <= 3 }
+            let required = min(2, max(1, requiredSources(name)))
+            let scope = required == 2 ? "across both papers" : "in the paper that assesses it"
             let level: DiagnosticEvidenceLevel
             let explanation: String
-            if exam != .bmo && assessed.count >= 4 && sourceCount == 2
+            if exam != .bmo && assessed.count >= 4 && sourceCount >= required
                 && low >= 3 && missedOrdinary {
                 level = .strongDifficulty
-                explanation = "\(low) of \(assessed.count) assessed questions were missed across both papers, including an ordinary-difficulty question."
+                explanation = "\(low) of \(assessed.count) assessed questions were missed \(scope), including an ordinary-difficulty question."
             } else if assessed.count >= 2 && low >= 2 && low * 2 >= assessed.count {
                 level = .possibleImprovement
                 explanation = exam == .bmo
                     ? "Low self-estimated marks on \(low) proofs; no examiner scheme is available."
                     : "\(low) of \(assessed.count) assessed questions were missed; more evidence is needed for a firm conclusion."
-            } else if assessed.count >= 4 && sourceCount == 2 && high >= 4
+            } else if assessed.count >= 4 && sourceCount >= required && high >= 4
                         && high * 4 >= assessed.count * 3 {
                 level = .relativeStrength
                 explanation = exam == .bmo
                     ? "High self-estimated marks across both papers; this is not examiner-verified."
-                    : "\(high) of \(assessed.count) assessed questions were correct across both papers."
+                    : "\(high) of \(assessed.count) assessed questions were correct \(scope)."
             } else {
                 level = .insufficient
                 explanation = "\(assessed.count) assessed question\(assessed.count == 1 ? "" : "s"); more evidence is needed."

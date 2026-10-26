@@ -1,0 +1,200 @@
+{
+  "taxonomyVersion": "tmua-syllabus-v1",
+  "specification": {
+    "title": "TMUA Content Specification",
+    "assessmentWindow": "October 2026 and January 2027",
+    "publisher": "UAT-UK",
+    "url": "https://uat-wp.s3.eu-west-2.amazonaws.com/wp-content/uploads/2024/05/03165619/TMUA_Content_Specification.pdf",
+    "checkedOn": "2026-10-26",
+    "note": "Revisr's grouping of specification references into topics and strands is an internal organisation choice, not an official blueprint."
+  },
+  "legacyTopicKeyMap": {
+    "algebra": "algebra",
+    "sequences": "sequences-series",
+    "geometry": "geometry-measures",
+    "functions": "functions-graphs",
+    "combinatorics": "counting-probability",
+    "probability": "counting-probability",
+    "number-theory": "number",
+    "inequalities": "equations-inequalities"
+  },
+  "topics": [
+    {
+      "key": "algebra",
+      "title": "Algebra",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "indices-surds", "title": "Indices and surds", "specRefs": ["MM1.1", "MM1.2", "M2.11", "M4.2"] },
+        { "key": "polynomials", "title": "Polynomials and the Factor Theorem", "specRefs": ["MM1.6"] },
+        { "key": "algebraic-manipulation", "title": "Algebraic manipulation and identities", "specRefs": ["M4.1", "M4.4", "M4.5", "M4.6", "M4.7"] }
+      ]
+    },
+    {
+      "key": "equations-inequalities",
+      "title": "Equations and inequalities",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "quadratics", "title": "Quadratics and the discriminant", "specRefs": ["MM1.3", "M4.11", "M4.15"] },
+        { "key": "simultaneous-equations", "title": "Simultaneous equations", "specRefs": ["MM1.4", "M4.13", "M4.14"] },
+        { "key": "inequalities", "title": "Linear and quadratic inequalities", "specRefs": ["MM1.5", "M4.16"] }
+      ]
+    },
+    {
+      "key": "functions-graphs",
+      "title": "Functions and graphs",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "function-properties", "title": "Properties of functions", "specRefs": ["MM1.7"] },
+        { "key": "graph-transformations", "title": "Graph transformations and composition", "specRefs": ["MM8.2", "MM8.3", "MM8.4"] },
+        { "key": "graphs-and-roots", "title": "Sketching graphs, intersections and roots", "specRefs": ["MM8.1", "MM8.6", "MM8.7", "M4.12"] }
+      ]
+    },
+    {
+      "key": "coordinate-geometry",
+      "title": "Coordinate geometry",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "straight-lines", "title": "Straight lines", "specRefs": ["MM3.1", "MM3.2", "M4.9", "M4.10"] },
+        { "key": "circles", "title": "Circles in the coordinate plane", "specRefs": ["MM3.3"] }
+      ]
+    },
+    {
+      "key": "sequences-series",
+      "title": "Sequences and series",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "sequences", "title": "Sequences and recurrences", "specRefs": ["MM2.1", "M4.17"] },
+        { "key": "arithmetic-series", "title": "Arithmetic series", "specRefs": ["MM2.2"] },
+        { "key": "geometric-series", "title": "Geometric series", "specRefs": ["MM2.3"] },
+        { "key": "binomial-expansion", "title": "Binomial expansion", "specRefs": ["MM2.4"] }
+      ]
+    },
+    {
+      "key": "trigonometry",
+      "title": "Trigonometry",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "triangle-trigonometry", "title": "Sine rule, cosine rule and triangle area", "specRefs": ["MM4.1", "M5.17"] },
+        { "key": "radians-arcs", "title": "Radians, arcs and sectors", "specRefs": ["MM4.2", "M5.16"] },
+        { "key": "trig-functions-identities", "title": "Trigonometric graphs, values and identities", "specRefs": ["MM4.3", "MM4.4", "MM4.5"] },
+        { "key": "trig-equations", "title": "Trigonometric equations", "specRefs": ["MM4.6"] }
+      ]
+    },
+    {
+      "key": "exponentials-logarithms",
+      "title": "Exponentials and logarithms",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "exponential-graphs", "title": "Exponential graphs", "specRefs": ["MM5.1"] },
+        { "key": "logarithm-laws", "title": "Laws of logarithms", "specRefs": ["MM5.2"] },
+        { "key": "exponential-equations", "title": "Exponential equations", "specRefs": ["MM5.3"] }
+      ]
+    },
+    {
+      "key": "differentiation",
+      "title": "Differentiation",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "derivatives", "title": "Derivatives and notation", "specRefs": ["MM6.1", "MM6.2"] },
+        { "key": "applications-of-differentiation", "title": "Tangents, normals and stationary points", "specRefs": ["MM6.3", "MM8.5"] }
+      ]
+    },
+    {
+      "key": "integration",
+      "title": "Integration",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "definite-integrals", "title": "Definite integrals and area", "specRefs": ["MM7.1", "MM7.2", "MM7.3", "MM7.4"] },
+        { "key": "trapezium-rule", "title": "The trapezium rule", "specRefs": ["MM7.5"] },
+        { "key": "differential-equations", "title": "Simple differential equations", "specRefs": ["MM7.6"] }
+      ]
+    },
+    {
+      "key": "number",
+      "title": "Number",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "number-properties", "title": "Primes, factors, multiples and remainders", "specRefs": ["M2.5"] },
+        { "key": "number-calculation", "title": "Exact calculation, fractions and bounds", "specRefs": ["M2.1", "M2.3", "M2.8", "M2.9", "M2.10", "M2.12", "M2.13", "M2.14"] }
+      ]
+    },
+    {
+      "key": "ratio-proportion",
+      "title": "Ratio, proportion and units",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "ratio-proportion", "title": "Ratio, percentages and proportion", "specRefs": ["M3.1", "M3.3", "M3.5", "M3.8", "M3.9", "M3.11"] },
+        { "key": "units", "title": "Units and compound measures", "specRefs": ["M1.1", "M1.2"] }
+      ]
+    },
+    {
+      "key": "geometry-measures",
+      "title": "Geometry and measures",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "plane-geometry", "title": "Angles, triangles, Pythagoras and circle theorems", "specRefs": ["M5.2", "M5.3", "M5.4", "M5.5", "M5.6", "M5.9", "MM3.3"] },
+        { "key": "mensuration", "title": "Area, volume and similarity", "specRefs": ["M5.14", "M5.15", "M5.16"] },
+        { "key": "vectors", "title": "Vectors", "specRefs": ["M5.19"] }
+      ]
+    },
+    {
+      "key": "statistics",
+      "title": "Statistics",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "statistics", "title": "Averages, spread and data representation", "specRefs": ["M6.1", "M6.2", "M6.3", "M6.4"] }
+      ]
+    },
+    {
+      "key": "counting-probability",
+      "title": "Counting and probability",
+      "papers": [1, 2],
+      "strands": [
+        { "key": "counting", "title": "Systematic counting", "specRefs": ["M2.6", "MM2.4"] },
+        { "key": "probability", "title": "Probability", "specRefs": ["M7.1", "M7.4", "M7.5", "M7.6", "M7.7"] }
+      ]
+    },
+    {
+      "key": "logic",
+      "title": "Logic of arguments",
+      "papers": [2],
+      "strands": [
+        { "key": "implication", "title": "If, only if, converse and contrapositive", "specRefs": ["Arg1"] },
+        { "key": "necessary-sufficient", "title": "Necessary and sufficient conditions", "specRefs": ["Arg2"] },
+        { "key": "quantifiers", "title": "For all, for some and there exists", "specRefs": ["Arg3"] },
+        { "key": "negation", "title": "Negating statements", "specRefs": ["Arg4"] }
+      ]
+    },
+    {
+      "key": "proof",
+      "title": "Mathematical proof",
+      "papers": [2],
+      "strands": [
+        { "key": "proof-methods", "title": "Direct proof, cases, contradiction and counterexample", "specRefs": ["Prf1"] },
+        { "key": "deduction", "title": "Deducing implications and chains of reasoning", "specRefs": ["Prf2", "Prf5"] },
+        { "key": "conjecture", "title": "Conjectures from small cases", "specRefs": ["Prf3"] },
+        { "key": "proof-ordering", "title": "Ordering the steps of a proof", "specRefs": ["Prf4"] }
+      ]
+    },
+    {
+      "key": "errors-in-proofs",
+      "title": "Errors in proofs",
+      "papers": [2],
+      "strands": [
+        { "key": "error-identification", "title": "Identifying errors in purported proofs", "specRefs": ["Err1", "Err2"] }
+      ]
+    }
+  ],
+  "skills": [
+    { "key": "conditional-reasoning", "title": "Conditional reasoning" },
+    { "key": "necessary-sufficient", "title": "Necessary and sufficient reasoning" },
+    { "key": "quantifier-reasoning", "title": "Reasoning with quantifiers" },
+    { "key": "negation", "title": "Negation" },
+    { "key": "counterexample", "title": "Counterexamples" },
+    { "key": "proof-structure", "title": "Proof structure" },
+    { "key": "error-identification", "title": "Error identification" },
+    { "key": "deduction", "title": "Deductive chains" },
+    { "key": "case-analysis", "title": "Case analysis" },
+    { "key": "multi-step-problem-solving", "title": "Multi-step problem solving" }
+  ]
+}

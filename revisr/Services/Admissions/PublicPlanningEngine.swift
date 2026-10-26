@@ -12,6 +12,30 @@ struct PublicPlanningInput {
     let questions: [PublicPlanningQuestion]
     let papers: [PublicPlanningPaper]
     let calendar: Calendar
+    /// Defaults reproduce the original planner exactly (and its TypeScript
+    /// parity fixtures). The flexible TMUA programme opts into the extras.
+    var options: PublicPlanningOptions = .legacy
+}
+
+struct PublicPlanningOptions: Equatable {
+    /// Upper bound on minutes planned for any one study day.
+    var dailyMinutesCap: Int?
+    /// Spread unseen questions across the remaining window instead of
+    /// front-loading them, so later weeks are not left empty.
+    var paceFreshQuestions = false
+    /// Allows re-scheduling a question already attempted or planned earlier,
+    /// as spaced review. The required gap grows with each repeat (interval,
+    /// then twice the interval, ...).
+    var spacedReviewIntervalDays: Int?
+    var maximumSpacedRepeats = 2
+    /// Schedules one optional task inviting the student to answer more
+    /// diagnostic questions, with this many minutes.
+    var diagnosticRefinementMinutes: Int?
+    var diagnosticRefinementSourceID = "diagnostic-expansion"
+    /// Questions per task for this programme; nil keeps the exam default.
+    var questionMinutes: Int?
+
+    static let legacy = PublicPlanningOptions()
 }
 
 struct PublicPlanningQuestion: Equatable {
@@ -40,6 +64,8 @@ enum PublicPlanningActivity: String, CaseIterable {
     case timed
     case fullPaper
     case finalReview
+    case spacedReview
+    case diagnosticRefinement
 
     var title: String {
         switch self {
@@ -50,6 +76,8 @@ enum PublicPlanningActivity: String, CaseIterable {
         case .timed: "Timed practice"
         case .fullPaper: "Full paper"
         case .finalReview: "Final review"
+        case .spacedReview: "Spaced review"
+        case .diagnosticRefinement: "Refine your diagnostic"
         }
     }
 }
@@ -120,8 +148,10 @@ enum PublicPlanningEngine {
         guard start < examDay else { throw PublicPlanningError.examDatePassed }
         let available = input.availability.filter(\.isAvailable)
         guard !available.isEmpty else { throw PublicPlanningError.noAvailableDays }
-        let minutes = PublicPlanningPolicy.questionMinutes(for: input.exam)
-        guard input.weeklyMinutes / available.count >= minutes else {
+        let options = input.options
+        let minutes = options.questionMinutes ?? PublicPlanningPolicy.questionMinutes(for: input.exam)
+        guard input.weeklyMinutes / available.count >= minutes,
+              (options.dailyMinutesCap ?? minutes) >= minutes else {
             throw PublicPlanningError.insufficientDailyCapacity
         }
         guard !input.questions.isEmpty else { throw PublicPlanningError.noEligibleQuestions }
@@ -173,6 +203,19 @@ enum PublicPlanningEngine {
         var tasks: [PublicPlannedTask] = []
         var availableDays = 0
         var unfilledDays = 0
+        var lastPlanned: [String: Date] = [:]
+        var spacedRepeats: [String: Int] = [:]
+        var refinementPlaced = options.diagnosticRefinementMinutes == nil
+        let freshTotal = input.questions.filter { !$0.diagnostic && $0.latestOutcome == nil }.count
+        var freshPlacedTotal = 0
+        var studyDayIndex = 0
+        var totalStudyDays = 0
+        var cursor = start
+        while cursor < examDay {
+            if let weekday = Weekday(rawValue: calendar.component(.weekday, from: cursor)),
+               available.contains(where: { $0.weekday == weekday }) { totalStudyDays += 1 }
+            cursor = calendar.date(byAdding: .day, value: 1, to: cursor) ?? examDay
+        }
         var date = start
         while date < examDay {
             defer { date = calendar.date(byAdding: .day, value: 1, to: date) ?? examDay }
@@ -183,13 +226,31 @@ enum PublicPlanningEngine {
                 available.contains(where: { $0.weekday == value })
             }
             let dailyIndex = orderedWeekdays.firstIndex(of: weekday) ?? 0
-            let capacity = input.weeklyMinutes / available.count
+            let baseCapacity = input.weeklyMinutes / available.count
                 + (dailyIndex < input.weeklyMinutes % available.count ? 1 : 0)
+            let capacity = options.dailyMinutesCap.map { min($0, baseCapacity) } ?? baseCapacity
             let daysRemaining = calendar.dateComponents([.day], from: date, to: examDay).day ?? 0
             let finalWindow = daysRemaining <= 3
             let usableCapacity = finalWindow ? max(minutes, capacity / 2) : capacity
             var remaining = min(capacity, usableCapacity)
             var placed = 0
+            // Cumulative pacing: by each study day, roughly that share of the
+            // window's unseen questions has been introduced.
+            let freshTarget = Int((Double(freshTotal) * Double(studyDayIndex + 1)
+                / Double(max(1, totalStudyDays))).rounded(.up))
+            let freshAllowance = options.paceFreshQuestions ? max(0, freshTarget - freshPlacedTotal) : Int.max
+            var freshPlacedToday = 0
+            studyDayIndex += 1
+
+            if !refinementPlaced, !finalWindow, availableDays >= 3,
+               let refinement = options.diagnosticRefinementMinutes, refinement <= remaining {
+                tasks.append(PublicPlannedTask(date: date, questionID: nil, sourceID: options.diagnosticRefinementSourceID,
+                    topic: "Diagnostic", minutes: refinement, activity: .diagnosticRefinement,
+                    reason: "Optional: answer more diagnostic questions to sharpen your topic priorities."))
+                refinementPlaced = true
+                remaining -= refinement
+                placed += 1
+            }
 
             // Full papers are optional and only use a complete, unattempted,
             // non-diagnostic source that fits within this day's actual budget.
@@ -250,13 +311,48 @@ enum PublicPlanningEngine {
                     return questionOrder(lhs, rhs)
                 }
                 let preferredReview = slot == 0 ? reviewPool.first : nil
-                let selectedQuestion = preferredReview ?? freshPool.first
-                    ?? reviewPool.first ?? anyFresh.first
+                let freshAllowed = freshPlacedToday < freshAllowance
+                var selectedQuestion = preferredReview ?? (freshAllowed ? freshPool.first : nil)
+                    ?? reviewPool.first ?? (freshAllowed ? anyFresh.first : nil)
+                var isSpaced = false
+                if selectedQuestion == nil, let interval = options.spacedReviewIntervalDays {
+                    let placedToday = Set(tasks.filter { calendar.isDate($0.date, inSameDayAs: date) }
+                        .compactMap(\.questionID))
+                    let spaced = input.questions.filter { question in
+                        guard !placedToday.contains(question.id),
+                              spacedRepeats[question.id, default: 0] < options.maximumSpacedRepeats,
+                              let last = lastPlanned[question.id] ?? question.latestAttemptDate,
+                              let gap = calendar.dateComponents([.day], from: calendar.startOfDay(for: last), to: date).day
+                        else { return false }
+                        return gap >= interval * (spacedRepeats[question.id, default: 0] + 1)
+                    }.sorted { lhs, rhs in
+                        let leftMissed = lhs.latestOutcome == .incorrect || lhs.latestOutcome == .partial || lhs.reviewFlag
+                        let rightMissed = rhs.latestOutcome == .incorrect || rhs.latestOutcome == .partial || rhs.reviewFlag
+                        if leftMissed != rightMissed { return leftMissed }
+                        let left = priorities.firstIndex(where: { $0.topic == lhs.topic }) ?? 0
+                        let right = priorities.firstIndex(where: { $0.topic == rhs.topic }) ?? 0
+                        if left != right { return left < right }
+                        let leftDate = lastPlanned[lhs.id] ?? lhs.latestAttemptDate ?? start
+                        let rightDate = lastPlanned[rhs.id] ?? rhs.latestAttemptDate ?? start
+                        if leftDate != rightDate { return leftDate < rightDate }
+                        return lhs.id < rhs.id
+                    }
+                    selectedQuestion = spaced.first
+                    // A missed or flagged question meeting its first revisit
+                    // in this plan is error review; later revisits are spaced.
+                    if let pick = selectedQuestion {
+                        let missed = pick.latestOutcome == .incorrect || pick.latestOutcome == .partial || pick.reviewFlag
+                        isSpaced = !(missed && lastPlanned[pick.id] == nil && !used.contains(pick.id))
+                    }
+                }
                 guard let selected = selectedQuestion else { break }
                 let isReview = selected.latestOutcome != nil || selected.diagnostic || selected.reviewFlag
-                let effectiveActivity: PublicPlanningActivity = isReview ? .errorReview : activity
+                let effectiveActivity: PublicPlanningActivity = isSpaced ? .spacedReview
+                    : isReview ? .errorReview : activity
                 let reason: String
-                if isReview {
+                if isSpaced {
+                    reason = "Return to this \(selected.topic) question after a gap to strengthen recall."
+                } else if isReview {
                     reason = "Revisit \(selected.topic) after an earlier result or review flag."
                 } else if activity == .mixed {
                     reason = "Practise \(selected.topic) alongside other topics to build flexibility."
@@ -270,7 +366,16 @@ enum PublicPlanningEngine {
                 tasks.append(PublicPlannedTask(date: date, questionID: selected.id,
                     sourceID: selected.sourceID, topic: selected.topic, minutes: minutes,
                     activity: effectiveActivity, reason: reason))
-                used.insert(selected.id)
+                if isSpaced {
+                    spacedRepeats[selected.id, default: 0] += 1
+                } else {
+                    if !isReview && !used.contains(selected.id) {
+                        freshPlacedToday += 1
+                        freshPlacedTotal += 1
+                    }
+                    used.insert(selected.id)
+                }
+                lastPlanned[selected.id] = date
                 topicCounts[selected.topic, default: 0] += 1
                 remaining -= minutes
                 placed += 1

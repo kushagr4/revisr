@@ -24,8 +24,11 @@ enum PublicProgrammeService {
     }
 
     static func load(settings: AppSettings, in context: ModelContext) throws -> PublicProgramme? {
-        let id = programmeID(settings: settings)
-        return try context.fetch(FetchDescriptor<PublicProgramme>()).first { $0.stableID == id }
+        try load(programmeID: programmeID(settings: settings), in: context)
+    }
+
+    static func load(programmeID id: String, in context: ModelContext) throws -> PublicProgramme? {
+        try context.fetch(FetchDescriptor<PublicProgramme>()).first { $0.stableID == id }
     }
 
     static func tasks(for programme: PublicProgramme, in context: ModelContext) throws -> [PublicProgrammeTask] {
@@ -65,14 +68,33 @@ enum PublicProgrammeService {
               let weeklyMinutes = settings.publicWeeklyTargetMinutes else {
             throw PublicProgrammeError.diagnosticsIncomplete
         }
-        let id = programmeID(settings: settings)
         let assessmentID = DiagnosticAssessmentService.assessmentID(profileID: settings.id, exam: settings.publicExam)
         guard let assessment = try context.fetch(FetchDescriptor<DiagnosticAssessment>()).first(where: {
             $0.stableID == assessmentID && $0.completedAt != nil
         }) else { throw PublicProgrammeError.diagnosticsIncomplete }
-        let old = try load(settings: settings, in: context)
+        return try applyPlan(programmeID: programmeID(settings: settings), settings: settings,
+                             examDate: examDate, weeklyMinutes: weeklyMinutes, today: today,
+                             calendar: calendar, changed: { settingsChanged($0, settings: settings, calendar: calendar) },
+                             in: context) { start, excluded in
+            try makeInput(settings: settings, assessment: assessment,
+                          start: start, examDate: examDate,
+                          weeklyMinutes: weeklyMinutes, excludedQuestionIDs: excluded,
+                          calendar: calendar, in: context)
+        }
+    }
+
+    /// Shared refresh rules: completed tasks are never changed, the next three
+    /// days stay stable unless preparation settings changed, other incomplete
+    /// tasks are retired (not deleted) and stable IDs prevent duplicates.
+    static func applyPlan(programmeID id: String, settings: AppSettings, examDate: Date,
+                          weeklyMinutes: Int, today: Date, calendar: Calendar,
+                          changed hasChanged: (PublicProgramme) -> Bool,
+                          in context: ModelContext,
+                          makeInput: (_ start: Date, _ excludedQuestionIDs: Set<String>) throws -> PublicPlanningInput)
+        throws -> PublicProgramme {
+        let old = try load(programmeID: id, in: context)
         let oldTasks = try old.map { try tasks(for: $0, in: context) } ?? []
-        let changed = old.map { settingsChanged($0, settings: settings, calendar: calendar) } ?? false
+        let changed = old.map(hasChanged) ?? false
         let currentDay = calendar.startOfDay(for: today)
         let stableEnd = calendar.date(byAdding: .day, value: 3, to: currentDay) ?? currentDay
         let start = old != nil && !changed ? stableEnd : currentDay
@@ -81,10 +103,7 @@ enum PublicProgrammeService {
                 && task.scheduledDate < stableEnd && !changed
         }
         let frozenQuestionIDs = Set(frozen.compactMap(\.questionID))
-        let snapshot = try makeInput(settings: settings, assessment: assessment,
-                                     start: start, examDate: examDate,
-                                     weeklyMinutes: weeklyMinutes, excludedQuestionIDs: frozenQuestionIDs,
-                                     calendar: calendar, in: context)
+        let snapshot = try makeInput(start, frozenQuestionIDs)
         let result: PublicPlanningResult
         if start >= calendar.startOfDay(for: examDate), old != nil {
             result = PublicPlanningResult(tasks: [], priorities: [], availableDays: 0, unfilledDays: 0)
@@ -118,12 +137,38 @@ enum PublicProgrammeService {
         programme.weeklyMinutesSnapshot = weeklyMinutes
         programme.availabilitySnapshotData = (try? JSONEncoder().encode(settings.publicAvailability)) ?? Data()
         programme.completedCountAtRefresh = oldTasks.filter { $0.completedAt != nil }.count
+        programme.sessionMinutesSnapshot = settings.publicSessionMinutes
+        if old != nil {
+            let before = oldTasks.filter { $0.isActive && $0.completedAt == nil && !frozenIDs.contains($0.stableID) }
+            programme.refreshSummary = refreshSummary(before: before.map(\.topic),
+                after: result.tasks.map(\.topic), completed: programme.completedCountAtRefresh,
+                frozen: frozen.count)
+        }
         settings.publicOnboardingStage = .programme
         do { try context.save() } catch { context.rollback(); throw error }
         return programme
     }
 
-    private static func stableTaskID(programmeID: String, task: PublicPlannedTask,
+    /// A short, factual description of how future work moved between topics.
+    static func refreshSummary(before: [String], after: [String], completed: Int, frozen: Int) -> String {
+        let old = Dictionary(grouping: before, by: { $0 }).mapValues(\.count)
+        let new = Dictionary(grouping: after, by: { $0 }).mapValues(\.count)
+        let deltas = Set(old.keys).union(new.keys).compactMap { topic -> (String, Int)? in
+            let delta = new[topic, default: 0] - old[topic, default: 0]
+            return delta == 0 ? nil : (topic, delta)
+        }.sorted { abs($0.1) == abs($1.1) ? $0.0 < $1.0 : abs($0.1) > abs($1.1) }
+        var parts: [String] = []
+        let more = deltas.filter { $0.1 > 0 }.prefix(2).map { "\($0.0) (+\($0.1))" }
+        let less = deltas.filter { $0.1 < 0 }.prefix(2).map { "\($0.0) (\($0.1))" }
+        if !more.isEmpty { parts.append("More " + more.joined(separator: ", ")) }
+        if !less.isEmpty { parts.append("less " + less.joined(separator: ", ")) }
+        if parts.isEmpty { parts.append("Topic balance unchanged") }
+        parts.append("\(completed) completed task\(completed == 1 ? "" : "s") kept")
+        if frozen > 0 { parts.append("\(frozen) task\(frozen == 1 ? "" : "s") in the next three days unchanged") }
+        return parts.joined(separator: "; ") + "."
+    }
+
+    static func stableTaskID(programmeID: String, task: PublicPlannedTask,
                                      calendar: Calendar) -> String {
         let parts = calendar.dateComponents([.year, .month, .day], from: task.date)
         let key = String(format: "%04d%02d%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)

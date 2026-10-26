@@ -14,6 +14,9 @@ final class PublicProgramme {
     var weeklyMinutesSnapshot: Int
     var availabilitySnapshotData: Data
     var completedCountAtRefresh: Int
+    /// Added for the flexible TMUA programme; nil on earlier programmes.
+    var sessionMinutesSnapshot: Int? = nil
+    var refreshSummary: String? = nil
 
     var exam: PublicExamKind { PublicExamKind(rawValue: examRawValue) ?? .tmua }
     var availabilitySnapshot: [DayAvailability] {

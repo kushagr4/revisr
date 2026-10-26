@@ -28,7 +28,12 @@ enum AppContainer {
         DiagnosticPaperRecord.self,
         DiagnosticResponse.self,
         PublicProgramme.self,
-        PublicProgrammeTask.self
+        PublicProgrammeTask.self,
+        TMUADiagnostic.self,
+        TMUADiagnosticSection.self,
+        TMUADiagnosticItem.self,
+        TMUAPracticeAttempt.self,
+        TMUAReviewFlag.self
     ])
 
     static func make(isStoredInMemoryOnly: Bool = false) throws -> ModelContainer {

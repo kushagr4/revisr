@@ -23,6 +23,12 @@ final class AppSettings {
     var publicExamDate: Date? = nil
     var publicWeeklyTargetMinutes: Int? = nil
     var publicAvailabilityData: Data? = nil
+    /// Nil keeps an existing public profile on the earlier PDF diagnostic flow;
+    /// 2 is the flexible native TMUA journey. Neither rewrites earlier records.
+    var publicFlowVersion: Int? = nil
+    var publicDiagnosticLengthRawValue: String? = nil
+    /// Optional cap on minutes planned for any single study day.
+    var publicSessionMinutes: Int? = nil
     /// Enables additive seed migrations without recreating content the user deleted.
     var appliedSeedVersion: Int
 
@@ -61,6 +67,14 @@ final class AppSettings {
         }
         set { publicAvailabilityData = try? JSONEncoder().encode(newValue) }
     }
+
+    var publicDiagnosticLength: TMUADiagnosticLength? {
+        get { publicDiagnosticLengthRawValue.flatMap(TMUADiagnosticLength.init(rawValue:)) }
+        set { publicDiagnosticLengthRawValue = newValue?.rawValue }
+    }
+
+    /// True for profiles on the flexible native TMUA journey.
+    var usesFlexibleTMUAFlow: Bool { publicFlowVersion == 2 && publicExam == .tmua }
 
     var effectiveTMUAProgrammeStartDate: Date {
         tmuaProgrammeStartDate ?? Self.makeDefaultProgrammeStartDate()

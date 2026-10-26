@@ -52,7 +52,11 @@ private struct StartupView: View {
         Group {
             if let settings {
                 if settings.publicOnboardingStage != nil {
-                    PublicPreparationSetupView(settings: settings)
+                    if settings.publicFlowVersion == 2 {
+                        TMUAFlowRootView(settings: settings)
+                    } else {
+                        PublicPreparationSetupView(settings: settings)
+                    }
                 } else {
                     RootTabView()
                 }
