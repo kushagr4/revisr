@@ -357,9 +357,11 @@ enum TMUADiagnosticService {
         let originals = items.filter { $0.category == .revisrOriginal }.count
         let past = items.filter { $0.category == .licensedPastPaper }.count
         let mocks = items.filter { $0.category == .licensedMock }.count
+        let studyCopies = items.filter { $0.category == .pastPaperStudyCopy }.count
         let fixtures = items.filter { $0.category == .developmentFixture }.count
         var parts: [String] = []
         if originals > 0 || fixtures == 0 { parts.append("\(originals) original Revisr") }
+        if studyCopies > 0 { parts.append("\(studyCopies) official past-paper") }
         if past > 0 { parts.append("\(past) licensed past-paper") }
         if mocks > 0 { parts.append("\(mocks) licensed mock") }
         if fixtures > 0 { parts.append("\(fixtures) synthetic test-fixture") }

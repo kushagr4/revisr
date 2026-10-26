@@ -29,7 +29,7 @@ import sys
 
 SCHEMA_VERSION = 1
 POLICY_VERSION = "tmua-content-policy-v1"
-CATEGORIES = {"revisr_original", "licensed_past_paper", "licensed_mock", "development_fixture"}
+CATEGORIES = {"revisr_original", "licensed_past_paper", "licensed_mock", "past_paper_study_copy", "development_fixture"}
 RIGHTS_STATES = {"cleared", "pending_review", "not_permitted", "not_applicable"}
 RIGHTS_FIELDS = ["inAppUse", "redistribution", "commercialUse", "answerKey", "solution"]
 MATH_REVIEW = {"none", "ai_derivation_only", "human_approved", "rejected"}
@@ -93,27 +93,34 @@ def balanced_math(text):
     return depth == 0
 
 
-def validate_item(item, topics, skills):
+def validate_item(item, topics, skills, root=None):
     errors = []
 
     def need(condition, message):
         if not condition:
             errors.append(message)
 
+    # A question shown from its original paper has no Revisr text: the stem is empty and the
+    # options carry letters only. It must point at a bundled paper region instead.
+    presentation = item.get("presentation")
+
     stable_id = item.get("stableId", "")
     need(isinstance(stable_id, str) and STABLE_ID.match(stable_id or ""), "invalid stableId")
     need(isinstance(item.get("version"), int) and item["version"] >= 1, "invalid version")
     need(item.get("paper") in (1, 2), "paper must be 1 or 2")
     need(item.get("category") in CATEGORIES, "unknown category")
-    for field in ("title", "stem", "solution"):
+    for field in ("title", "solution") + (() if presentation else ("stem",)):
         need(isinstance(item.get(field), str) and item[field].strip(), "missing " + field)
     options = item.get("options") or []
     need(4 <= len(options) <= 8, "options must number 4 to 8")
     expected_ids = list("ABCDEFGH"[: len(options)])
     need([option.get("id") for option in options] == expected_ids, "option ids must be A, B, C, ... in order")
-    texts = [option.get("text", "").strip() for option in options]
-    need(all(texts), "empty option text")
-    need(len(set(texts)) == len(texts), "duplicate option text")
+    if presentation:
+        errors.extend(validate_presentation(item, root))
+    else:
+        texts = [option.get("text", "").strip() for option in options]
+        need(all(texts), "empty option text")
+        need(len(set(texts)) == len(texts), "duplicate option text")
     need(item.get("correctOptionId") in expected_ids, "correctOptionId is not an option")
     for field in ("stem", "solution"):
         need(balanced_math(item.get(field, "")), "unbalanced math markup in " + field)
@@ -144,6 +151,45 @@ def validate_item(item, topics, skills):
         source = item.get("source") or {}
         for field in ("organisation", "examination", "year", "paperNumber", "questionNumber", "url"):
             need(source.get(field) not in (None, ""), "licensed item missing source." + field)
+    if item.get("category") == "past_paper_study_copy":
+        source = item.get("source") or {}
+        for field in ("organisation", "examination", "paperNumber", "questionNumber"):
+            need(source.get(field) not in (None, ""), "study copy missing source." + field)
+        need(bool(item.get("libraryQuestionID")), "study copy missing libraryQuestionID")
+        need(bool(item.get("keyProvenance")), "study copy missing keyProvenance")
+        need(presentation is not None, "study copy must be shown from its paper")
+        for field in RIGHTS_FIELDS:
+            need((item.get("rights") or {}).get(field) != "cleared", "study copy cannot claim cleared rights." + field)
+    return errors
+
+
+def validate_presentation(item, root):
+    """Checks a paper-presented question: its regions and, when the repository is known, that
+    the paper and the official solution are bundled resources."""
+    errors = []
+    presentation = item.get("presentation") or {}
+    document = presentation.get("document")
+    regions = presentation.get("regions") or []
+    if not isinstance(document, str) or not document.endswith(".pdf"):
+        errors.append("presentation.document must name a bundled PDF")
+    if not regions:
+        errors.append("presentation needs at least one region")
+    for region in regions:
+        page = region.get("page")
+        if not isinstance(page, int) or page < 0:
+            errors.append("presentation region page must be a non-negative integer")
+        if not all(isinstance(region.get(key), (int, float)) for key in ("x", "y", "width", "height")) \
+                or region.get("width", 0) <= 0 or region.get("height", 0) <= 0:
+            errors.append("presentation region needs a positive rectangle")
+    if any(option.get("text") for option in item.get("options") or []):
+        errors.append("paper-presented options carry letters only")
+    if root and isinstance(document, str):
+        if not os.path.isfile(os.path.join(root, "revisr", "Resources", "AdmissionsPapers", document)):
+            errors.append("presentation document %s is not a bundled paper" % document)
+        reference = item.get("solutionReference")
+        if reference and not os.path.isfile(os.path.join(root, "revisr", "Resources", "AdmissionsSolutions",
+                                                          reference.get("document", ""))):
+            errors.append("solutionReference document is not a bundled solution")
     return errors
 
 
@@ -152,6 +198,8 @@ def public_gate_failures(item):
     failures = []
     if item.get("category") == "development_fixture":
         failures.append("development fixture")
+    if item.get("category") == "past_paper_study_copy" or item.get("presentation"):
+        failures.append("personal study copy, not licensed for distribution")
     rights = item.get("rights") or {}
     for field in RIGHTS_FIELDS:
         if rights.get(field) != "cleared":
@@ -176,7 +224,7 @@ def validate_bank(content_dir, root):
         if key in seen:
             problems.append("%s: duplicate %s@v%s" % (filename, key[0], key[1]))
         seen.add(key)
-        for error in validate_item(item, topics, skills):
+        for error in validate_item(item, topics, skills, root):
             problems.append("%s: %s@v%s: %s" % (filename, key[0], key[1], error))
     return taxonomy_version, [item for _, item in items], problems
 

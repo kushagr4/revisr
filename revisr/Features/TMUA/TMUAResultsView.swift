@@ -191,7 +191,7 @@ struct TMUAResultsView: View {
     private func generate() {
         guard let content else { return }
         do {
-            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, in: modelContext)
+            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, resourceSessions: true, in: modelContext)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -236,23 +236,21 @@ struct TMUADiagnosticItemReview: View {
     var body: some View {
         ScrollView {
             if let content = item.content, item.marking != nil {
-                VStack(alignment: .leading, spacing: RevisrSpacing.large) {
-                    Text(content.category.attributionTitle).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                    MathText(content.stem, textStyle: .title3)
-                    VStack(spacing: RevisrSpacing.compact) {
-                        ForEach(content.options, id: \.id) { option in
-                            TMUAOptionButton(option: option, selected: item.selectedOptionID == option.id,
-                                state: option.id == content.correctOptionId
-                                    ? (item.selectedOptionID == option.id ? .correct : .key)
-                                    : (item.selectedOptionID == option.id ? .incorrect : .neutral)) {}
-                                .allowsHitTesting(false)
-                        }
-                    }
+                VStack(alignment: .leading, spacing: RevisrSpacing.standard) {
+                    TMUAQuestionStem(content: content)
+                        .padding(.horizontal, content.presentation == nil ? 0 : -(RevisrSpacing.large - 6))
+                    TMUAAnswerOptions(content: content, selectedID: item.selectedOptionID, marking: { option in
+                        option.id == content.correctOptionId
+                            ? (item.selectedOptionID == option.id ? .correct : .key)
+                            : (item.selectedOptionID == option.id ? .incorrect : .neutral)
+                    }) { _ in }
+                    .allowsHitTesting(false)
+                    TMUASourceCredit(content: content)
                     if item.selectedOptionID == nil {
                         Label("You skipped this question.", systemImage: "minus.circle")
                             .foregroundStyle(RevisrColors.secondaryLabel)
                     }
-                    TMUASolutionCard(solution: content.solution)
+                    TMUAWorkedSolution(item: content)
                 }
                 .padding(RevisrSpacing.large)
             } else {
@@ -270,8 +268,8 @@ struct TMUASolutionCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: RevisrSpacing.small) {
-            Label("Worked solution", systemImage: "lightbulb").font(.headline)
-            MathText(solution, textStyle: .body)
+            Label("Worked solution", systemImage: "lightbulb").font(.subheadline.weight(.semibold))
+            MathText(solution, role: .solution)
         }
         .padding(RevisrSpacing.standard)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -359,7 +357,7 @@ struct TMUAExpansionView: View {
         guard let target, let content = TMUAContentStore.context() else { return }
         do {
             _ = try TMUAProgrammeService.expandDiagnostic(snapshot, to: target, settings: settings,
-                                                          content: content, in: modelContext)
+                                                          content: content, resourceSessions: true, in: modelContext)
             dismiss()
         } catch {
             errorMessage = error.localizedDescription

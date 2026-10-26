@@ -304,7 +304,7 @@ struct TMUADiagnosticHubView: View {
         isGenerating = true
         defer { isGenerating = false }
         do {
-            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, in: modelContext)
+            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, resourceSessions: true, in: modelContext)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -385,18 +385,18 @@ struct TMUAAssessmentView: View {
         .interactiveDismissDisabled()
     }
 
+    /// Compact progress chrome. Its text size is capped so that, at the largest sizes, the
+    /// question rather than the header fills the screen; the question text is never capped.
     private var progressHeader: some View {
-        VStack(spacing: RevisrSpacing.small) {
-            let layout = dynamicTypeSize.isAccessibilitySize
-                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4)) : AnyLayout(HStackLayout())
-            layout {
-                Text("Question \(index + 1) of \(items.count)").font(.subheadline.weight(.semibold))
+        VStack(spacing: 6) {
+            HStack(alignment: .firstTextBaseline, spacing: RevisrSpacing.small) {
+                Text("Question \(index + 1) of \(items.count)").font(.footnote.weight(.semibold))
                     .accessibilityIdentifier("assessment.position")
-                if !dynamicTypeSize.isAccessibilitySize { Spacer() }
+                Spacer(minLength: RevisrSpacing.small)
                 TimelineView(.periodic(from: .now, by: 1)) { context in
                     let clock = Self.clock(section.elapsed(at: context.date))
                     Label(clock, systemImage: "clock")
-                        .font(.subheadline.monospacedDigit())
+                        .font(.footnote.monospacedDigit())
                         .foregroundStyle(RevisrColors.secondaryLabel)
                         .accessibilityLabel("Active time")
                         .accessibilityValue(clock)
@@ -419,36 +419,25 @@ struct TMUAAssessmentView: View {
                     .font(.caption2).foregroundStyle(RevisrColors.secondaryLabel)
             }
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .padding(.horizontal, RevisrSpacing.large)
         .padding(.vertical, RevisrSpacing.small)
         .background(.bar)
     }
 
     private func questionBody(_ item: TMUADiagnosticItem, content: TMUAContentItem) -> some View {
-        VStack(alignment: .leading, spacing: RevisrSpacing.large) {
-            HStack {
-                Text(content.category.attributionTitle)
-                    .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                Spacer()
-                if item.isFlagged {
-                    Label("Flagged", systemImage: "flag.fill").font(.caption.weight(.semibold))
-                        .foregroundStyle(RevisrColors.warning)
-                        .accessibilityIdentifier("assessment.flagged")
-                }
+        VStack(alignment: .leading, spacing: RevisrSpacing.standard) {
+            if item.isFlagged {
+                Label("Flagged", systemImage: "flag.fill").font(.caption.weight(.semibold))
+                    .foregroundStyle(RevisrColors.warning)
+                    .accessibilityIdentifier("assessment.flagged")
             }
-            MathText(content.stem, textStyle: .title3)
-                .accessibilityIdentifier("question.stem")
-            VStack(spacing: RevisrSpacing.compact) {
-                ForEach(content.options, id: \.id) { option in
-                    TMUAOptionButton(option: option, selected: item.selectedOptionID == option.id) {
-                        choose(option.id == item.selectedOptionID ? nil : option.id, item: item)
-                    }
-                }
+            TMUAQuestionStem(content: content)
+                .padding(.horizontal, content.presentation == nil ? 0 : -(RevisrSpacing.large - 6))
+            TMUAAnswerOptions(content: content, selectedID: item.selectedOptionID) { option in
+                choose(option.id == item.selectedOptionID ? nil : option.id, item: item)
             }
-            if let source = content.source, content.category.isLicensedThirdParty {
-                Text(source.attribution ?? "")
-                    .font(.caption2).foregroundStyle(RevisrColors.secondaryLabel)
-            }
+            TMUASourceCredit(content: content)
         }
     }
 
@@ -489,14 +478,20 @@ struct TMUAAssessmentView: View {
                 .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
                 .accessibilityIdentifier("assessment.next")
             } else {
-                Button("Review and submit") { showingSubmit = true }
-                    .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
-                    .accessibilityIdentifier("assessment.review")
+                Button { showingSubmit = true } label: {
+                    ViewThatFits(in: .horizontal) {
+                        Text("Review and submit")
+                        Text("Review")
+                    }
                     .lineLimit(1)
-                    .minimumScaleFactor(0.5)
                     .frame(minHeight: RevisrMetrics.minimumTapTarget)
+                }
+                .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
+                .accessibilityLabel("Review and submit")
+                .accessibilityIdentifier("assessment.review")
             }
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         .padding(.horizontal, RevisrSpacing.large)
         .padding(.vertical, RevisrSpacing.compact)
         .background(.bar)
@@ -679,7 +674,7 @@ struct TMUAAssessmentView: View {
                 try TMUAProgrammeService.completeRefinementTasks(settings: settings, in: modelContext)
                 if let content = TMUAContentStore.context(),
                    try TMUAProgrammeService.load(settings: settings, in: modelContext) != nil {
-                    try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, in: modelContext)
+                    try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, resourceSessions: true, in: modelContext)
                 }
             }
         }
@@ -712,11 +707,38 @@ struct TMUAAssessmentView: View {
     }
 }
 
+/// Answer options, evenly and compactly spaced.
+struct TMUAOptionList<Row: View>: View {
+    let options: [TMUAOption]
+    @ViewBuilder let row: (TMUAOption) -> Row
+
+    var body: some View {
+        VStack(spacing: 10) {
+            ForEach(options, id: \.id) { option in row(option) }
+        }
+        .padding(.top, 2)
+    }
+}
+
+/// A discreet source credit under the options, visually subordinate to the mathematics.
+struct TMUASourceCredit: View {
+    let content: TMUAContentItem
+
+    var body: some View {
+        Text(content.creditLine)
+            .font(.caption)
+            .foregroundStyle(RevisrColors.secondaryLabel)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityIdentifier("question.source")
+    }
+}
+
 struct TMUAOptionButton: View {
     let option: TMUAOption
     let selected: Bool
     var state: Marking = .neutral
     let action: () -> Void
+    @ScaledMetric(relativeTo: .body) private var badge: CGFloat = 28
 
     enum Marking {
         case neutral, correct, incorrect, key
@@ -726,19 +748,19 @@ struct TMUAOptionButton: View {
         Button(action: action) {
             HStack(alignment: .firstTextBaseline, spacing: RevisrSpacing.compact) {
                 Text(option.id)
-                    .font(.headline)
-                    .frame(width: 32, height: 32)
+                    .font(.subheadline.weight(.semibold))
+                    .frame(width: badge, height: badge)
                     .foregroundStyle(selected ? Color.white : RevisrColors.primaryLabel)
                     .background(selected ? (state == .neutral ? RevisrColors.accentFill : accent)
                                 : RevisrColors.tertiaryBackground, in: Circle())
-                    .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] + 6 }
-                MathText(option.text, textStyle: .body)
+                MathText(option.text, role: .option)
                 if let symbol {
                     Image(systemName: symbol).foregroundStyle(accent)
                 }
             }
-            .padding(RevisrSpacing.standard)
-            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+            .padding(.vertical, RevisrSpacing.compact)
+            .padding(.horizontal, 14)
+            .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
             .background(RevisrColors.secondaryBackground, in: RoundedRectangle(cornerRadius: RevisrMetrics.standardCornerRadius))
             .overlay {
                 RoundedRectangle(cornerRadius: RevisrMetrics.standardCornerRadius)

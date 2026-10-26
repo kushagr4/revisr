@@ -53,9 +53,12 @@ enum TMUAProgrammeService {
             || programme.sessionMinutesSnapshot != settings.publicSessionMinutes
     }
 
+    /// - Parameter resourceSessions: also fill study days the question bank cannot fill with
+    ///   self-marked papers from the library (`TMUAResourcePlanning`). The app passes true.
     @discardableResult
     static func generateOrRefresh(settings: AppSettings, content: TMUAContentContext,
                                   today: Date = .now, calendar: Calendar = DateUtilities.appCalendar(),
+                                  resourceSessions: Bool = false,
                                   in context: ModelContext) throws -> PublicProgramme {
         guard let examDate = settings.publicExamDate, let weekly = settings.publicWeeklyTargetMinutes,
               let snapshot = try TMUADiagnosticService.load(settings: settings, in: context),
@@ -74,7 +77,7 @@ enum TMUAProgrammeService {
         }
         let refinement = refinementMinutes(snapshot: snapshot, settings: settings, content: content,
                                            existingTasks: existingTasks, in: context)
-        return try PublicProgrammeService.applyPlan(
+        let programme = try PublicProgrammeService.applyPlan(
             programmeID: programmeID(settings: settings), settings: settings, examDate: examDate,
             weeklyMinutes: weekly, today: today, calendar: calendar,
             changed: { settingsChanged($0, settings: settings, calendar: calendar) },
@@ -85,6 +88,11 @@ enum TMUAProgrammeService {
                               ($0, refinementSourceID(for: snapshot.diagnostic.targetLength)) },
                           calendar: calendar)
         }
+        if resourceSessions {
+            try scheduleResourceSessions(programme: programme, settings: settings, content: content,
+                                         today: today, calendar: calendar, in: context)
+        }
+        return programme
     }
 
     /// Question identities waiting in an unsubmitted diagnostic section.
@@ -99,11 +107,13 @@ enum TMUAProgrammeService {
     static func expandDiagnostic(_ snapshot: TMUADiagnosticSnapshot, to target: TMUADiagnosticLength,
                                  settings: AppSettings, content: TMUAContentContext, today: Date = .now,
                                  calendar: Calendar = DateUtilities.appCalendar(),
+                                 resourceSessions: Bool = false,
                                  in context: ModelContext) throws -> TMUADiagnosticSnapshot {
         let expanded = try TMUADiagnosticService.expand(snapshot, to: target, settings: settings,
                                                         content: content, in: context)
         if try load(settings: settings, in: context) != nil {
-            try generateOrRefresh(settings: settings, content: content, today: today, calendar: calendar, in: context)
+            try generateOrRefresh(settings: settings, content: content, today: today, calendar: calendar,
+                                  resourceSessions: resourceSessions, in: context)
         }
         return expanded
     }
@@ -298,6 +308,8 @@ struct TMUAPlanContentSummary: Equatable {
     let studyDays: Int
     let emptyStudyDays: Int
     let distinctQuestions: Int
+    /// Remaining study days given a self-marked paper session because the bank cannot fill them.
+    var paperSessionDays = 0
     let lastNewQuestionDate: Date?
     /// Days between the last newly introduced question and the exam.
     let daysWithoutNewQuestions: Int
@@ -314,6 +326,9 @@ struct TMUAPlanContentSummary: Equatable {
             parts.append(lastNewQuestionDate.map {
                 "Questions you have not seen before run out on \($0.formatted(date: .abbreviated, time: .omitted)). After that, your plan revisits earlier questions with widening gaps."
             } ?? "There are no questions you have not seen before left in this build, so your plan revisits earlier questions with widening gaps.")
+        }
+        if paperSessionDays > 0 {
+            parts.append("\(paperSessionDays) study day\(paperSessionDays == 1 ? "" : "s") use a self-marked paper from your library instead.")
         }
         if emptyStudyDays > 0 {
             parts.append("\(emptyStudyDays) of your \(studyDays) remaining study days have no task because Revisr’s question bank is not yet large enough to fill them.")
@@ -349,8 +364,10 @@ extension TMUAProgrammeService {
             lastNew = calendar.startOfDay(for: task.scheduledDate)
         }
         let gap = calendar.dateComponents([.day], from: lastNew ?? start, to: examDay).day ?? 0
+        let paperDays = Set(future.filter { $0.activity == .resourcePractice }.map { calendar.startOfDay(for: $0.scheduledDate) })
         return TMUAPlanContentSummary(studyDays: studyDays, emptyStudyDays: empty,
                                       distinctQuestions: Set(future.compactMap(\.questionID)).count,
+                                      paperSessionDays: paperDays.count,
                                       lastNewQuestionDate: lastNew, daysWithoutNewQuestions: gap)
     }
 

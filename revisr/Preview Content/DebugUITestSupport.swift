@@ -7,6 +7,7 @@ import SwiftData
 ///   --uitest-store <name>   open an isolated store, never the student's own
 ///   --uitest-reset          delete that isolated store first (a clean install)
 ///   --uitest-fixture-bank   use synthetic development fixtures instead of the bundled bank
+///   --uitest-typography-bank use the synthetic layout specimens (`DebugTypographySpecimens`)
 enum DebugUITestSupport {
     static func value(_ name: String) -> String? {
         let arguments = ProcessInfo.processInfo.arguments
@@ -37,15 +38,19 @@ enum DebugUITestSupport {
 
     @MainActor
     static func installFixtureBankIfRequested() {
-        guard flag("--uitest-fixture-bank"), let syllabus = TMUASyllabus.load() else { return }
-        let bank = TMUAContentBank(schemaVersion: 1, bankVersion: "uitest-fixtures-v1", distribution: .internal,
+        let typography = flag("--uitest-typography-bank")
+        guard flag("--uitest-fixture-bank") || typography, let syllabus = TMUASyllabus.load() else { return }
+        let bank = TMUAContentBank(schemaVersion: 1,
+            bankVersion: typography ? "uitest-typography-v1" : "uitest-fixtures-v1", distribution: .internal,
             taxonomyVersion: TMUASyllabus.currentVersion, contentPolicyVersion: TMUAContentPolicy.version,
-            excludedItemCount: 0, items: fixtureItems(syllabus: syllabus))
+            excludedItemCount: 0,
+            items: typography ? DebugTypographySpecimens.items(syllabus: syllabus) : fixtureItems(syllabus: syllabus))
         TMUAContentStore.install(TMUAContentContext(bank: bank, syllabus: syllabus,
                                                     allowsDevelopmentFixtures: true))
     }
 
     static let optionIDs = ["A", "B", "C", "D", "E"]
+    static let letters = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
     /// Synthetic questions spread over every strand. Each stem states its own
     /// key so a UI test can answer deliberately right or wrong. Every fourth

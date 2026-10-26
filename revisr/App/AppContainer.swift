@@ -33,7 +33,8 @@ enum AppContainer {
         TMUADiagnosticSection.self,
         TMUADiagnosticItem.self,
         TMUAPracticeAttempt.self,
-        TMUAReviewFlag.self
+        TMUAReviewFlag.self,
+        TMUAResourceLog.self
     ])
 
     static func make(isStoredInMemoryOnly: Bool = false) throws -> ModelContainer {

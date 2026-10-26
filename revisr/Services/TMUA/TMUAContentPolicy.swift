@@ -6,9 +6,10 @@ import Foundation
 enum TMUAContentPolicy {
     static let version = "tmua-content-policy-v1"
 
-    /// A soft preference for licensed past/mock questions when they are
-    /// available. Coverage always outranks source mix; there is no fixed ratio.
-    static let preferredLicensedShare = 0.3
+    /// A soft preference for real past or mock questions (licensed, or personal study copies
+    /// in an internal build) when they are available. Coverage always outranks source mix;
+    /// there is no fixed ratio.
+    static let preferredLicensedShare = 0.5
 
     /// Product decision: a public diagnostic must not silently become
     /// original-only. Changing this requires an explicit product decision.
@@ -17,6 +18,9 @@ enum TMUAContentPolicy {
     static func publicGateFailures(_ item: TMUAContentItem) -> [String] {
         var failures: [String] = []
         if item.category == .developmentFixture { failures.append("Development fixture") }
+        if item.category == .pastPaperStudyCopy || item.presentation != nil {
+            failures.append("Personal study copy: not licensed for distribution")
+        }
         let rights = item.rights
         let states: [(String, TMUARightsState)] = [
             ("In-app use", rights.inAppUse), ("Redistribution", rights.redistribution),
@@ -87,6 +91,7 @@ struct TMUAContentContext: Sendable {
     }
 
     var licensedItemCount: Int { eligibleItems.filter(\.category.isLicensedThirdParty).count }
+    var studyCopyItemCount: Int { eligibleItems.filter { $0.category == .pastPaperStudyCopy }.count }
     var originalItemCount: Int { eligibleItems.filter { $0.category == .revisrOriginal }.count }
     var unreviewedItemCount: Int {
         eligibleItems.filter { !TMUAContentPolicy.publicGateFailures($0).isEmpty }.count
@@ -94,7 +99,7 @@ struct TMUAContentContext: Sendable {
 
     var sourceMix: TMUASourceMixStatus {
         if licensedItemCount > 0 { return .mixedAvailable }
-        if distribution == .internal { return .originalOnlyDevelopment }
+        if distribution == .internal { return studyCopyItemCount > 0 ? .mixedStudyCopies : .originalOnlyDevelopment }
         return TMUAContentPolicy.publicAllowsOriginalOnlyDiagnostic ? .originalOnlyApproved : .blocked
     }
 
@@ -116,6 +121,9 @@ struct TMUAContentContext: Sendable {
 
 enum TMUASourceMixStatus: Equatable, Sendable {
     case mixedAvailable
+    /// Internal build: official past-paper questions from the owner's library, held as personal
+    /// study copies, alongside unreviewed original drafts.
+    case mixedStudyCopies
     case originalOnlyDevelopment
     case originalOnlyApproved
     case blocked
@@ -123,6 +131,8 @@ enum TMUASourceMixStatus: Equatable, Sendable {
     var studentNotice: String? {
         switch self {
         case .mixedAvailable: nil
+        case .mixedStudyCopies:
+            "Development build: official past-paper questions here are personal study copies from your own library, not licensed content, and the original Revisr questions are unreviewed drafts."
         case .originalOnlyDevelopment:
             "Development build: no past or mock questions are cleared for use yet, so this diagnostic uses unreviewed original Revisr questions only."
         case .originalOnlyApproved: "This diagnostic uses original Revisr questions."

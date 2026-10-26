@@ -15,7 +15,12 @@ enum TMUASelectionError: LocalizedError, Equatable {
 /// produce the same ordered questions, so an assessment version can be
 /// reproduced from its bank version, length and prior exposure.
 enum TMUADiagnosticSelector {
-    static let version = "tmua-selector-v1"
+    /// v2: the section's target size is fixed before selection starts (prior questions plus this
+    /// round). v1 recomputed it after every pick, which inflated the difficulty-band targets and the
+    /// preferred past/mock share as the section filled. Equal scores are now broken by a stable
+    /// hash of the question identity rather than alphabetically, so picks spread across papers and
+    /// years (alphabetical order put every student on the oldest paper's first questions).
+    static let version = "tmua-selector-v2"
 
     private struct Coverage {
         var topics: [String: Int] = [:]
@@ -31,7 +36,7 @@ enum TMUADiagnosticSelector {
             strands[item.taxonomy.strand, default: 0] += 1
             if let skill = item.taxonomy.skill { skills[skill, default: 0] += 1 }
             difficultyBands[TMUADiagnosticSelector.band(item.difficulty), default: 0] += 1
-            if item.category.isLicensedThirdParty {
+            if item.category.isPastOrMock {
                 licensed += 1
                 licensedTopics.insert(item.taxonomy.topic)
             }
@@ -41,6 +46,16 @@ enum TMUADiagnosticSelector {
 
     /// Target share of easier, standard and harder questions.
     private static let bandTargets: [Int: Double] = [0: 0.35, 1: 0.45, 2: 0.20]
+
+    /// A deterministic, well-mixed ordering key (FNV-1a over the version key).
+    static func tieBreak(_ item: TMUAContentItem) -> (UInt64, String) {
+        var hash: UInt64 = 0xcbf2_9ce4_8422_2325
+        for byte in item.versionKey.utf8 {
+            hash ^= UInt64(byte)
+            hash = hash &* 0x0000_0100_0000_01B3
+        }
+        return (hash, item.versionKey)
+    }
 
     static func band(_ difficulty: Int) -> Int {
         difficulty <= 2 ? 0 : difficulty == 3 ? 1 : 2
@@ -75,15 +90,16 @@ enum TMUADiagnosticSelector {
             if item.paper == paper.rawValue { paperCoverage.add(item) }
         }
         let shortSection = count + paperCoverage.total <= 8
+        let targetTotal = paperCoverage.total + count
         var chosen: [TMUAContentItem] = []
         while chosen.count < count {
             var best: (score: Int, item: TMUAContentItem)?
             for item in pool {
                 let value = score(item, paper: paperCoverage, diagnostic: diagnosticCoverage,
-                                  targetTotal: paperCoverage.total + count,
+                                  targetTotal: targetTotal,
                                   shortSection: shortSection, preferredLicensedShare: preferredLicensedShare)
                 if let current = best {
-                    if value > current.score || (value == current.score && item.versionKey < current.item.versionKey) {
+                    if value > current.score || (value == current.score && tieBreak(item) < tieBreak(current.item)) {
                         best = (value, item)
                     }
                 } else {
@@ -123,7 +139,7 @@ enum TMUADiagnosticSelector {
         let target = Int((Double(targetTotal) * (bandTargets[band] ?? 0)).rounded(.up))
         if paper.difficultyBands[band, default: 0] < target { value += 60 }
         if shortSection && (2...3).contains(item.difficulty) { value += 15 }
-        if item.category.isLicensedThirdParty,
+        if item.category.isPastOrMock,
            Double(paper.licensed) < Double(targetTotal) * preferredLicensedShare,
            !paper.licensedTopics.contains(item.taxonomy.topic) {
             value += 50

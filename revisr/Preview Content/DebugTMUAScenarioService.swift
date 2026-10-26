@@ -4,7 +4,8 @@ import SwiftData
 
 /// Launch-argument scenarios for screenshot QA of the flexible TMUA journey.
 /// Applied only to a fresh public profile, using the bundled development bank.
-///   --tmua-scenario session|results|programme
+///   --tmua-scenario session|results|programme|layout
+///   --tmua-paper 1|2 --tmua-question N   (layout: open that question, timer running)
 ///   --tmua-length starter|quick|balanced|comprehensive
 ///   --tmua-tab today|plan|progress|topics|questions|settings
 ///   --tmua-step examDate|availability|length
@@ -37,6 +38,19 @@ enum DebugTMUAScenarioService {
         let snapshot = try TMUADiagnosticService.create(settings: settings, length: length, content: content,
                                                         at: start, in: context)
         let sections = snapshot.sections.sorted { $0.paperRawValue < $1.paperRawValue }
+        if scenario == "layout" {
+            let paper = min(max(Int(value("--tmua-paper") ?? "1") ?? 1, 1), sections.count)
+            if paper == 2 {
+                try TMUADiagnosticService.start(sections[0], in: snapshot, at: start, in: context)
+                try TMUADiagnosticService.submit(sections[0], in: snapshot, at: start.addingTimeInterval(600), in: context)
+            }
+            let section = sections[paper - 1]
+            try TMUADiagnosticService.start(section, in: snapshot, at: .now, in: context)
+            let count = snapshot.items(in: section).count
+            let question = min(max(Int(value("--tmua-question") ?? "1") ?? 1, 1), count)
+            try TMUADiagnosticService.move(section, to: question - 1, count: count, in: context)
+            return
+        }
         if scenario == "session" {
             let paperOne = sections[0]
             try TMUADiagnosticService.start(paperOne, in: snapshot, at: start, in: context)
@@ -65,7 +79,7 @@ enum DebugTMUAScenarioService {
                 at: start.addingTimeInterval(Double(section.paperRawValue) * 2_400), in: context)
         }
         guard scenario == "programme" else { return }
-        try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, today: start, in: context)
+        try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, today: start, resourceSessions: true, in: context)
         let tasks = try TMUAProgrammeService.tasks(settings: settings, in: context)
             .filter { $0.isActive && $0.questionID != nil && $0.scheduledDate < today }
         for (offset, task) in tasks.prefix(5).enumerated() {

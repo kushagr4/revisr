@@ -95,5 +95,49 @@ class PublicGateTests(unittest.TestCase):
             assemble.check_app(app, str(ROOT), "public")
 
 
+STUDY_COPY = dict(copy.deepcopy(ITEM), stableId="tmua-2019-p1-q11", category="past_paper_study_copy", stem="",
+                  options=[{"id": letter, "text": ""} for letter in "ABCDEF"], correctOptionId="C",
+                  source={"organisation": "UAT-UK (© UCLES)", "examination": "TMUA", "year": 2019,
+                          "paperNumber": 1, "questionNumber": 11, "url": "https://esat-tmua.ac.uk/", "attribution": None},
+                  rights=dict(CLEARED, inAppUse="not_permitted", redistribution="not_permitted",
+                              commercialUse="not_permitted", answerKey="not_permitted", solution="not_permitted"),
+                  review={"mathematical": "none", "originality": "not_applicable", "publication": "not_approved",
+                          "editorialStatus": "official-paper-study-copy"},
+                  presentation={"document": "SRC-TEST.pdf",
+                                "regions": [{"page": 2, "x": 50, "y": 300, "width": 480, "height": 400}]},
+                  keyProvenance="official answer key", libraryQuestionID="TMUA-2019-P1-Q11")
+
+
+class StudyCopyTests(unittest.TestCase):
+    def setUp(self):
+        _, self.topics, self.skills = assemble.load_taxonomy(str(ROOT))
+
+    def test_paper_presented_study_copy_is_valid_without_text(self):
+        self.assertEqual(assemble.validate_item(copy.deepcopy(STUDY_COPY), self.topics, self.skills), [])
+
+    def test_study_copy_never_enters_a_public_bundle(self):
+        cleared = dict(copy.deepcopy(STUDY_COPY), rights=CLEARED,
+                       review=dict(ITEM["review"], originality="not_applicable"))
+        self.assertTrue(any("personal study copy" in f for f in assemble.public_gate_failures(cleared)))
+        errors = assemble.validate_item(cleared, self.topics, self.skills)
+        self.assertTrue(any("cannot claim cleared rights" in e for e in errors))
+
+    def test_study_copy_needs_its_paper_identity_and_letter_only_options(self):
+        missing = copy.deepcopy(STUDY_COPY)
+        del missing["presentation"]
+        del missing["libraryQuestionID"]
+        missing["options"][0]["text"] = "transcribed text"
+        errors = assemble.validate_item(missing, self.topics, self.skills)
+        self.assertTrue(any("shown from its paper" in e for e in errors))
+        self.assertTrue(any("libraryQuestionID" in e for e in errors))
+        texted = copy.deepcopy(STUDY_COPY)
+        texted["options"][0]["text"] = "transcribed text"
+        self.assertTrue(any("letters only" in e for e in assemble.validate_item(texted, self.topics, self.skills)))
+
+    def test_presentation_must_point_at_a_bundled_paper(self):
+        errors = assemble.validate_item(copy.deepcopy(STUDY_COPY), self.topics, self.skills, str(ROOT))
+        self.assertTrue(any("not a bundled paper" in e for e in errors))
+
+
 if __name__ == "__main__":
     unittest.main()

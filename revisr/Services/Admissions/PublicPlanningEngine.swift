@@ -73,6 +73,8 @@ enum PublicPlanningActivity: String, CaseIterable {
     case finalReview
     case spacedReview
     case diagnosticRefinement
+    /// A self-marked paper from the library, scheduled only on days the question bank cannot fill.
+    case resourcePractice
 
     var title: String {
         switch self {
@@ -85,6 +87,7 @@ enum PublicPlanningActivity: String, CaseIterable {
         case .finalReview: "Final review"
         case .spacedReview: "Spaced review"
         case .diagnosticRefinement: "Refine your diagnostic"
+        case .resourcePractice: "Paper practice (self-marked)"
         }
     }
 }

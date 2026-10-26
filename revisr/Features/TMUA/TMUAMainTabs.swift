@@ -204,7 +204,7 @@ private struct TMUATodayView: View {
     private func refresh() {
         guard let content = TMUAContentStore.context() else { return }
         do {
-            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, in: modelContext)
+            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, resourceSessions: true, in: modelContext)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -243,6 +243,7 @@ struct TMUATaskRow: View {
         case .finalReview: "flag.checkered"
         case .spacedReview: "clock.arrow.circlepath"
         case .diagnosticRefinement: "plus.magnifyingglass"
+        case .resourcePractice: "doc.richtext"
         }
     }
 }
@@ -360,7 +361,7 @@ private struct TMUAPlanView: View {
     private func refresh() {
         guard let content = TMUAContentStore.context() else { return }
         do {
-            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, in: modelContext)
+            try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, resourceSessions: true, in: modelContext)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -407,6 +408,8 @@ struct TMUATaskView: View {
             } else {
                 TMUADiagnosticHubView(settings: settings, embedded: true)
             }
+        } else if task.activity == .resourcePractice {
+            TMUAResourceTaskView(settings: settings, task: task)
         } else if let id = task.questionID, isReserved(id) {
             ContentUnavailableView("Finish your added diagnostic questions first", systemImage: "lock",
                 description: Text("This question is part of your open diagnostic round. Its practice task returns after you submit that round."))
@@ -463,30 +466,22 @@ struct TMUAPracticeView: View {
                         Text(task.reason).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
                     }
                 }
-                HStack {
-                    Text("Paper \(item.paper) · \(TMUAContentStore.context()?.syllabus.strandTitle(item.taxonomy.strand) ?? "")")
-                        .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                    Spacer()
-                    Text(item.category.attributionTitle).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                Text("Paper \(item.paper) · \(TMUAContentStore.context()?.syllabus.strandTitle(item.taxonomy.strand) ?? "")")
+                    .font(.footnote.weight(.semibold)).foregroundStyle(RevisrColors.secondaryLabel)
+                TMUAQuestionStem(content: item)
+                    .padding(.horizontal, item.presentation == nil ? 0 : -(RevisrSpacing.large - 6))
+                TMUAAnswerOptions(content: item, selectedID: shownSelection, marking: markingState) { option in
+                    guard !showsAnswer else { return }
+                    selection = option.id
                 }
-                MathText(item.stem, textStyle: .title3)
-                    .accessibilityIdentifier("question.stem")
-                VStack(spacing: RevisrSpacing.compact) {
-                    ForEach(item.options, id: \.id) { option in
-                        TMUAOptionButton(option: option, selected: shownSelection == option.id,
-                                         state: markingState(option)) {
-                            guard !showsAnswer else { return }
-                            selection = option.id
-                        }
-                    }
-                }
+                TMUASourceCredit(content: item)
                 if showsAnswer {
                     let correct = (result?.isCorrect) ?? (history.first?.isCorrect ?? false)
                     RevisrStatusLabel(title: correct ? "Correct" : "Not this time — review the solution",
                                       systemImage: correct ? "checkmark.circle.fill" : "xmark.circle.fill",
                                       color: correct ? RevisrColors.success : RevisrColors.critical)
                         .accessibilityIdentifier("practice.result")
-                    TMUASolutionCard(solution: item.solution)
+                    TMUAWorkedSolution(item: item)
                 } else {
                     Button {
                         check()
@@ -728,84 +723,53 @@ private struct TMUAQuestionsView: View {
     @Query private var flags: [TMUAReviewFlag]
     @Query private var sections: [TMUADiagnosticSection]
     @Query private var diagnosticItems: [TMUADiagnosticItem]
+    @State private var library = Self.initialLibrary
     @State private var paper: Int = 0
     @State private var topic: String = ""
+    @State private var strand: String = ""
     @State private var difficulty: Int = 0
     @State private var source: String = ""
-    @State private var flaggedOnly = false
+    @State private var status: Status = .all
     @State private var debugPractice: TMUAContentItem?
+
+    enum Status: String, CaseIterable {
+        case all, notAttempted, attempted, incorrect, flagged
+
+        var title: String {
+            switch self {
+            case .all: "Any status"
+            case .notAttempted: "Not attempted"
+            case .attempted: "Attempted"
+            case .incorrect: "Incorrect last time"
+            case .flagged: "Flagged for review"
+            }
+        }
+    }
+
+    private static var initialLibrary: String {
+#if DEBUG
+        DebugTMUAScenarioService.value("--tmua-library") ?? "questions"
+#else
+        "questions"
+#endif
+    }
 
     var body: some View {
         let content = TMUAContentStore.context()
-        let openSectionIDs = Set(sections.filter { $0.status != .submitted }.map(\.stableID))
-        // Questions waiting in an unsubmitted diagnostic section stay hidden so
-        // practice cannot reveal their solutions early.
-        let reserved = Set(diagnosticItems.filter { openSectionIDs.contains($0.sectionID) }.map(\.itemStableID))
-        let mine = attempts.filter { $0.profileSettingsID == settings.id }
-        let flagged = Set(flags.filter { $0.profileSettingsID == settings.id && $0.isFlagged }.map(\.itemStableID))
-        let items = (content?.eligibleItems ?? []).filter { item in
-            !reserved.contains(item.stableId)
-                && (paper == 0 || item.paper == paper)
-                && (topic.isEmpty || item.taxonomy.topic == topic)
-                && (difficulty == 0 || item.difficulty == difficulty)
-                && (source.isEmpty || item.category.rawValue == source)
-                && (!flaggedOnly || flagged.contains(item.stableId))
-        }
-        let byItem = Dictionary(grouping: mine, by: \.itemStableID)
-
         NavigationStack {
             List {
                 Section {
-                    Picker("Paper", selection: $paper) {
-                        Text("All").tag(0); Text("Paper 1").tag(1); Text("Paper 2").tag(2)
+                    Picker("Library", selection: $library) {
+                        Text("Practice questions").tag("questions")
+                        Text("Papers & sources").tag("sources")
                     }
                     .pickerStyle(.segmented)
-                    Picker("Topic", selection: $topic) {
-                        Text("All topics").tag("")
-                        ForEach(content?.syllabus.topics ?? [], id: \.key) { Text($0.title).tag($0.key) }
-                    }
-                    Picker("Difficulty", selection: $difficulty) {
-                        Text("Any").tag(0)
-                        ForEach(1...5, id: \.self) { Text("Level \($0)").tag($0) }
-                    }
-                    Picker("Source", selection: $source) {
-                        Text("All sources").tag("")
-                        ForEach([TMUAContentCategory.revisrOriginal, .licensedPastPaper, .licensedMock], id: \.self) {
-                            Text($0.attributionTitle).tag($0.rawValue)
-                        }
-                    }
-                    Toggle("Flagged for review only", isOn: $flaggedOnly)
-                } footer: {
-                    if let content, content.distribution == .internal {
-                        Text("Development build: \(content.unreviewedItemCount) questions are unreviewed drafts. \(content.licensedItemCount) licensed past or mock questions are available.")
-                    }
+                    .accessibilityIdentifier("questions.library")
                 }
-                Section("\(items.count) question\(items.count == 1 ? "" : "s")") {
-                    if items.isEmpty {
-                        Text("No questions match these filters.").foregroundStyle(RevisrColors.secondaryLabel)
-                    }
-                    ForEach(items, id: \.versionKey) { item in
-                        NavigationLink {
-                            TMUAPracticeView(settings: settings, item: item)
-                        } label: {
-                            let history = byItem[item.stableId] ?? []
-                            VStack(alignment: .leading, spacing: 2) {
-                                HStack {
-                                    Text(item.title).font(.subheadline.weight(.semibold))
-                                    if flagged.contains(item.stableId) {
-                                        Image(systemName: "flag.fill").foregroundStyle(RevisrColors.warning)
-                                            .accessibilityLabel("Flagged")
-                                    }
-                                }
-                                Text("Paper \(item.paper) · \(content?.syllabus.topicTitle(item.taxonomy.topic) ?? "") · level \(item.difficulty)")
-                                    .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                                Text(history.isEmpty ? item.category.attributionTitle
-                                     : "\(history.count) attempt\(history.count == 1 ? "" : "s") · last \(history.max { $0.attemptedAt < $1.attemptedAt }?.isCorrect == true ? "correct" : "incorrect")")
-                                    .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                            }
-                            .accessibilityElement(children: .combine)
-                        }
-                    }
+                if library == "sources" {
+                    TMUAResourceLibraryView(settings: settings, content: content)
+                } else {
+                    questionList(content)
                 }
             }
             .navigationTitle("Questions")
@@ -814,10 +778,105 @@ private struct TMUAQuestionsView: View {
 #if DEBUG
             .onAppear {
                 if DebugTMUAScenarioService.value("--tmua-open") == "practice", debugPractice == nil {
-                    debugPractice = items.first { $0.paper == 2 }
+                    let wanted = DebugTMUAScenarioService.value("--tmua-item")
+                    debugPractice = content?.eligibleItems.first { wanted == nil ? $0.paper == 2 : $0.stableId == wanted }
                 }
             }
 #endif
+        }
+    }
+
+    @ViewBuilder
+    private func questionList(_ content: TMUAContentContext?) -> some View {
+        let openSectionIDs = Set(sections.filter { $0.status != .submitted }.map(\.stableID))
+        // Questions waiting in an unsubmitted diagnostic section stay hidden so
+        // practice cannot reveal their solutions early.
+        let reserved = Set(diagnosticItems.filter { openSectionIDs.contains($0.sectionID) }.map(\.itemStableID))
+        let mine = attempts.filter { $0.profileSettingsID == settings.id }
+        let byItem = Dictionary(grouping: mine, by: \.itemStableID)
+        let flagged = Set(flags.filter { $0.profileSettingsID == settings.id && $0.isFlagged }.map(\.itemStableID))
+        let eligible = (content?.eligibleItems ?? []).filter { !reserved.contains($0.stableId) }
+        let categories = TMUAContentCategory.allCases.filter { category in eligible.contains { $0.category == category } }
+        let items = eligible.filter { item in
+            let history = byItem[item.stableId] ?? []
+            let last = history.max { $0.attemptedAt < $1.attemptedAt }
+            let statusMatches = switch status {
+            case .all: true
+            case .notAttempted: history.isEmpty
+            case .attempted: !history.isEmpty
+            case .incorrect: last?.isCorrect == false
+            case .flagged: flagged.contains(item.stableId)
+            }
+            return statusMatches
+                && (paper == 0 || item.paper == paper)
+                && (topic.isEmpty || item.taxonomy.topic == topic)
+                && (strand.isEmpty || item.taxonomy.strand == strand)
+                && (difficulty == 0 || item.difficulty == difficulty)
+                && (source.isEmpty || item.category.rawValue == source)
+        }
+
+        Section {
+            Picker("Paper", selection: $paper) {
+                Text("All").tag(0); Text("Paper 1").tag(1); Text("Paper 2").tag(2)
+            }
+            .pickerStyle(.segmented)
+            Picker("Topic", selection: $topic) {
+                Text("All topics").tag("")
+                ForEach(content?.syllabus.topics ?? [], id: \.key) { Text($0.title).tag($0.key) }
+            }
+            .onChange(of: topic) { _, _ in strand = "" }
+            if let selected = content?.syllabus.topic(topic) {
+                Picker("Strand", selection: $strand) {
+                    Text("All strands").tag("")
+                    ForEach(selected.strands, id: \.key) { Text($0.title).tag($0.key) }
+                }
+            }
+            Picker("Difficulty (estimated)", selection: $difficulty) {
+                Text("Any").tag(0)
+                ForEach(1...5, id: \.self) { Text("Level \($0)").tag($0) }
+            }
+            if categories.count > 1 {
+                Picker("Source", selection: $source) {
+                    Text("All sources").tag("")
+                    ForEach(categories, id: \.self) { Text($0.attributionTitle).tag($0.rawValue) }
+                }
+            }
+            Picker("Status", selection: $status) {
+                ForEach(Status.allCases, id: \.self) { Text($0.title).tag($0) }
+            }
+        } footer: {
+            if let content, content.distribution == .internal {
+                Text("Development build: \(content.originalItemCount) original Revisr questions are unreviewed drafts; \(content.studyCopyItemCount) official past-paper questions are personal study copies with official answer keys. Difficulty levels are estimates, not calibrated ratings.")
+            } else {
+                Text("Difficulty levels are estimates until student results calibrate them.")
+            }
+        }
+        Section("\(items.count) question\(items.count == 1 ? "" : "s")") {
+            if items.isEmpty {
+                Text("No questions match these filters.").foregroundStyle(RevisrColors.secondaryLabel)
+            }
+            ForEach(items, id: \.versionKey) { item in
+                NavigationLink {
+                    TMUAPracticeView(settings: settings, item: item)
+                } label: {
+                    let history = byItem[item.stableId] ?? []
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Text(item.title).font(.subheadline.weight(.semibold))
+                            if flagged.contains(item.stableId) {
+                                Image(systemName: "flag.fill").foregroundStyle(RevisrColors.warning)
+                                    .accessibilityLabel("Flagged")
+                            }
+                        }
+                        Text("Paper \(item.paper) · \(content?.syllabus.strandTitle(item.taxonomy.strand) ?? "") · level \(item.difficulty) (estimated)")
+                            .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                        Text(history.isEmpty ? item.creditLine
+                             : "\(history.count) attempt\(history.count == 1 ? "" : "s") · last \(history.max { $0.attemptedAt < $1.attemptedAt }?.isCorrect == true ? "correct" : "incorrect")")
+                            .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+            }
         }
     }
 }
@@ -878,6 +937,7 @@ private struct TMUASettingsView: View {
                         LabeledContent("Distribution", value: content.distribution == .internal ? "Development" : "Public")
                         LabeledContent("Original Revisr questions", value: "\(content.originalItemCount)")
                         LabeledContent("Licensed past/mock questions", value: "\(content.licensedItemCount)")
+                        LabeledContent("Official past-paper study copies", value: "\(content.studyCopyItemCount)")
                         if content.unreviewedItemCount > 0 {
                             Text("\(content.unreviewedItemCount) questions are unreviewed development drafts and are excluded from public builds.")
                                 .font(.footnote).foregroundStyle(RevisrColors.warning)
@@ -946,7 +1006,7 @@ private struct TMUASettingsView: View {
             editing = false
             if let content = TMUAContentStore.context() {
                 let updated = try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content,
-                                                                         in: modelContext)
+                                                                         resourceSessions: true, in: modelContext)
                 message = "Your future plan was rebuilt. " + (updated.refreshSummary ?? "")
             }
         } catch {

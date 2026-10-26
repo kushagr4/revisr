@@ -6,6 +6,9 @@ enum TMUAContentCategory: String, Codable, CaseIterable, Sendable {
     case revisrOriginal = "revisr_original"
     case licensedPastPaper = "licensed_past_paper"
     case licensedMock = "licensed_mock"
+    /// An official past-paper question held for personal study in an internal build. It is
+    /// shown from the bundled paper and never distributed: it fails the public gate.
+    case pastPaperStudyCopy = "past_paper_study_copy"
     case developmentFixture = "development_fixture"
 
     var attributionTitle: String {
@@ -13,11 +16,14 @@ enum TMUAContentCategory: String, Codable, CaseIterable, Sendable {
         case .revisrOriginal: "Original Revisr question"
         case .licensedPastPaper: "Licensed past examination question"
         case .licensedMock: "Licensed mock paper question"
+        case .pastPaperStudyCopy: "Official past paper · personal study copy"
         case .developmentFixture: "Development fixture"
         }
     }
 
     var isLicensedThirdParty: Bool { self == .licensedPastPaper || self == .licensedMock }
+    /// Real examination or mock questions, licensed or held as a personal study copy.
+    var isPastOrMock: Bool { isLicensedThirdParty || self == .pastPaperStudyCopy }
 }
 
 enum TMUARightsState: String, Codable, Sendable {
@@ -73,6 +79,37 @@ struct TMUAContentSource: Codable, Hashable, Sendable {
     let attribution: String?
 }
 
+/// A question shown from its original paper rather than as Revisr text: the regions of the
+/// bundled PDF (`AdmissionsPapers/<document>`) that make up the question, in reading order.
+struct TMUAItemPresentation: Codable, Hashable, Sendable {
+    struct Region: Codable, Hashable, Sendable {
+        /// Zero-based page index.
+        let page: Int
+        /// PDF points, origin at the bottom-left of the media box.
+        let x: Double
+        let y: Double
+        let width: Double
+        let height: Double
+    }
+
+    let document: String
+    let regions: [Region]
+
+    var aspectRatio: Double {
+        let width = regions.map(\.width).max() ?? 1
+        let height = regions.reduce(0) { $0 + $1.height }
+        return height > 0 ? width / height : 1
+    }
+}
+
+/// Where the official worked solution for a question is: a bundled PDF
+/// (`AdmissionsSolutions/<document>`) and its one-based first page.
+struct TMUASolutionReference: Codable, Hashable, Sendable {
+    let document: String
+    let page: Int
+    let publisher: String
+}
+
 struct TMUAContentRights: Codable, Hashable, Sendable {
     let copyrightHolder: String
     let licence: String
@@ -109,10 +146,41 @@ struct TMUAContentItem: Codable, Hashable, Identifiable, Sendable {
     let source: TMUAContentSource?
     let rights: TMUAContentRights
     let review: TMUAContentReview
+    /// Set for questions shown from their original paper; the stem is then empty and the
+    /// options carry letters only.
+    var presentation: TMUAItemPresentation? = nil
+    var solutionReference: TMUASolutionReference? = nil
+    /// How the answer key was established, e.g. "UAT-UK official answer key".
+    var keyProvenance: String? = nil
+    /// How topic and difficulty were assigned when they are estimates, not reviewed values.
+    var taxonomyProvenance: String? = nil
+    var difficultyProvenance: String? = nil
+    /// The question's identity in the original Revisr library index (`AdmissionsManifest`).
+    var libraryQuestionID: String? = nil
 
     var id: String { versionKey }
     var versionKey: String { "\(stableId)@v\(version)" }
     var paperKind: TMUAPaper { TMUAPaper(rawValue: paper) ?? .one }
+
+    /// The short source credit shown under a question, e.g. "Original Revisr question · draft"
+    /// or "Source: UAT-UK · TMUA 2019 Paper 1 · Q12". It never implies endorsement.
+    var creditLine: String {
+        switch category {
+        case .revisrOriginal:
+            return review.publication == .approved ? "Original Revisr question" : "Original Revisr question · draft, not yet reviewed"
+        case .developmentFixture:
+            return category.attributionTitle
+        case .pastPaperStudyCopy, .licensedPastPaper, .licensedMock:
+            guard let source else { return category.attributionTitle }
+            if let attribution = source.attribution, !attribution.isEmpty { return attribution }
+            let paper = [source.examination, source.year.map(String.init), source.paperNumber.map { "Paper \($0)" }]
+                .compactMap { $0 }.joined(separator: " ")
+            let parts = [source.organisation, paper.isEmpty ? nil : paper, source.questionNumber.map { "Q\($0)" }]
+                .compactMap { $0 }
+            let credit = "Source: " + parts.joined(separator: " · ")
+            return category == .pastPaperStudyCopy ? credit + " · personal study copy" : credit
+        }
+    }
 }
 
 struct TMUAContentBank: Codable, Sendable {
