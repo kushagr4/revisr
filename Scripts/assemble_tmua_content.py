@@ -271,12 +271,30 @@ def default_content_dir(root):
     return os.environ.get("REVISR_PRIVATE_CONTENT_DIR") or os.path.join(os.path.dirname(root), "revisr-content-private")
 
 
+def resolve_distribution(env):
+    """The distribution an Xcode build may assemble. Private drafts are only
+    ever bundled into Debug builds; an archive (ACTION=install), which is what
+    TestFlight and the App Store receive, is always public."""
+    configuration = env.get("CONFIGURATION")
+    distribution = env.get("REVISR_DISTRIBUTION") or ("internal" if configuration == "Debug" else "public")
+    if distribution not in ("internal", "public"):
+        raise ValueError("REVISR_DISTRIBUTION must be internal or public")
+    if distribution == "internal":
+        if env.get("ACTION") == "install":
+            raise ValueError("internal content may never be assembled for an archive; use REVISR_DISTRIBUTION=public")
+        if configuration != "Debug" and env.get("REVISR_ALLOW_INTERNAL_NON_DEBUG") != "1":
+            raise ValueError("internal content is limited to Debug builds (configuration %s); "
+                             "set REVISR_ALLOW_INTERNAL_NON_DEBUG=1 only for a local, never-distributed build"
+                             % configuration)
+    return distribution
+
+
 def xcode_entry():
     root = os.environ.get("SRCROOT") or repo_root()
-    distribution = os.environ.get("REVISR_DISTRIBUTION") or (
-        "internal" if os.environ.get("CONFIGURATION") == "Debug" else "public")
-    if distribution not in ("internal", "public"):
-        sys.stderr.write("error: REVISR_DISTRIBUTION must be internal or public\n")
+    try:
+        distribution = resolve_distribution(os.environ)
+    except ValueError as error:
+        sys.stderr.write("error: " + str(error) + "\n")
         raise SystemExit(1)
     app = os.path.join(os.environ["TARGET_BUILD_DIR"], os.environ["UNLOCALIZED_RESOURCES_FOLDER_PATH"])
     content_dir = default_content_dir(root)
