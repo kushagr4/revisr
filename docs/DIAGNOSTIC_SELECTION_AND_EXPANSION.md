@@ -1,10 +1,12 @@
 # Diagnostic selection and expansion
 
-## Selector (`TMUADiagnosticSelector`, `tmua-selector-v1`)
+## Selector (`TMUADiagnosticSelector`, `tmua-selector-v2`)
+
+v2 (question-bank integration): the section's target size is fixed before selection (prior questions plus this round); v1 recomputed it after every pick, inflating band targets and the past/mock share. Ties are broken by a stable hash of `stableId@vN` instead of alphabetically, so picks spread across papers. The table below is otherwise unchanged.
 
 Inputs: paper, count, eligible items (latest version per stable ID), prior items already in this diagnostic, and excluded stable IDs (anything seen in the diagnostic or in practice). Paper 1 is selected first; Paper 2 is selected with Paper 1's picks as prior coverage.
 
-Greedy scoring for each candidate (highest wins; ties broken by `stableId@vN`, so the result is deterministic and independent of input order):
+Greedy scoring for each candidate (highest wins; ties broken by a stable hash of `stableId@vN`, so the result is deterministic and independent of input order):
 
 | Term | Weight |
 |---|---|
@@ -15,7 +17,7 @@ Greedy scoring for each candidate (highest wins; ties broken by `stableId@vN`, s
 | Reasoning skill not yet sampled | +80 |
 | Difficulty band (≤2 / 3 / ≥4) below its target share (35 / 45 / 20%) | +60 |
 | Short section (≤ 8 questions per paper) and difficulty 2–3 ("broadly informative") | +15 |
-| Licensed item while the section is under 30% licensed, in a topic with no licensed item yet | +50 |
+| Past or mock item (licensed, or a study copy in development builds) while the section is under 50% past or mock, in a topic with no such item yet | +50 |
 
 The chosen questions are presented in ascending difficulty, keeping selection order within a difficulty level.
 

@@ -22,7 +22,7 @@ Question content never lives in this public repository. It is read at build time
 
 ## Source mix
 
-- Selection gives a modest bonus to licensed items until about 30% of a section is licensed (`preferredLicensedShare`). Coverage scoring outranks it, and at most one licensed item per topic receives the bonus, so licensed questions are not concentrated in one topic. There is no fixed ratio.
+- Selection gives a modest bonus to real past or mock items (licensed, or personal study copies in development builds) until about half of a section is past or mock (`preferredLicensedShare = 0.5`; 0.3 before the question-bank integration, when a moving section total let it reach about 60% anyway). Coverage scoring outranks it, and at most one licensed item per topic receives the bonus, so licensed questions are not concentrated in one topic. There is no fixed ratio.
 - Each diagnostic stores its actual composition (`sourceCompositionNote`), shown on the hub and results screens.
 - Every question shows an unobtrusive attribution ("Original Revisr question", "Licensed past examination question", "Licensed mock paper question"); licensed items also show their source attribution. Nothing implies endorsement by an examination provider.
 

@@ -21,7 +21,7 @@ Branch `claude/flexible-tmua-ios`, started from `codex/ios-completion` at `3e140
 |---|---|---|
 | Content model | `Models/TMUA/TMUAContent.swift`, `Resources/TMUASyllabus.v1.json` | Versioned items (stable ID + version), rights and review records, hierarchical syllabus. |
 | Content policy | `Services/TMUA/TMUAContentPolicy.swift` | Public gate, internal/public distribution, source-mix status, availability per length. `TMUAContentStore` decodes the bank once per launch. |
-| Selection | `Services/TMUA/TMUADiagnosticSelector.swift` | Deterministic, coverage-aware greedy selection (`tmua-selector-v1`). |
+| Selection | `Services/TMUA/TMUADiagnosticSelector.swift` | Deterministic, coverage-aware greedy selection (`tmua-selector-v2`; see `RESOURCE_LIBRARY_INTEGRATION.md`). |
 | Diagnostic lifecycle | `Models/TMUA/TMUADiagnosticModels.swift`, `Services/TMUA/TMUADiagnosticService.swift` | Rounds → sections → pinned items; timing; submission; expansion. |
 | Evidence | `Services/Admissions/DiagnosticAnalysis.swift` (existing engine), `Services/TMUA/TMUADiagnosticReport.swift` | Raw score and topic/skill evidence from question-level outcomes. |
 | Planning | `Services/Admissions/PublicPlanningEngine.swift` (existing engine + opt-in options), `Services/TMUA/TMUAProgrammeService.swift`, `PublicProgrammeService.applyPlan` | One shared refresh rule set for both public programmes. |
@@ -31,7 +31,7 @@ Branch `claude/flexible-tmua-ios`, started from `codex/ios-completion` at `3e140
 
 ## SwiftData additions (all additive)
 
-New entities: `TMUADiagnostic`, `TMUADiagnosticSection`, `TMUADiagnosticItem`, `TMUAPracticeAttempt`, `TMUAReviewFlag`. New optional attributes: `AppSettings.publicFlowVersion`, `publicDiagnosticLengthRawValue`, `publicSessionMinutes`; `PublicProgramme.sessionMinutesSnapshot`, `refreshSummary`. These are lightweight-migration changes; no existing attribute was renamed or removed, and no record is relabelled. The flexible programme uses the existing `PublicProgramme`/`PublicProgrammeTask` entities under a distinct ID (`tmua-flex-programme-v1-<profile>`), so an earlier `public-programme-v1-…` programme is never overwritten.
+New entities: `TMUADiagnostic`, `TMUADiagnosticSection`, `TMUADiagnosticItem`, `TMUAPracticeAttempt`, `TMUAReviewFlag`, and (question-bank integration) `TMUAResourceLog` for self-recorded results. New optional attributes: `AppSettings.publicFlowVersion`, `publicDiagnosticLengthRawValue`, `publicSessionMinutes`; `PublicProgramme.sessionMinutesSnapshot`, `refreshSummary`. These are lightweight-migration changes; no existing attribute was renamed or removed, and no record is relabelled. The flexible programme uses the existing `PublicProgramme`/`PublicProgrammeTask` entities under a distinct ID (`tmua-flex-programme-v1-<profile>`), so an earlier `public-programme-v1-…` programme is never overwritten.
 
 Native practice uses `TMUAPracticeAttempt` instead of `QuestionAttempt`, because bank items are not `AdmissionsQuestion` rows. The legacy catalogue, its attempts and the personal programme are untouched.
 
