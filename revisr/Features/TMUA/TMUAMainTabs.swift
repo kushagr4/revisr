@@ -4,6 +4,16 @@ import SwiftUI
 struct TMUARootTabView: View {
     let settings: AppSettings
     @Query private var programmes: [PublicProgramme]
+    @State private var tab = Self.initialTab
+    @State private var showingSettings = Self.initialTab == "settings"
+
+    private static var initialTab: String {
+#if DEBUG
+        DebugTMUAScenarioService.value("--tmua-tab") ?? "today"
+#else
+        "today"
+#endif
+    }
 
     private var programme: PublicProgramme? {
         programmes.first { $0.stableID == TMUAProgrammeService.programmeID(settings: settings) }
@@ -11,21 +21,25 @@ struct TMUARootTabView: View {
 
     var body: some View {
         if let programme {
-            TabView {
+            TabView(selection: $tab) {
                 TMUATodayView(settings: settings, programme: programme)
-                    .tabItem { Label("Today", systemImage: "checklist") }
+                    .tabItem { Label("Today", systemImage: "checklist") }.tag("today")
                 TMUAPlanView(settings: settings, programme: programme)
-                    .tabItem { Label("Plan", systemImage: "calendar") }
+                    .tabItem { Label("Plan", systemImage: "calendar") }.tag("plan")
                 TMUAProgressView(settings: settings, programme: programme)
-                    .tabItem { Label("Progress", systemImage: "chart.bar.xaxis") }
+                    .tabItem { Label("Progress", systemImage: "chart.bar.xaxis") }.tag("progress")
                 TMUATopicsView(settings: settings, programme: programme)
-                    .tabItem { Label("Topics", systemImage: "list.bullet.rectangle") }
+                    .tabItem { Label("Topics", systemImage: "list.bullet.rectangle") }.tag("topics")
                 TMUAQuestionsView(settings: settings)
-                    .tabItem { Label("Questions", systemImage: "square.stack.3d.up") }
-                TMUASettingsView(settings: settings, programme: programme)
-                    .tabItem { Label("Settings", systemImage: "gearshape") }
+                    .tabItem { Label("Questions", systemImage: "square.stack.3d.up") }.tag("questions")
             }
-            .tint(RevisrColors.accentTeal)
+            // Settings opens from a gear on every tab: a sixth tab would be
+            // folded into iOS's More menu, which nests navigation stacks.
+            .environment(\.tmuaShowSettings, { showingSettings = true })
+            .sheet(isPresented: $showingSettings) {
+                TMUASettingsView(settings: settings, programme: programme, onDone: { showingSettings = false })
+            }
+            .tint(RevisrColors.accentStrong)
         } else {
             TMUADiagnosticHubView(settings: settings)
         }
@@ -159,6 +173,7 @@ private struct TMUATodayView: View {
                 }
             }
             .navigationTitle("Today")
+            .tmuaSettingsButton()
         }
     }
 }
@@ -254,6 +269,7 @@ private struct TMUAPlanView: View {
                 }
             }
             .navigationTitle("Plan")
+            .tmuaSettingsButton()
             .confirmationDialog("Refresh your future plan?", isPresented: $showingRefresh, titleVisibility: .visible) {
                 Button("Refresh plan") { refresh() }
             } message: {
@@ -558,6 +574,7 @@ private struct TMUAProgressView: View {
                 }
             }
             .navigationTitle("Progress")
+            .tmuaSettingsButton()
         }
     }
 }
@@ -629,6 +646,7 @@ private struct TMUATopicsView: View {
                 }
             }
             .navigationTitle("Topics")
+            .tmuaSettingsButton()
         }
     }
 }
@@ -647,6 +665,7 @@ private struct TMUAQuestionsView: View {
     @State private var difficulty: Int = 0
     @State private var source: String = ""
     @State private var flaggedOnly = false
+    @State private var debugPractice: TMUAContentItem?
 
     var body: some View {
         let content = TMUAContentStore.context()
@@ -722,6 +741,15 @@ private struct TMUAQuestionsView: View {
                 }
             }
             .navigationTitle("Questions")
+            .tmuaSettingsButton()
+            .navigationDestination(item: $debugPractice) { TMUAPracticeView(settings: settings, item: $0) }
+#if DEBUG
+            .onAppear {
+                if DebugTMUAScenarioService.value("--tmua-open") == "practice", debugPractice == nil {
+                    debugPractice = items.first { $0.paper == 2 }
+                }
+            }
+#endif
         }
     }
 }
@@ -732,6 +760,7 @@ private struct TMUASettingsView: View {
     @Environment(\.modelContext) private var modelContext
     let settings: AppSettings
     let programme: PublicProgramme
+    var onDone: () -> Void = {}
     @State private var editing = false
     @State private var examDate = Date.now
     @State private var weekly: Int?
@@ -796,6 +825,9 @@ private struct TMUASettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) { Button("Done", action: onDone) }
+            }
             .sheet(isPresented: $editing) { editSheet }
             .alert("Preparation", isPresented: Binding(get: { message != nil }, set: { if !$0 { message = nil } })) {
                 Button("OK", role: .cancel) { message = nil }
@@ -866,4 +898,32 @@ private struct TMUASettingsView: View {
         let parts = DateUtilities.appCalendar().dateComponents([.hour, .minute], from: date)
         return (parts.hour ?? 18) * 60 + (parts.minute ?? 0)
     }
+}
+
+
+private struct TMUAShowSettingsKey: EnvironmentKey {
+    static let defaultValue: () -> Void = {}
+}
+
+extension EnvironmentValues {
+    var tmuaShowSettings: () -> Void {
+        get { self[TMUAShowSettingsKey.self] }
+        set { self[TMUAShowSettingsKey.self] = newValue }
+    }
+}
+
+private struct TMUASettingsButton: ViewModifier {
+    @Environment(\.tmuaShowSettings) private var showSettings
+
+    func body(content: Content) -> some View {
+        content.toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Settings", systemImage: "gearshape", action: showSettings)
+            }
+        }
+    }
+}
+
+extension View {
+    func tmuaSettingsButton() -> some View { modifier(TMUASettingsButton()) }
 }

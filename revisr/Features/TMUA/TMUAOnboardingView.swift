@@ -24,7 +24,7 @@ struct TMUAFlowRootView: View {
                 }
             }
         }
-        .tint(RevisrColors.accentTeal)
+        .tint(RevisrColors.accentStrong)
     }
 }
 
@@ -59,6 +59,13 @@ struct TMUAOnboardingView: View {
             ? AppSettings.publicDefaultAvailability : settings.publicAvailability)
         _sessionMinutes = State(initialValue: settings.publicSessionMinutes)
         _length = State(initialValue: settings.publicDiagnosticLength)
+#if DEBUG
+        if let step = DebugTMUAScenarioService.value("--tmua-step") {
+            _step = State(initialValue: ["examDate": .examDate, "availability": .availability,
+                                         "length": .length][step] ?? .welcome)
+            if step == "length" { _weeklyMinutes = State(initialValue: 300) }
+        }
+#endif
     }
 
     var body: some View {
@@ -86,6 +93,11 @@ struct TMUAOnboardingView: View {
                     .padding(RevisrSpacing.large)
                     .frame(maxWidth: 640)
                     .frame(maxWidth: .infinity)
+                    if let hint = blockingHint {
+                        Text(hint).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
+                            .padding(.horizontal, RevisrSpacing.large).padding(.bottom, RevisrSpacing.large)
+                            .frame(maxWidth: 640, alignment: .leading)
+                    }
                 }
             }
             .safeAreaInset(edge: .bottom) { footer }
@@ -177,12 +189,9 @@ struct TMUAOnboardingView: View {
 
     private var footer: some View {
         VStack(spacing: RevisrSpacing.small) {
-            if let hint = blockingHint {
-                Text(hint).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
-                    .multilineTextAlignment(.center)
-            }
             Button(action: advance) {
-                Text(primaryTitle).frame(maxWidth: .infinity).padding(.vertical, 6)
+                Text(primaryTitle).lineLimit(1).minimumScaleFactor(0.5)
+                    .frame(maxWidth: .infinity).padding(.vertical, 6)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
@@ -315,7 +324,7 @@ struct TMUAAvailabilityEditor: View {
                                 .font(.subheadline.weight(.semibold))
                                 .frame(maxWidth: .infinity, minHeight: RevisrMetrics.minimumTapTarget)
                                 .foregroundStyle(on ? Color.white : RevisrColors.primaryLabel)
-                                .background(on ? RevisrColors.accentTeal : RevisrColors.secondaryBackground,
+                                .background(on ? RevisrColors.accentStrong : RevisrColors.secondaryBackground,
                                             in: RoundedRectangle(cornerRadius: RevisrMetrics.compactCornerRadius))
                         }
                         .buttonStyle(.plain)
@@ -326,12 +335,17 @@ struct TMUAAvailabilityEditor: View {
                 }
             }
             VStack(alignment: .leading, spacing: RevisrSpacing.compact) {
-                Picker("Longest session in a day", selection: $sessionMinutes) {
-                    ForEach(Self.sessionOptions, id: \.self) { option in
-                        Text(option.map { "\($0) minutes" } ?? "No limit").tag(option)
+                HStack {
+                    Text("Longest session in a day").font(.headline)
+                    Spacer()
+                    Picker("Longest session in a day", selection: $sessionMinutes) {
+                        ForEach(Self.sessionOptions, id: \.self) { option in
+                            Text(option.map { "\($0) minutes" } ?? "No limit").tag(option)
+                        }
                     }
+                    .pickerStyle(.menu)
+                    .labelsHidden()
                 }
-                .pickerStyle(.menu)
                 Text("Optional. Revisr never plans more than this on one day.")
                     .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
             }
@@ -369,7 +383,7 @@ struct TMUAAvailabilityEditor: View {
                 .font(.body.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: RevisrMetrics.minimumTapTarget)
                 .foregroundStyle(selected ? Color.white : RevisrColors.primaryLabel)
-                .background(selected ? RevisrColors.accentTeal : RevisrColors.secondaryBackground,
+                .background(selected ? RevisrColors.accentStrong : RevisrColors.secondaryBackground,
                             in: RoundedRectangle(cornerRadius: RevisrMetrics.standardCornerRadius))
         }
         .buttonStyle(.plain)

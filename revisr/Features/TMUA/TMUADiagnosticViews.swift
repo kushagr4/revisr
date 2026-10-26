@@ -18,6 +18,7 @@ struct TMUADiagnosticHubView: View {
     @State private var pendingLength: TMUADiagnosticLength?
     @State private var errorMessage: String?
     @State private var isGenerating = false
+    @State private var showingResults = false
 
     private var content: TMUAContentContext? { TMUAContentStore.context() }
 
@@ -42,6 +43,19 @@ struct TMUADiagnosticHubView: View {
         }
         .navigationTitle("Diagnostic")
         .onAppear(perform: refresh)
+        .navigationDestination(isPresented: $showingResults) {
+            if let snapshot { TMUAResultsView(settings: settings, snapshot: snapshot) }
+        }
+#if DEBUG
+        .task {
+            guard let open = DebugTMUAScenarioService.value("--tmua-open"), let snapshot else { return }
+            if open == "results" { showingResults = snapshot.isInitialComplete }
+            if open == "session" || open == "overview",
+               let section = snapshot.sections.first(where: { $0.status == .inProgress }) {
+                self.open(section)
+            }
+        }
+#endif
         .onChange(of: allSections.map(\.statusRawValue)) { _, _ in refresh() }
         .fullScreenCover(item: $activeSection, onDismiss: refresh) { section in
             if let snapshot {
@@ -291,11 +305,12 @@ struct TMUAAssessmentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let settings: AppSettings
     let section: TMUADiagnosticSection
     let snapshot: TMUADiagnosticSnapshot
 
-    @State private var showingOverview = false
+    @State private var showingOverview = Self.debugOverview
     @State private var showingSubmit = false
     @State private var paused = false
     @State private var errorMessage: String?
@@ -351,9 +366,11 @@ struct TMUAAssessmentView: View {
 
     private var progressHeader: some View {
         VStack(spacing: RevisrSpacing.small) {
-            HStack {
+            let layout = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4)) : AnyLayout(HStackLayout())
+            layout {
                 Text("Question \(index + 1) of \(items.count)").font(.subheadline.weight(.semibold))
-                Spacer()
+                if !dynamicTypeSize.isAccessibilitySize { Spacer() }
                 TimelineView(.periodic(from: .now, by: 1)) { context in
                     Label(Self.clock(section.elapsed(at: context.date)), systemImage: "clock")
                         .font(.subheadline.monospacedDigit())
@@ -370,8 +387,10 @@ struct TMUAAssessmentView: View {
                 .tint(RevisrColors.accentTeal)
                 .accessibilityLabel("Answered")
                 .accessibilityValue("\(items.filter { $0.selectedOptionID != nil }.count) of \(items.count)")
-            Text("Suggested time \(section.advisoryMinutes) minutes · nothing is submitted automatically")
-                .font(.caption2).foregroundStyle(RevisrColors.secondaryLabel)
+            if !dynamicTypeSize.isAccessibilitySize {
+                Text("Suggested time \(section.advisoryMinutes) minutes · nothing is submitted automatically")
+                    .font(.caption2).foregroundStyle(RevisrColors.secondaryLabel)
+            }
         }
         .padding(.horizontal, RevisrSpacing.large)
         .padding(.vertical, RevisrSpacing.small)
@@ -421,7 +440,8 @@ struct TMUAAssessmentView: View {
             } label: {
                 Label(item?.isFlagged == true ? "Unflag" : "Flag",
                       systemImage: item?.isFlagged == true ? "flag.slash" : "flag")
-                    .frame(minHeight: RevisrMetrics.minimumTapTarget)
+                    .labelStyle(AdaptiveLabelStyle(iconOnly: dynamicTypeSize.isAccessibilitySize))
+                    .frame(minWidth: RevisrMetrics.minimumTapTarget, minHeight: RevisrMetrics.minimumTapTarget)
             }
             .buttonStyle(.bordered)
 
@@ -432,12 +452,15 @@ struct TMUAAssessmentView: View {
                     move(to: index + 1)
                 } label: {
                     Label("Next", systemImage: "chevron.right")
+                        .labelStyle(AdaptiveLabelStyle(iconOnly: dynamicTypeSize.isAccessibilitySize))
                         .frame(minWidth: 88, minHeight: RevisrMetrics.minimumTapTarget)
                 }
                 .buttonStyle(.borderedProminent)
             } else {
                 Button("Review and submit") { showingSubmit = true }
                     .buttonStyle(.borderedProminent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .frame(minHeight: RevisrMetrics.minimumTapTarget)
             }
         }
@@ -494,7 +517,7 @@ struct TMUAAssessmentView: View {
                 .font(.headline.monospacedDigit())
                 .frame(width: 52, height: 52)
                 .foregroundStyle(answered ? Color.white : RevisrColors.primaryLabel)
-                .background(answered ? RevisrColors.accentTeal : RevisrColors.secondaryBackground,
+                .background(answered ? RevisrColors.accentStrong : RevisrColors.secondaryBackground,
                             in: RoundedRectangle(cornerRadius: RevisrMetrics.compactCornerRadius))
                 .overlay {
                     RoundedRectangle(cornerRadius: RevisrMetrics.compactCornerRadius)
@@ -617,6 +640,14 @@ struct TMUAAssessmentView: View {
         }
     }
 
+    private static var debugOverview: Bool {
+#if DEBUG
+        DebugTMUAScenarioService.value("--tmua-open") == "overview"
+#else
+        false
+#endif
+    }
+
     static func clock(_ seconds: TimeInterval) -> String {
         let total = max(0, Int(seconds))
         return total >= 3600
@@ -667,7 +698,7 @@ struct TMUAOptionButton: View {
 
     private var accent: Color {
         switch state {
-        case .neutral: RevisrColors.accentTeal
+        case .neutral: RevisrColors.accentStrong
         case .correct, .key: RevisrColors.success
         case .incorrect: RevisrColors.critical
         }
@@ -687,6 +718,19 @@ struct TMUAOptionButton: View {
         case .correct: "Your answer, correct"
         case .incorrect: "Your answer, incorrect"
         case .key: "Correct answer"
+        }
+    }
+}
+
+/// Shows only the icon at accessibility text sizes; VoiceOver still reads the title.
+struct AdaptiveLabelStyle: LabelStyle {
+    let iconOnly: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        if iconOnly {
+            Label(configuration).labelStyle(.iconOnly)
+        } else {
+            Label(configuration).labelStyle(.titleAndIcon)
         }
     }
 }

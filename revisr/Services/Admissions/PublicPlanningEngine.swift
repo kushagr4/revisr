@@ -338,9 +338,17 @@ enum PublicPlanningEngine {
                         return lhs.id < rhs.id
                     }
                     selectedQuestion = spaced.first
+                    // Nothing is due for review: borrow up to a week ahead of
+                    // the fresh-question pace rather than leave time unused.
+                    if selectedQuestion == nil, options.paceFreshQuestions {
+                        let ahead = Int((Double(freshTotal) * Double(min(totalStudyDays, studyDayIndex + 6))
+                            / Double(max(1, totalStudyDays))).rounded(.up))
+                        if freshPlacedTotal < ahead { selectedQuestion = freshPool.first ?? anyFresh.first }
+                    }
                     // A missed or flagged question meeting its first revisit
                     // in this plan is error review; later revisits are spaced.
-                    if let pick = selectedQuestion {
+                    if let pick = selectedQuestion,
+                       pick.latestOutcome != nil || pick.diagnostic || pick.reviewFlag || lastPlanned[pick.id] != nil {
                         let missed = pick.latestOutcome == .incorrect || pick.latestOutcome == .partial || pick.reviewFlag
                         isSpaced = !(missed && lastPlanned[pick.id] == nil && !used.contains(pick.id))
                     }

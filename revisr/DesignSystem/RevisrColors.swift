@@ -2,6 +2,13 @@ import SwiftUI
 
 enum RevisrColors {
     static let accentTeal = Color("AccentColor")
+    /// A darker teal for filled controls with white text and for tinted text
+    /// on light backgrounds; meets WCAG contrast where `accentTeal` does not.
+    static let accentStrong = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.10, green: 0.62, blue: 0.60, alpha: 1)
+            : UIColor(red: 0.03, green: 0.45, blue: 0.45, alpha: 1)
+    })
     static let deepNavy = Color(red: 0.025, green: 0.10, blue: 0.25)
 
     static let tmua = Color(red: 0.12, green: 0.55, blue: 0.58)

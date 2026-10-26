@@ -60,17 +60,32 @@ struct TMUAResultsView: View {
                     }
                 }
                 Divider()
-                Grid(alignment: .leading, horizontalSpacing: RevisrSpacing.large, verticalSpacing: 4) {
-                    GridRow { Text("Answered"); Text("\(report.answered)").monospacedDigit() }
-                    GridRow { Text("Skipped"); Text("\(report.skipped)").monospacedDigit() }
-                    GridRow { Text("Active time"); Text(TMUAAssessmentView.clock(Double(report.activeSeconds))).monospacedDigit() }
-                    GridRow { Text("Topics sampled"); Text("\(report.sampledTopicKeys.count) of \(report.sampledTopicKeys.count + report.unassessedTopicKeys.count)").monospacedDigit() }
+                ViewThatFits(in: .horizontal) {
+                    Grid(alignment: .leading, horizontalSpacing: RevisrSpacing.large, verticalSpacing: 4) {
+                        ForEach(facts(report), id: \.0) { fact in
+                            GridRow { Text(fact.0).fixedSize(); Text(fact.1).monospacedDigit().fixedSize() }
+                        }
+                    }
+                    VStack(alignment: .leading, spacing: RevisrSpacing.small) {
+                        ForEach(facts(report), id: \.0) { fact in
+                            VStack(alignment: .leading) {
+                                Text(fact.0).foregroundStyle(RevisrColors.secondaryLabel)
+                                Text(fact.1).monospacedDigit()
+                            }
+                        }
+                    }
                 }
                 .font(.subheadline)
                 Text(report.scoreDisclaimer).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
             }
             .padding(.vertical, RevisrSpacing.small)
         }
+    }
+
+    private func facts(_ report: TMUADiagnosticReport) -> [(String, String)] {
+        [("Answered", "\(report.answered)"), ("Skipped", "\(report.skipped)"),
+         ("Active time", TMUAAssessmentView.clock(Double(report.activeSeconds))),
+         ("Topics sampled", "\(report.sampledTopicKeys.count) of \(report.sampledTopicKeys.count + report.unassessedTopicKeys.count)")]
     }
 
     private func confidenceSection(_ report: TMUADiagnosticReport) -> some View {

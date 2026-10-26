@@ -174,4 +174,31 @@ final class TMUAContentAndSelectionTests: XCTestCase {
         }
         XCTAssertEqual(content.licensedItemCount, 0, "no licensed past/mock content has been cleared")
     }
+
+    /// Reports how much of the syllabus each length samples from the bundled
+    /// bank. Counts only; no question content is printed.
+    func testBundledBankCoverageByLength() throws {
+        guard let content = TMUAContentStore.context(), content.eligibleItems.count >= 40 else {
+            throw XCTSkip("Bundled bank too small for a comprehensive selection")
+        }
+        let syllabus = content.syllabus
+        let allStrands = syllabus.topics.flatMap(\.strands).count
+        var previousTopics = 0
+        for length in TMUADiagnosticLength.allCases {
+            let one = try TMUADiagnosticSelector.select(paper: .one, count: length.paperOneQuestions,
+                                                        candidates: content.eligibleItems)
+            let two = try TMUADiagnosticSelector.select(paper: .two, count: length.paperTwoQuestions,
+                                                        candidates: content.eligibleItems, prior: one)
+            let items = one + two
+            let topics = Set(items.map(\.taxonomy.topic))
+            let strands = Set(items.map(\.taxonomy.strand))
+            let difficulties = Dictionary(grouping: items, by: \.difficulty).mapValues(\.count)
+            print("COVERAGE \(length.title): topics \(topics.count)/\(syllabus.topics.count), strands \(strands.count)/\(allStrands), P2 reasoning topics \(Set(two.map(\.taxonomy.topic)).intersection(["logic", "proof", "errors-in-proofs"]).count)/3, difficulty \(difficulties.sorted { $0.key < $1.key }), minutes \(items.reduce(0) { $0 + $1.estimatedMinutes })")
+            XCTAssertGreaterThanOrEqual(topics.count, previousTopics)
+            previousTopics = topics.count
+        }
+        let bankTopics = Set(content.eligibleItems.map(\.taxonomy.topic))
+        let bankStrands = Set(content.eligibleItems.map(\.taxonomy.strand))
+        print("COVERAGE bank: \(content.eligibleItems.count) items, topics \(bankTopics.count)/\(syllabus.topics.count), strands \(bankStrands.count)/\(allStrands); missing strands: \(syllabus.topics.flatMap(\.strands).map(\.key).filter { !bankStrands.contains($0) })")
+    }
 }

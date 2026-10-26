@@ -83,6 +83,7 @@ private struct StartupView: View {
                 try DebugPlanScenarioService.applyIfRequested(in: modelContext)
                 try DebugProgressScenarioService.applyIfRequested(in: modelContext)
                 try DebugTopicsScenarioService.applyIfRequested(in: modelContext)
+                try DebugTMUAScenarioService.applyIfRequested(in: modelContext)
 #endif
                 settings = preparedSettings
             } catch {
