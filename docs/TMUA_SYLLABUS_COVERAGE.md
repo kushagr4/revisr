@@ -36,39 +36,41 @@ Reasoning skills: conditional reasoning, necessary/sufficient, quantifiers, nega
 
 `legacyTopicKeyMap` maps Revisr Web's broad `revisr-core-v1` keys (algebra, sequences, geometry, functions, combinatorics, probability, number-theory, inequalities) onto these topics. Imported web items keep their original keys in provenance. The legacy iOS catalogue's free-text `primaryTopic` values and earlier diagnostic records are not relabelled. New diagnostic items store `topicKey`, `strandKey`, `skillKey` and the taxonomy version.
 
-## Development bank coverage (26 October 2026)
+## Development bank coverage (26 October 2026, after R1)
 
-| Topic | Papers | P1 items | P2 items | Strands not yet represented |
+The R1 drafts add 16 Paper 1 items for the 8 previously empty strands and 6 Paper 2 items whose main load is Section 1 knowledge. They also add 5 corrected versions, which do not change the counts. Counts are latest versions per stable ID: 82 questions, 50 Paper 1 and 32 Paper 2. Paper 2 items carry their Section 1 topic, so a Section 1 topic can have Paper 2 items.
+
+| Topic | Papers | P1 items | P2 items | Strands with only one item |
 |---|---|---:|---:|---|
-| Algebra | 1, 2 | 4 | 0 | — |
-| Equations and inequalities | 1, 2 | 3 | 0 | — |
-| Functions and graphs | 1, 2 | 2 | 0 | function-properties |
-| Coordinate geometry | 1, 2 | 2 | 0 | — |
-| Sequences and series | 1, 2 | 4 | 0 | — |
-| Trigonometry | 1, 2 | 4 | 0 | — |
-| Exponentials and logarithms | 1, 2 | 2 | 0 | exponential-graphs |
-| Differentiation | 1, 2 | 2 | 0 | derivatives |
-| Integration | 1, 2 | 2 | 0 | differential-equations |
-| Number | 1, 2 | 1 | 0 | number-calculation |
-| Ratio, proportion and units | 1, 2 | 1 | 0 | units |
-| Geometry and measures | 1, 2 | 2 | 0 | mensuration, vectors |
-| Statistics | 1, 2 | 1 | 0 | — |
-| Counting and probability | 1, 2 | 4 | 0 | — |
+| Algebra | 1, 2 | 4 | 0 | polynomials, algebraic-manipulation |
+| Equations and inequalities | 1, 2 | 3 | 1 | quadratics, simultaneous-equations |
+| Functions and graphs | 1, 2 | 4 | 0 | graph-transformations, graphs-and-roots |
+| Coordinate geometry | 1, 2 | 2 | 1 | straight-lines |
+| Sequences and series | 1, 2 | 4 | 1 | arithmetic-series, geometric-series, binomial-expansion |
+| Trigonometry | 1, 2 | 4 | 1 | triangle-trigonometry, radians-arcs, trig-functions-identities |
+| Exponentials and logarithms | 1, 2 | 4 | 0 | logarithm-laws, exponential-equations |
+| Differentiation | 1, 2 | 4 | 0 | — |
+| Integration | 1, 2 | 4 | 1 | trapezium-rule |
+| Number | 1, 2 | 3 | 0 | number-properties |
+| Ratio, proportion and units | 1, 2 | 3 | 0 | ratio-proportion |
+| Geometry and measures | 1, 2 | 6 | 0 | — |
+| Statistics | 1, 2 | 1 | 0 | statistics |
+| Counting and probability | 1, 2 | 4 | 1 | — |
 | Logic of arguments | 2 | 0 | 15 | — |
-| Mathematical proof | 2 | 0 | 8 | — |
+| Mathematical proof | 2 | 0 | 8 | conjecture, proof-ordering |
 | Errors in proofs | 2 | 0 | 3 | — |
 
-All 17 topics and 38 of 46 strands are represented; 8 strands are not yet. Paper 2 items currently test reasoning only and do not yet include Paper 2-style items whose main load is Section 1 knowledge. Most topics have only 1–4 items, so expansion and long plans rely on spaced review. None of these items is publicly eligible.
+All 17 topics and **46 of 46** strands now have at least one draft question. Before R1, 38 of 46 had one; the 8 previously empty strands are all assessed content in the official specification (see `R1_CONTENT_REVIEW_MATRIX.md`). 21 strands still have only one question. None of these items is publicly eligible, and none has human review.
 
 ## Coverage by diagnostic length
 
-The selector maximises new topics first, then new strands and skills (see `DIAGNOSTIC_SELECTION_AND_EXPANSION.md`). Measured on the 60-item development bank by `testBundledBankCoverageByLength` (26 October 2026):
+The selector maximises new topics first, then new strands and skills (see `DIAGNOSTIC_SELECTION_AND_EXPANSION.md`). Measured on the 82-question development bank by `testBundledBankCoverageByLength` (26 October 2026, after R1; the earlier 60-item figures are in brackets):
 
 | Length | Topics sampled | Strands sampled | Paper 2 reasoning topics | Difficulty mix (level: count) | Author-estimated minutes |
 |---|---:|---:|---:|---|---:|
-| Starter (10) | 8 / 17 | 10 / 46 | 3 / 3 | 2: 5, 3: 5 | 34 |
-| Quick (15) | 11 / 17 | 15 / 46 | 3 / 3 | 2: 7, 3: 7, 5: 1 | 54 |
-| Balanced (20) | 13 / 17 | 19 / 46 | 3 / 3 | 2: 9, 3: 8, 4: 2, 5: 1 | 74 |
-| Comprehensive (40) | 17 / 17 | 29 / 46 | 3 / 3 | 2: 13, 3: 19, 4: 7, 5: 1 | 155 |
+| Starter (10) | 10 / 17 (8) | 10 / 46 (10) | 3 / 3 | 2: 5, 3: 5 | 34 |
+| Quick (15) | 13 / 17 (11) | 15 / 46 (15) | 3 / 3 | 2: 5, 3: 8, 4: 2 | 56 |
+| Balanced (20) | 13 / 17 (13) | 20 / 46 (19) | 3 / 3 | 2: 8, 3: 7, 4: 4, 5: 1 | 76 |
+| Comprehensive (40) | 17 / 17 (17) | 31 / 46 (29) | 3 / 3 | 2: 14, 3: 16, 4: 9, 5: 1 | 153 |
 
 Even the comprehensive diagnostic has only one to a few questions per topic. Topics with few assessed questions are reported as "insufficient evidence", and unsampled topics as "not assessed".

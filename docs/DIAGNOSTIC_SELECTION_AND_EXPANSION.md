@@ -34,7 +34,9 @@ From the results screen, the hub, the Settings sheet, or the optional "Refine yo
 4. Creates a new round with its own sections, timing and advisory minutes. Earlier rounds, answers, marks and timings are never modified.
 5. Updates the target length. The report keeps the earlier length's confidence label until the new round is fully submitted.
 
-When the added round is submitted, any open refinement task is marked complete and an existing programme is refreshed. Completed tasks are kept and the next three days stay stable.
+Questions in an unsubmitted round are **reserved** (R1 fix). Expansion goes through `TMUAProgrammeService.expandDiagnostic`, which refreshes an existing plan immediately. Reserved questions are excluded from planning, open tasks that reference them are retired, and the task screen refuses to show them. Before this fix, an added question could also sit in Today's tasks, and opening that task revealed its worked solution before the student answered it in the diagnostic (`testExpansionReservesQuestionsAndPreservesEarlierWork`).
+
+When the added round is submitted, any open refinement task is marked complete and the programme is refreshed again. Completed tasks are kept and the next three days stay stable.
 
 Each question identity contributes at most one observation to the evidence (`TMUADiagnosticReportBuilder` deduplicates by stable ID), so repeats cannot inflate evidence. The timing note states that extended diagnostics were answered in separate sessions, not under one timed sitting.
 
@@ -42,4 +44,4 @@ If a student practises many questions before expanding, too few unseen questions
 
 ## Tests
 
-`TMUAContentAndSelectionTests` (exact counts for every length, determinism, difficulty variety, insufficient content, exclusion, versioning, mixed source) and `TMUADiagnosticLifecycleTests.testEveryExpansionPathKeepsEarlierWorkAndAddsOnlyTheDifference` (all six expansion paths).
+`TMUAContentAndSelectionTests` (exact counts for every length, determinism, difficulty variety, insufficient content, exclusion, versioning, mixed source) and `TMUADiagnosticLifecycleTests.testEveryExpansionPathKeepsEarlierWorkAndAddsOnlyTheDifference` (all six expansion paths). R1 adds the UI journey `TMUALifecycleAndExpansionUITests.testExpansionFromStarterKeepsEarlierAnswersAndScores` and `TMUAAdaptationScenarioTests.testExpansionReservesQuestionsAndPreservesEarlierWork`.

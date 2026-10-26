@@ -19,7 +19,9 @@ Start date; exam date (exam day excluded); available weekdays; weekly minutes; o
 | `dailyMinutesCap` | Student's "longest session" preference; never exceeded |
 | `paceFreshQuestions` | Introduces unseen questions cumulatively in proportion to the elapsed share of the window, so a 12-day and a 180-day plan both spread content to the end. When nothing is due for review, it may borrow up to about a week ahead. |
 | `spacedReviewIntervalDays = 7` | Revisits questions with widening gaps (7, 14, 21… days). A missed question's first revisit is labelled error review; later ones spaced review. |
-| `maximumSpacedRepeats` | 2 to 6, scaled to the window's capacity against the bank size |
+| `maximumSpacedRepeats` | 2 or 3 (R1: capped at `spacedRepeatLimit = 3`; was up to 6, which scheduled one question up to 7 times in long plans) |
+| `balanceFallbackTopics` (R1) | When the preferred topic has no suitable question, the fallback rotates across topics instead of always using the top-priority topic |
+| `minimumOneTaskPerStudyDay` (R1) | While unseen questions remain, pacing never leaves a study day empty |
 | `diagnosticRefinementMinutes` | One optional "Refine your diagnostic" task (on the third study day or later) for Starter, Quick and Balanced, only when enough unseen questions exist. It is completed automatically when the added questions are submitted. |
 
 Every task references a real eligible bank item, or is the refinement task. No fictional IDs or missing documents are created (`testRefinementTaskOfferedForShortDiagnosticsOnly`, `testInsufficientRevisionContentLeavesHonestGaps`). If capacity is below one 15-minute task per study day, generation fails with an explanation, and onboarding/Settings block saving such a profile with a suggestion.
@@ -34,7 +36,7 @@ Refresh rules (shared `PublicProgrammeService.applyPlan`):
 - Stable task IDs (date + activity + question) prevent duplicate active tasks.
 - `revision`, `refreshedAt` and a one-line `refreshSummary` are shown in Plan, for example "More Trigonometry (+3), less Algebra (−2); 5 completed tasks kept; 4 tasks in the next three days unchanged."
 
-Today suggests a refresh after settings change or after five completed tasks since the last refresh. Refreshes happen automatically after Settings changes and after an expansion round is submitted.
+Today suggests a refresh after settings change or after five completed tasks since the last refresh. Since R1 it also reports tasks missed on earlier days and offers a one-tap refresh, which retires them (kept, not deleted) and replans their questions. Refreshes happen automatically after Settings changes, when diagnostic questions are added (so those questions leave planned practice at once: `reservedStableIDs`), and after an expansion round is submitted.
 
 ## Verified windows
 
@@ -42,4 +44,4 @@ Today suggests a refresh after settings change or after five completed tasks sin
 
 ## Limits
 
-With 60 draft items, long windows lean heavily on spaced review. The engine prefers honest gaps to invented work. The 15-minute task size is a planning cap, not a calibrated time per question.
+With 60 draft items, unseen questions last about 2–6 weeks; after that plans use error and spaced review, at most 4 scheduled uses per question. Long windows therefore have empty study days. The Plan tab reports them (`TMUAPlanContentSummary`) instead of filling them with repetition. The 15-minute task size is a planning cap, not a calibrated time per question. Measurements for 3–180-day windows are in `R1_DIAGNOSTIC_AND_PLANNER_AUDIT.md`.

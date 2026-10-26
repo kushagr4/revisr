@@ -1,5 +1,7 @@
 # Universal onboarding and journey QA — 26 October 2026
 
+> First-milestone record. R1 replaced the screenshot-only walkthrough with XCUITest journeys that use real taps; see `R1_END_TO_END_VALIDATION.md`.
+
 ## Environment
 
 macOS 26.7.1, Xcode 27.1 (27A9275), iOS Simulator SDK 27.1, iOS 26.5 simulator runtime. The CoreSimulator failure recorded in `POST_RECOVERY_VALIDATION.md` (11 October) is no longer present on this host: `simctl list` works, builds succeed and XCTest runs. No runtime or device was repaired, erased or deleted. Tests ran on the existing "iPhone 17 Pro (iOS 26.5)" simulator; screenshots used a new disposable device, "Revisr Flexible TMUA QA".

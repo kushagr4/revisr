@@ -26,13 +26,23 @@ Branch `claude/flexible-tmua-ios`, started from `codex/ios-completion` at `3e140
 | Evidence | `Services/Admissions/DiagnosticAnalysis.swift` (existing engine), `Services/TMUA/TMUADiagnosticReport.swift` | Raw score and topic/skill evidence from question-level outcomes. |
 | Planning | `Services/Admissions/PublicPlanningEngine.swift` (existing engine + opt-in options), `Services/TMUA/TMUAProgrammeService.swift`, `PublicProgrammeService.applyPlan` | One shared refresh rule set for both public programmes. |
 | UI | `Features/TMUA/*`, `DesignSystem/MathText.swift` | Onboarding, hub, assessment, results, expansion, Today/Plan/Progress/Topics/Questions + Settings sheet. |
-| Build | `Scripts/assemble_tmua_content.py`, "Assemble TMUA Content" build phase | Bundles and gates content; strips restricted resources from public builds. |
+| Build | `Scripts/assemble_tmua_content.py`, "Assemble TMUA Content" build phase | Bundles and gates content; strips restricted resources from public builds. Since R1, `resolve_distribution` allows internal content only in Debug and never in an archive. |
+| UI tests (R1) | `revisrUITests/*`, scheme `revisrUITests`, `Preview Content/DebugUITestSupport.swift` | XCUITest journeys. Debug-only launch switches: `--uitest-store <name>` opens an isolated store (never the student's own), `--uitest-reset` deletes it first, and `--uitest-fixture-bank` installs synthetic development fixtures instead of the private drafts. All are compiled out of Release. |
 
 ## SwiftData additions (all additive)
 
 New entities: `TMUADiagnostic`, `TMUADiagnosticSection`, `TMUADiagnosticItem`, `TMUAPracticeAttempt`, `TMUAReviewFlag`. New optional attributes: `AppSettings.publicFlowVersion`, `publicDiagnosticLengthRawValue`, `publicSessionMinutes`; `PublicProgramme.sessionMinutesSnapshot`, `refreshSummary`. These are lightweight-migration changes; no existing attribute was renamed or removed, and no record is relabelled. The flexible programme uses the existing `PublicProgramme`/`PublicProgrammeTask` entities under a distinct ID (`tmua-flex-programme-v1-<profile>`), so an earlier `public-programme-v1-…` programme is never overwritten.
 
 Native practice uses `TMUAPracticeAttempt` instead of `QuestionAttempt`, because bank items are not `AdmissionsQuestion` rows. The legacy catalogue, its attempts and the personal programme are untouched.
+
+Integrity rules added in R1:
+- A section's clock stops whenever the app leaves the foreground, and the student resumes explicitly.
+- A 60-second checkpoint bounds time lost to a crash.
+- A failed save restores the in-memory records, because SwiftData's rollback does not.
+- Questions in an open diagnostic round are reserved and kept out of planned practice.
+- Opened tasks are bound to their task by value-based navigation (`TMUATaskRoute`), so completing the "Next" task cannot swap the open screen to another question.
+
+Details: `R1_DIAGNOSTIC_AND_PLANNER_AUDIT.md`.
 
 ## Main navigation
 

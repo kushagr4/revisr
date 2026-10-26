@@ -1,5 +1,14 @@
 # iOS public release readiness — flexible TMUA
 
+> **Superseded for current status by `R1_RELEASE_READINESS.md` (26 October 2026).** R1 adds:
+> - real XCUITest journeys;
+> - fixes for timing, save-failure, navigation and expansion defects;
+> - planner limits on repetition;
+> - an archive-proof content gate;
+> - a Git history exposure assessment and the licensing plan.
+>
+> This file records the state at the end of the first milestone.
+
 **Status: not ready for public release.** The software journey is implemented and tested in development builds. A public build currently contains no eligible questions, so its diagnostic correctly shows as unavailable.
 
 ## Implemented and verified (development build)

@@ -9,7 +9,7 @@
 | `licensed_mock` | Third-party mock question used under licence | As for past papers |
 | `development_fixture` | Synthetic test data | Never eligible outside tests |
 
-Each item records copyright holder, licence, attribution and the five rights states (`cleared`, `pending_review`, `not_permitted`, `not_applicable`). A file being downloadable, or present in the repository, is never treated as permission.
+Each item records copyright holder, licence, attribution and the five rights states (`cleared`, `pending_review`, `not_permitted`, `not_applicable`). A file being downloadable, or present in the repository, is never treated as permission. The R1 inventory of every legacy source, the rights holders' published terms, and the steps to obtain and record permission are in `R1_PAST_PAPER_LICENSING_PLAN.md`. As of 26 October 2026 no source has permission.
 
 ## Enforcement (two independent layers)
 
