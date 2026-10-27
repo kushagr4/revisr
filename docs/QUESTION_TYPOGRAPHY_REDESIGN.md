@@ -117,6 +117,7 @@ Dark mode:
 
 - **No full TeX engine:** large operators with limits beyond the integral, matrices and `\mathbb` are not supported. Unknown commands render their name so content stays readable.
 - **Official questions are small:** shown as printed, they inherit the paper's roughly 10 pt type, which renders at about 7.5 pt across the phone's width. The zoom view covers this. Re-typesetting official questions natively would need a licence for any public use.
+- **Resolved in R2 (27 October 2026):** renderer fonts are now built by `UIFontMetrics` for their text style, at the same sizes. On the ten specimens the question-screen advisories fell from 1,120 to 22, and none is prose; see `R2_MATHEMATICAL_UI_ACCESSIBILITY.md`. The original note follows.
 - **New accessibility audit advisory:** Xcode's audit reports "Dynamic Type font sizes are partially unsupported" for 152 text elements on the question screen, and the same text again behind the pause overlay.
   - **Cause:** the old renderer used text styles; the new one sets point sizes computed with `@ScaledMetric`.
   - **Text does scale:** see the AX3 measurements above, and the largest-size journey test passes.

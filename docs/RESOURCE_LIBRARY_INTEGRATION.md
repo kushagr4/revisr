@@ -58,6 +58,8 @@ Self-recorded results update progress and the plan, never topic evidence.
 
 ## Diagnostic selection
 
+**Superseded for new diagnostics by v3 (R2).** This section describes v2, which still applies to diagnostics created under it. For v3's per-student selection and its composition, see `R2_DIFFICULTY_AND_SOURCE_DIVERSITY.md`.
+
 - **Source mix:** `TMUADiagnosticSelector` (now `tmua-selector-v2`) gives real past or mock questions, licensed or study copies, a bonus until half of each section is official (`TMUAContentPolicy.preferredLicensedShare = 0.5`). This is a preference, not a cap. Topic and strand coverage outrank it, so a section goes above half when only official questions cover its remaining topics.
 - **Two pre-existing defects fixed:**
   1. The section total was recomputed after every pick. That inflated the difficulty-band targets and the preferred share as the section filled; at a 50% share a section became entirely past-paper.

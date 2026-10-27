@@ -39,6 +39,13 @@ Those labels were inferred when the library was indexed. They are useful for ord
 
 ## How selection uses difficulty now
 
+**Updated in R2:**
+- Selector v3 uses difficulty profiles by section size and a larger demanding share, which gives Paper 1 1 to 8 level-4 questions instead of 0 to 4.
+- Paper 1 has no level-5 question in the bank.
+- The ten new Paper 2 drafts store the lower of their author's and an independent blind estimate.
+
+See `R2_DIFFICULTY_AND_SOURCE_DIVERSITY.md` and `R2_PAPER2_COVERAGE.md`. The v2 notes below are kept for diagnostics created under v2.
+
 - **Fixed targets:** the diagnostic selector aims for roughly 35% easier (L1–2), 45% standard (L3) and 20% harder (L4–5) questions in each section. A pre-existing bug inflated these targets as the section filled (fixed in selector v2; see `RESOURCE_LIBRARY_INTEGRATION.md`).
 - **Real questions preferred, softly:** the selector gives real past or mock questions a bonus until half of each section is official. Syllabus coverage still comes first, so the easy web-derived originals can no longer fill a diagnostic on their own. A section can go above half: Paper 2 is mostly official because its originals cover few topics.
 - **Measured on the bundled bank** (`TMUAQuestionBankIntegrationTests`, 27 October):
