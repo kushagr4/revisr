@@ -94,3 +94,11 @@ Importing any of the new files would only ever be into the private workspace, fo
 - `summary` prints counts without titles.
 
 Tests: `Scripts/tests/test_drive_inventory.py` (synthetic inventories only). On the real inventory it reports 343 records, 0 problems, 287 distinct documents and 29 byte-distinct from local. The difference from 262 and 20 is the 9 re-encoded files and the agent's content-based matching of Drive copies.
+
+**Re-checked 27 October 2026** against the private inventory, without contacting Drive again. Every count in this document matches the inventory's records:
+- 343 files, 551 MB, in 19 folders;
+- 262 distinct and 81 Drive copies;
+- 323 local (287 exact, 27 renamed, 9 re-encoded) and 20 new;
+- provider evidence: 275 by title, 28 by cover, 15 by folder, 25 unverified.
+
+The deterministic tool still gives 287 distinct and 29 not local. These are metadata counts. Drive was not re-listed, so files added or removed since 26 October are not reflected.

@@ -221,6 +221,8 @@ final class TMUAQuestionBankIntegrationTests: XCTestCase {
             XCTAssertNotNil(item.taxonomyProvenance, item.versionKey)
             XCTAssertNotNil(item.difficultyProvenance, item.versionKey)
             XCTAssertFalse([item.rights.inAppUse, item.rights.redistribution, item.rights.answerKey].contains(.cleared))
+            // The credit must identify the paper as precisely as the title does (specimen papers have no year).
+            XCTAssertTrue(item.creditLine.contains(item.title), "\(item.versionKey): \(item.creditLine)")
             let presentation = try XCTUnwrap(item.presentation)
             XCTAssertNotNil(TMUAPaperFiles.paperURL(presentation.document), "\(item.versionKey) paper is bundled")
             let solution = try XCTUnwrap(item.solutionReference)
@@ -236,14 +238,48 @@ final class TMUAQuestionBankIntegrationTests: XCTestCase {
         guard let content = TMUAContentStore.context(), content.studyCopyItemCount > 0 else {
             throw XCTSkip("No official study copies bundled in this build")
         }
-        for paper in TMUAPaper.allCases {
-            let chosen = try TMUADiagnosticSelector.select(paper: paper, count: 20, candidates: content.eligibleItems)
-            let official = chosen.filter { $0.category == .pastPaperStudyCopy }
-            let papers = Set(official.compactMap { $0.source.map { "\($0.year ?? 0)-\($0.paperNumber ?? 0)" } })
-            XCTAssertGreaterThanOrEqual(papers.count, 3, "\(paper.title): official picks spread across papers")
-            XCTAssertGreaterThan(chosen.count - official.count, 0, "\(paper.title): originals still included")
-            XCTAssertEqual(Set(chosen.map(\.taxonomy.topic)).count, Set(chosen.map(\.taxonomy.topic)).count)
-            print("MIX \(paper.title): \(official.count) official from \(papers.count) papers, \(chosen.count - official.count) original; topics \(Set(chosen.map(\.taxonomy.topic)).count); difficulty \(chosen.map(\.difficulty).sorted())")
+        for length in TMUADiagnosticLength.allCases {
+            // A first round as TMUADiagnosticService selects it: Paper 1, then Paper 2 after it.
+            let one = try TMUADiagnosticSelector.select(paper: .one, count: length.paperOneQuestions,
+                                                        candidates: content.eligibleItems)
+            let two = try TMUADiagnosticSelector.select(paper: .two, count: length.paperTwoQuestions,
+                                                        candidates: content.eligibleItems, prior: one)
+            let again = try TMUADiagnosticSelector.select(paper: .one, count: length.paperOneQuestions,
+                                                          candidates: content.eligibleItems.reversed())
+            XCTAssertEqual(one.map(\.versionKey), again.map(\.versionKey), "\(length.title): stable selection")
+            XCTAssertEqual(one.count, length.paperOneQuestions, length.title)
+            XCTAssertEqual(two.count, length.paperTwoQuestions, length.title)
+            XCTAssertTrue(one.allSatisfy { $0.paper == 1 } && two.allSatisfy { $0.paper == 2 }, length.title)
+            let all = one + two
+            XCTAssertEqual(Set(all.map(\.stableId)).count, all.count, "\(length.title): no question twice")
+            XCTAssertEqual(Set(one.map(\.taxonomy.topic)).count, min(one.count, 14), "\(length.title): Paper 1 topics")
+            for item in all {
+                XCTAssertTrue(item.options.contains { $0.id == item.correctOptionId }, "\(item.versionKey): key")
+                if item.category == .pastPaperStudyCopy {
+                    XCTAssertNotNil(item.solutionReference, item.versionKey)
+                    XCTAssertTrue(item.creditLine.hasSuffix("personal study copy"), item.creditLine)
+                }
+            }
+            // Coverage outranks source mix, so one section may be all official (the Paper 2 originals
+            // cover few topics); the diagnostic as a whole must still mix both sources.
+            XCTAssertTrue(all.contains { $0.category == .revisrOriginal }, "\(length.title): originals still included")
+            var summary: [String] = []
+            for picks in [one, two] {
+                let official = picks.filter { $0.category == .pastPaperStudyCopy }
+                let papers = Set(official.map { $0.title.components(separatedBy: " · ")[0] })
+                if picks.count >= 10 {
+                    XCTAssertFalse(official.isEmpty, "\(length.title): official questions included")
+                    XCTAssertGreaterThanOrEqual(Set(picks.map(\.difficulty)).count, 3, "\(length.title): difficulty")
+                }
+                if picks.count >= 20 {
+                    XCTAssertGreaterThanOrEqual(papers.count, 3, "\(length.title): official picks spread across papers")
+                }
+                summary.append("P\(picks.first?.paper ?? 0) \(picks.count): \(official.count) official from "
+                    + "\(papers.sorted()), \(picks.count - official.count) original; topics "
+                    + "\(Set(picks.map(\.taxonomy.topic)).count); difficulty \(picks.map(\.difficulty))")
+            }
+            print("MIX \(length.title) | " + summary.joined(separator: " | "))
+            print("PICKS \(length.title) | " + all.map(\.stableId).joined(separator: " "))
         }
     }
 

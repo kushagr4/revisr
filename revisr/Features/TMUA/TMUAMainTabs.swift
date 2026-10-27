@@ -846,7 +846,7 @@ private struct TMUAQuestionsView: View {
             }
         } footer: {
             if let content, content.distribution == .internal {
-                Text("Development build: \(content.originalItemCount) original Revisr questions are unreviewed drafts; \(content.studyCopyItemCount) official past-paper questions are personal study copies with official answer keys. Difficulty levels are estimates, not calibrated ratings.")
+                Text("Development build: \(content.originalItemCount) original Revisr questions are unreviewed drafts; \(content.studyCopyItemCount) official past-paper questions are personal study copies, with answer keys read from the official worked solutions and not yet checked by a person. Difficulty levels are estimates, not calibrated ratings.")
             } else {
                 Text("Difficulty levels are estimates until student results calibrate them.")
             }

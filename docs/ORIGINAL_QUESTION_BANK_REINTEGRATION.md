@@ -51,10 +51,16 @@ Questions → **Papers & sources** lists every source from the original index, g
 
 - **Identity reused:** each item records the original index identity (`libraryQuestionID`, for example `TMUA-2019-P1-Q11`). Its stable ID is the lowercase form (`tmua-2019-p1-q11`). No new synthetic identities were invented.
 - **Shown as printed:** the question is the cropped region of the bundled official paper, not transcribed text. Option buttons carry letters only.
-- **Official keys, verified twice:** a pattern extraction and an independent blind reading of UCLES's worked solutions agreed on 264 keys. The one disagreement was resolved from the solution's own conclusion. All 40 keys for 2022 match UAT-UK's official answer key (from the owner's Drive). Every item records how its key was established.
+- **Official keys, from UCLES's own documents:** every item records how its key was established:
+  - 190 from two independent readings of the worked solution (a pattern-extraction script and a separate blind reading by a Claude agent), which agree;
+  - 40 from UAT-UK's official 2022 answer key (from the owner's Drive), which the blind reading also matches;
+  - 27 from the worked solution's concluding statement, read and checked;
+  - 2 by matching the solution's final value to the printed option.
+
+  Across the 300 questions in the 15 official papers, the two readings agreed on 264. The one disagreement (2019 Paper 2 Q17) was resolved from the solution's own conclusion. All of this is AI-assisted; no key has had human review.
 - **Crops checked by eye:** all 260 crops were rendered and checked for the full stem, diagrams and every option, with nothing extra. 11 were re-cropped and re-checked. Option counts come from the visual check.
 - **Official solutions linked:** every item links UCLES's worked solution at its page (1,747-link index plus section pages).
-- **Classified against the syllabus:** topic, strand and Paper 2 skill come from an AI-assisted classification (176 high, 82 medium, 2 low confidence), recorded as awaiting human review. Six were spot-checked against the paper.
+- **Classified against the syllabus:** topic, strand and Paper 2 skill come from an AI-assisted classification (176 high, 82 medium, 2 low confidence), recorded as awaiting human review. Claude spot-checked six against the paper; that check was not recorded and is not a human review.
 - **Duplicates:** 2019 Paper 2 Q2 and 2020 Paper 1 Q2 are the same question; only the first is kept.
 - **Not included:** the 2016 practice papers (40 questions) are scanned images with several questions per page and no text layer. They stay as open-the-paper entries.
 
@@ -62,7 +68,10 @@ The items carry `rights` of `not_permitted` and fail the public gate by category
 
 ### 3. The diagnostic and planner use them
 
-- **Diagnostic:** the selector prefers real past or mock questions (soft target 50%; coverage still comes first) and now spreads picks across papers and years. On the iPhone, a Balanced diagnostic built from the bundled bank held 12 official and 8 original questions, and its composition note says so.
+- **Diagnostic:** the selector prefers real past or mock questions until half of a section is official. Coverage still comes first, so a section goes above half when only official questions cover its remaining topics.
+  - **Final code, bundled bank (unit test on the simulator, 27 October):** a new Balanced diagnostic holds 14 official and 6 original questions, 5 of 10 in Paper 1 and 9 of 10 in Paper 2, and its composition note says so.
+  - **Not spread deliberately:** nothing spreads picks across papers. Balanced Paper 1's five official questions come from two papers, four of them from Specimen Paper 1 (see `RESOURCE_LIBRARY_INTEGRATION.md`).
+  - **Earlier build:** before the final tie-break change, a Balanced diagnostic on the owner's iPhone held 12 official and 8 original questions.
 - **Planner:** the planner's pool grows from 82 to 341 distinct questions. See `RESOURCE_LIBRARY_INTEGRATION.md` for the 14–180 day audit.
 
 ## What is not reconnected
@@ -78,3 +87,18 @@ The manifest is left unchanged, because changing it would change its import revi
 - TMUA Mock B, C and D were all labelled "Set A".
 - Specimen Paper 1 Q5 is on page 5, not page 4.
 - The "TMUA Mock" family mixes Tyler Tutoring sets A–D with two Yotta papers; providers are assigned per source.
+
+## Verification status (27 October 2026)
+
+| Kind of check | What it covers |
+|---|---|
+| Source-level verified | Counts in this document, from the bundled manifests and files. The bundled bank: 87 original versions (82 questions, 5 with a corrected second version) and 259 study copies, 341 distinct questions. |
+| Automated tests passed (simulator) | Catalogue, gates, credit, bundled-bank invariants and the mixed diagnostic at all four lengths (`TMUAQuestionBankIntegrationTests`); the full unit suite and the 10 UI tests on the iPhone 17 Pro simulator |
+| AI-assisted | Answer-key readings, crop checks, syllabus classification and difficulty labels (inferred in the original index) |
+| Human-reviewed | Nothing: no key, crop, classification or original question has had human review |
+| Copyright-cleared | Nothing: no third-party permission is held (`QUESTION_SOURCE_AND_LICENSING_MATRIX.md`) |
+| Private development use | The 259 study copies and the bundled papers, in Debug builds on the owner's device only |
+| Public distribution | Nothing from the bank: the Release build bundles 0 of 346 items and none of the 242 papers, solutions or videos |
+| Physical iPhone | The final Debug build is installed on the owner's iPhone 15 but was not exercised there: the phone was locked and the on-device check was skipped |
+
+**Specimen credit fix (27 October):** Specimen Paper 1 has no year, so its 20 questions were credited as "TMUA Paper 1". The private builder now names them "TMUA Specimen Paper 1", and a test requires every study copy's credit to name the paper exactly as its title does.

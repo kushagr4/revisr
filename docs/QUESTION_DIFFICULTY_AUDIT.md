@@ -40,9 +40,13 @@ Those labels were inferred when the library was indexed. They are useful for ord
 ## How selection uses difficulty now
 
 - **Fixed targets:** the diagnostic selector aims for roughly 35% easier (L1–2), 45% standard (L3) and 20% harder (L4–5) questions in each section. A pre-existing bug inflated these targets as the section filled (fixed in selector v2; see `RESOURCE_LIBRARY_INTEGRATION.md`).
-- **Real questions preferred, softly:** the selector prefers real past or mock questions up to half of each section. Syllabus coverage still comes first, so the easy web-derived originals can no longer fill a diagnostic on their own.
-- **Measured on the bundled bank:** a 20-question section per paper mixes official and original questions from at least three different official papers, across levels 2–5 (`TMUAQuestionBankIntegrationTests`).
-- **Practice:** the planner schedules official questions as ordinary auto-marked practice. In the 14–180 day audit they made up 34–75% of practice tasks.
+- **Real questions preferred, softly:** the selector gives real past or mock questions a bonus until half of each section is official. Syllabus coverage still comes first, so the easy web-derived originals can no longer fill a diagnostic on their own. A section can go above half: Paper 2 is mostly official because its originals cover few topics.
+- **Measured on the bundled bank** (`TMUAQuestionBankIntegrationTests`, 27 October):
+  - **Comprehensive** (20 per paper): Paper 1 has 13 official questions from 4 papers and 7 originals, levels 2–4. Paper 2 has 15 official from 6 papers and 5 originals, levels 2–5.
+  - **Balanced** (10 per paper): 5 official and 5 original in Paper 1, levels 2–4; 9 official and 1 original in Paper 2, levels 2–5.
+  - **Paper 1 never draws a level 5:** no Paper 1 section at any length includes one.
+  - **Little paper spread:** official picks cluster by paper, for example four of Balanced Paper 1's five from Specimen Paper 1. Details are in `RESOURCE_LIBRARY_INTEGRATION.md`.
+- **Practice:** the planner schedules official questions as ordinary auto-marked practice. In the 14–180 day audit (final code, 27 October) they made up 38–75% of practice tasks.
 
 ## Distinguishing estimates from evidence
 
@@ -56,7 +60,7 @@ Those labels were inferred when the library was indexed. They are useful for ord
 ## Recommendations
 
 1. **Human review first:**
-   - review the official keys' transcription (two independent readings already agree) and the AI strand classification;
+   - review the official keys' transcription and the AI strand classification. Of the 259 keys, 190 rest on two agreeing AI readings, 40 on the official 2022 key and 29 on one checked reading of the worked solution;
    - review the drafts, starting with the 3 Paper 2 near-duplicate pairs;
    - decide whether the 20 web-derived questions stay in the diagnostic pool or move to foundation practice only.
 2. **Calibration:** once students use the app, record per-question facility (proportion correct) and time. Recalibrate after about 30 or more responses per question, keeping the estimate and the observed value separate.

@@ -33,7 +33,7 @@ struct TMUAResourceLibraryView: View {
             }
         } footer: {
             Text(content?.distribution == .internal
-                 ? "Development build: papers from your own library are shown as personal study copies. They are not licensed for distribution and never appear in a public build. Official TMUA questions with a verified official answer key are marked automatically; everything else is self-marked."
+                 ? "Development build: papers from your own library are shown as personal study copies. They are not licensed for distribution and never appear in a public build. Official TMUA questions whose answer has been read from the official worked solutions are marked automatically (keys not yet checked by a person); everything else is self-marked."
                  : "Papers are listed with their publisher and open on the publisher's own website. Revisr does not reproduce them, and results you record yourself are not used as evidence of mastery.")
         }
         if shown.isEmpty {
@@ -71,7 +71,7 @@ struct TMUAResourceLibraryView: View {
         switch source.access {
         case .studyCopy:
             source.autoMarkedCount > 0
-                ? "Personal study copy · \(source.autoMarkedCount) auto-marked with the official key"
+                ? "Personal study copy · \(source.autoMarkedCount) auto-marked from the official solutions"
                 : "Personal study copy · self-marked"
         case .providerLink:
             "Opens on \(source.provider.name)'s website · self-marked"

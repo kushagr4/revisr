@@ -2,7 +2,7 @@
 
 ## Selector (`TMUADiagnosticSelector`, `tmua-selector-v2`)
 
-v2 (question-bank integration): the section's target size is fixed before selection (prior questions plus this round); v1 recomputed it after every pick, inflating band targets and the past/mock share. Ties are broken by a stable hash of `stableId@vN` instead of alphabetically, so picks spread across papers. The table below is otherwise unchanged.
+v2 (question-bank integration): the section's target size is fixed before selection (prior questions plus this round); v1 recomputed it after every pick, inflating band targets and the past/mock share. Ties are broken by a stable hash of `stableId@vN` instead of alphabetically, so the oldest paper no longer wins every tie. No rule spreads picks across papers, and with the bundled bank they cluster: Balanced Paper 1's official picks come mostly from Specimen Paper 1 (see `RESOURCE_LIBRARY_INTEGRATION.md`). The table below is otherwise unchanged.
 
 Inputs: paper, count, eligible items (latest version per stable ID), prior items already in this diagnostic, and excluded stable IDs (anything seen in the diagnostic or in practice). Paper 1 is selected first; Paper 2 is selected with Paper 1's picks as prior coverage.
 
