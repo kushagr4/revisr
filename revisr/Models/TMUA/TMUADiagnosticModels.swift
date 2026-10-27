@@ -40,9 +40,13 @@ final class TMUADiagnostic {
         set { targetLengthRawValue = newValue.rawValue }
     }
 
+    /// The selection rules this diagnostic keeps for its whole life.
+    var selectionPolicy: TMUASelectionPolicy { TMUASelectionPolicy(recorded: selectorVersion) }
+
     init(stableID: String, profileSettingsID: UUID, length: TMUADiagnosticLength,
          bankVersion: String, distribution: TMUAContentDistribution,
-         sourceCompositionNote: String, createdAt: Date = .now) {
+         sourceCompositionNote: String, selectorVersion: String = TMUADiagnosticSelector.version,
+         createdAt: Date = .now) {
         self.stableID = stableID
         self.profileSettingsID = profileSettingsID
         self.createdAt = createdAt
@@ -51,7 +55,7 @@ final class TMUADiagnostic {
         self.bankVersion = bankVersion
         self.distributionRawValue = distribution.rawValue
         self.contentPolicyVersion = TMUAContentPolicy.version
-        self.selectorVersion = TMUADiagnosticSelector.version
+        self.selectorVersion = selectorVersion
         self.taxonomyVersion = TMUASyllabus.currentVersion
         self.sourceCompositionNote = sourceCompositionNote
     }

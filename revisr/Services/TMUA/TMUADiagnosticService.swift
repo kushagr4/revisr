@@ -89,6 +89,7 @@ enum TMUADiagnosticService {
         settings: AppSettings,
         length: TMUADiagnosticLength,
         content: TMUAContentContext,
+        policy: TMUASelectionPolicy = .current,
         at date: Date = .now,
         in context: ModelContext
     ) throws -> TMUADiagnosticSnapshot {
@@ -100,11 +101,12 @@ enum TMUADiagnosticService {
             throw TMUADiagnosticError.contentUnavailable(message)
         }
         let id = diagnosticID(profileID: settings.id)
-        let selections = try selectRound(length: length, from: nil, content: content, prior: [], excluded: [])
+        let selections = try selectRound(length: length, from: nil, content: content, prior: [], excluded: [],
+                                         policy: policy, assessmentID: id)
         let composition = compositionNote(selections.flatMap(\.1), sourceMix: content.sourceMix)
         let diagnostic = TMUADiagnostic(stableID: id, profileSettingsID: settings.id, length: length,
             bankVersion: content.bank.bankVersion, distribution: content.distribution,
-            sourceCompositionNote: composition, createdAt: date)
+            sourceCompositionNote: composition, selectorVersion: policy.rawValue, createdAt: date)
         context.insert(diagnostic)
         insertRound(0, selections: selections, target: length, diagnosticID: id, in: context)
         settings.publicDiagnosticLength = length
@@ -128,7 +130,9 @@ enum TMUADiagnosticService {
         if let message = content.availability(for: length).message {
             throw TMUADiagnosticError.contentUnavailable(message)
         }
-        let selections = try selectRound(length: length, from: nil, content: content, prior: [], excluded: [])
+        let selections = try selectRound(length: length, from: nil, content: content, prior: [], excluded: [],
+                                         policy: snapshot.diagnostic.selectionPolicy,
+                                         assessmentID: snapshot.diagnostic.stableID)
         snapshot.items.forEach(context.delete)
         snapshot.sections.forEach(context.delete)
         let diagnostic = snapshot.diagnostic
@@ -290,7 +294,8 @@ enum TMUADiagnosticService {
         let prior = snapshot.items.compactMap(\.content)
         let exposed = try exposedStableIDs(settings: settings, in: context)
         let selections = try selectRound(length: target, from: diagnostic.targetLength, content: content,
-                                         prior: prior, excluded: exposed)
+                                         prior: prior, excluded: exposed,
+                                         policy: diagnostic.selectionPolicy, assessmentID: diagnostic.stableID)
         insertRound(snapshot.currentRound + 1, selections: selections, target: target,
                     diagnosticID: diagnostic.stableID, in: context)
         diagnostic.targetLength = target
@@ -319,8 +324,11 @@ enum TMUADiagnosticService {
         from previous: TMUADiagnosticLength?,
         content: TMUAContentContext,
         prior: [TMUAContentItem],
-        excluded: Set<String>
+        excluded: Set<String>,
+        policy: TMUASelectionPolicy,
+        assessmentID: String
     ) throws -> [(TMUAPaper, [TMUAContentItem])] {
+        let seed = TMUADiagnosticSelector.seed(assessmentID: assessmentID, policy: policy)
         var running = prior
         var result: [(TMUAPaper, [TMUAContentItem])] = []
         do {
@@ -328,7 +336,8 @@ enum TMUADiagnosticService {
                 let count = previous.map { $0.additionalQuestions(to: length, paper: paper) }
                     ?? length.questions(for: paper)
                 let picks = try TMUADiagnosticSelector.select(paper: paper, count: count,
-                    candidates: content.eligibleItems, prior: running, excludedStableIDs: excluded)
+                    candidates: content.eligibleItems, prior: running, excludedStableIDs: excluded,
+                    policy: policy, seed: seed)
                 running += picks
                 result.append((paper, picks))
             }
