@@ -68,6 +68,13 @@ enum DebugTypographySpecimens {
                            "Every odd number greater than \\(2\\) is prime"], key: "B")
     ]
 
+    /// The identity of specimen `number` (from 1) in a paper, so a UI test can open the same
+    /// specimen whatever order a student-specific selection gives it.
+    static func specimenID(paper: Int, number: Int) -> String? {
+        let specimens = paper == 1 ? paperOne : paperTwo
+        return specimens.indices.contains(number - 1) ? specimens[number - 1].id : nil
+    }
+
     static func items(syllabus: TMUASyllabus) -> [TMUAContentItem] {
         var result: [TMUAContentItem] = []
         for (paper, specimens) in [(1, paperOne), (2, paperTwo)] {

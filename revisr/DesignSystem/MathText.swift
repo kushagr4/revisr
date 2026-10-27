@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Parsing
 
@@ -470,14 +471,45 @@ enum MathTextRole {
 
 /// Font size and the measurements derived from it, so superscripts, fractions and rules
 /// keep their proportions at every text size.
+///
+/// Sizes are design sizes (the size at the default text size). Each is turned into a system font
+/// by `UIFontMetrics` for `textStyle` at the current text size, so every font declares the
+/// Dynamic Type style it follows, and every measurement comes from the size actually drawn.
 struct MathMetrics: Equatable {
-    var size: CGFloat
-    var base: CGFloat
+    var designSize: CGFloat
+    var baseDesignSize: CGFloat
     var weight: Font.Weight = .regular
     var display = false
+    var textStyle: UIFont.TextStyle = .body
+    var category: UIContentSizeCategory = .large
 
-    var font: Font { .system(size: size, weight: weight) }
-    var displayed: MathMetrics { MathMetrics(size: size, base: base, weight: weight, display: true) }
+    init(size: CGFloat, base: CGFloat, weight: Font.Weight = .regular, display: Bool = false,
+         textStyle: UIFont.TextStyle = .body, category: UIContentSizeCategory = .large) {
+        designSize = size
+        baseDesignSize = base
+        self.weight = weight
+        self.display = display
+        self.textStyle = textStyle
+        self.category = category
+    }
+
+    /// The point size drawn at the current text size.
+    var size: CGFloat { uiFont(designSize: designSize, weight: weight).pointSize }
+    var font: Font { font(designSize: designSize, weight: weight) }
+
+    func font(designSize: CGFloat, weight: Font.Weight) -> Font {
+        MathFonts.font(designSize: designSize, weight: weight, textStyle: textStyle, category: category)
+    }
+
+    private func uiFont(designSize: CGFloat, weight: Font.Weight) -> UIFont {
+        MathFonts.uiFont(designSize: designSize, weight: weight, textStyle: textStyle, category: category)
+    }
+
+    var displayed: MathMetrics {
+        var metrics = self
+        metrics.display = true
+        return metrics
+    }
     var script: MathMetrics { scaled(0.72) }
     var fractionPart: MathMetrics { display ? scaled(0.94, keepDisplay: false) : scaled(0.8) }
     var superscriptRaise: CGFloat { size * 0.36 }
@@ -489,8 +521,65 @@ struct MathMetrics: Equatable {
     var paragraphGap: CGFloat { (size * 0.75).rounded() }
 
     private func scaled(_ factor: CGFloat, keepDisplay: Bool = false) -> MathMetrics {
-        MathMetrics(size: max(base * 0.55, size * factor), base: base, weight: weight,
-                    display: keepDisplay && display)
+        var metrics = self
+        metrics.designSize = max(baseDesignSize * 0.55, designSize * factor)
+        metrics.display = keepDisplay && display
+        return metrics
+    }
+}
+
+/// System fonts built by `UIFontMetrics.scaledFont(for:)`, which, unlike a bare
+/// `Font.system(size:)`, declare the Dynamic Type style they follow.
+///
+/// The size follows the text style itself: a design size grows by the same factor as the style's
+/// own font (body is 17 pt by default and 40 pt at accessibility size XL, so an 18 pt question
+/// becomes about 42 pt). `scaledFont(for:)` alone scales an arbitrary size less (18 pt becomes
+/// 39 pt), which would make questions smaller than body text at the largest sizes, so the input
+/// is chosen to land on the style's factor. UIKit rounds the result to whole points.
+enum MathFonts {
+    private final class Cache: @unchecked Sendable {
+        let lock = NSLock()
+        var fonts: [String: UIFont] = [:]
+    }
+
+    private static let cache = Cache()
+
+    static func font(designSize: CGFloat, weight: Font.Weight, textStyle: UIFont.TextStyle,
+                     category: UIContentSizeCategory) -> Font {
+        Font(uiFont(designSize: designSize, weight: weight, textStyle: textStyle, category: category))
+    }
+
+    static func uiFont(designSize: CGFloat, weight: Font.Weight, textStyle: UIFont.TextStyle,
+                       category: UIContentSizeCategory) -> UIFont {
+        let key = "\((designSize * 100).rounded())|\(weight)|\(textStyle.rawValue)|\(category.rawValue)"
+        cache.lock.lock()
+        defer { cache.lock.unlock() }
+        if let font = cache.fonts[key] { return font }
+        let traits = UITraitCollection(preferredContentSizeCategory: category)
+        let reference = UIFont.preferredFont(forTextStyle: textStyle,
+            compatibleWith: UITraitCollection(preferredContentSizeCategory: .large)).pointSize
+        let styleFactor = UIFont.preferredFont(forTextStyle: textStyle, compatibleWith: traits).pointSize / reference
+        let fontMetrics = UIFontMetrics(forTextStyle: textStyle)
+        let metricsFactor = fontMetrics.scaledValue(for: reference, compatibleWith: traits) / reference
+        let font = fontMetrics.scaledFont(
+            for: .systemFont(ofSize: designSize * styleFactor / metricsFactor, weight: uiWeight(weight)),
+            compatibleWith: traits)
+        cache.fonts[key] = font
+        return font
+    }
+
+    static func uiWeight(_ weight: Font.Weight) -> UIFont.Weight {
+        switch weight {
+        case .ultraLight: .ultraLight
+        case .thin: .thin
+        case .light: .light
+        case .medium: .medium
+        case .semibold: .semibold
+        case .bold: .bold
+        case .heavy: .heavy
+        case .black: .black
+        default: .regular
+        }
     }
 }
 
@@ -502,8 +591,7 @@ struct MathText: View {
     let source: String
     var role: MathTextRole
     var weight: Font.Weight
-    @ScaledMetric(relativeTo: .body) private var bodyScale: CGFloat = 1
-    @ScaledMetric(relativeTo: .callout) private var calloutScale: CGFloat = 1
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     init(_ source: String, role: MathTextRole = .body, weight: Font.Weight = .regular) {
         self.source = source
@@ -512,8 +600,9 @@ struct MathText: View {
     }
 
     private var metrics: MathMetrics {
-        let size = role.baseSize * (role == .solution ? calloutScale : bodyScale)
-        return MathMetrics(size: size, base: size, weight: weight)
+        MathMetrics(size: role.baseSize, base: role.baseSize, weight: weight,
+                    textStyle: role == .solution ? .callout : .body,
+                    category: UIContentSizeCategory(dynamicTypeSize))
     }
 
     var body: some View {
@@ -712,7 +801,7 @@ private struct MathNodesView: View {
             .alignmentGuide(.firstTextBaseline) { $0.height / 2 + metrics.axis }
         case let .integral(lower, upper):
             HStack(alignment: .center, spacing: metrics.size * 0.05) {
-                Text("∫").font(.system(size: metrics.size * 1.45, weight: .light))
+                Text("∫").font(metrics.font(designSize: metrics.designSize * 1.45, weight: .light))
                 VStack(alignment: .leading, spacing: metrics.size * 0.3) {
                     MathNodesView(nodes: upper, metrics: metrics.script)
                     MathNodesView(nodes: lower, metrics: metrics.script)

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import XCTest
 @testable import revisr
 
@@ -89,6 +90,47 @@ final class MathTextLayoutTests: XCTestCase {
         XCTAssertGreaterThan(accessible.height, regular.height * 1.6, "question text keeps scaling at accessibility sizes")
         // About 22 pt per line at 18 pt; the stem is roughly eight lines at 350 pt wide.
         XCTAssertLessThan(regular.height, 260, "18 pt reading text, not a heading style")
+    }
+
+    /// R2: fonts are built by `UIFontMetrics` for the role's text style, and every measurement
+    /// uses the size actually drawn, so layout and glyphs agree at every text size.
+    func testDrawnSizeMatchesLayoutAndFollowsTheTextStyle() {
+        var previous: CGFloat = 0
+        for category in [UIContentSizeCategory.large, .accessibilityMedium, .accessibilityExtraLarge,
+                         .accessibilityExtraExtraExtraLarge] {
+            let metrics = MathMetrics(size: 18, base: 18, textStyle: .body, category: category)
+            let font = MathFonts.uiFont(designSize: 18, weight: .regular, textStyle: .body, category: category)
+            XCTAssertEqual(metrics.size, font.pointSize, "\(category.rawValue): layout uses the drawn size")
+            XCTAssertGreaterThan(metrics.size, previous, "\(category.rawValue): grows with the text size")
+            XCTAssertLessThan(metrics.script.size, metrics.size)
+            previous = metrics.size
+            print("FONT \(category.rawValue): \(font.pointSize) pt, script \(metrics.script.size), attributes \(font.fontDescriptor.fontAttributes.map { "\($0.key.rawValue)=\($0.value)" }.sorted())")
+        }
+        XCTAssertEqual(MathMetrics(size: 18, base: 18).size, 18, "the design size at the default text size")
+    }
+
+    /// Question text grows like the body text style, never less: at accessibility size XL body
+    /// is 40 pt, so the 18 pt question role is 42 pt there, not smaller than body text.
+    func testQuestionTextGrowsLikeBodyText() {
+        for category in [UIContentSizeCategory.extraExtraLarge, .accessibilityMedium, .accessibilityExtraLarge,
+                         .accessibilityExtraExtraExtraLarge] {
+            let traits = UITraitCollection(preferredContentSizeCategory: category)
+            let body = UIFont.preferredFont(forTextStyle: .body, compatibleWith: traits).pointSize
+            let callout = UIFont.preferredFont(forTextStyle: .callout, compatibleWith: traits).pointSize
+            let question = MathMetrics(size: 18, base: 18, textStyle: .body, category: category).size
+            let solution = MathMetrics(size: 16, base: 16, textStyle: .callout, category: category).size
+            XCTAssertEqual(question, (18 * body / 17).rounded(), accuracy: 1, "\(category.rawValue)")
+            XCTAssertGreaterThanOrEqual(question, body, "\(category.rawValue): never smaller than body text")
+            XCTAssertEqual(solution, callout, accuracy: 1, "\(category.rawValue)")
+        }
+    }
+
+    func testFractionsAndRootsScaleWithDynamicType() {
+        let formula = "\\(\\frac{x^2 + 1}{\\sqrt{x}} = \\frac{3n - 1}{2}\\)"
+        let regular = measure(MathText(formula, role: .question), width: 350, size: .large)
+        let accessible = measure(MathText(formula, role: .question), width: 350, size: .accessibility3)
+        XCTAssertGreaterThan(accessible.height, regular.height * 1.8, "fraction parts grow with the text")
+        XCTAssertLessThanOrEqual(accessible.width, 350.5)
     }
 
     func testUnbreakableFormulaNeverWidensTheLayout() {

@@ -414,6 +414,7 @@ struct TMUAAssessmentView: View {
                 .accessibilityRepresentation {
                     Text("\(items.filter { $0.selectedOptionID != nil }.count) of \(items.count) answered")
                 }
+                .accessibilityIdentifier("assessment.progress")
             if !dynamicTypeSize.isAccessibilitySize {
                 Text("Suggested time \(section.advisoryMinutes) minutes · nothing is submitted automatically")
                     .font(.caption2).foregroundStyle(RevisrColors.secondaryLabel)
@@ -449,7 +450,7 @@ struct TMUAAssessmentView: View {
                 Label("Previous", systemImage: "chevron.left").labelStyle(.iconOnly)
                     .frame(minWidth: RevisrMetrics.minimumTapTarget, minHeight: RevisrMetrics.minimumTapTarget)
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(TMUABorderedControlStyle())
             .disabled(index == 0)
             .accessibilityLabel("Previous question")
             .accessibilityIdentifier("assessment.previous")
@@ -811,6 +812,33 @@ struct AdaptiveLabelStyle: LabelStyle {
             Label(configuration).labelStyle(.iconOnly)
         } else {
             Label(configuration).labelStyle(.titleAndIcon)
+        }
+    }
+}
+
+/// The system bordered style, with a disabled state that stays visible. Over the bar, iOS draws a
+/// disabled bordered button as a flat black (dark mode) or white (light mode) disc with an almost
+/// invisible symbol; this keeps its shape in the system's tertiary fill with a tertiary-label
+/// symbol, the colours iOS uses for unavailable controls. It is still a disabled `Button`, so
+/// VoiceOver reads it as dimmed.
+struct TMUABorderedControlStyle: PrimitiveButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+
+    func makeBody(configuration: Configuration) -> some View {
+        if isEnabled {
+            Button(configuration).buttonStyle(.bordered)
+        } else {
+            Button(configuration).buttonStyle(DisabledLook())
+        }
+    }
+
+    private struct DisabledLook: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .foregroundStyle(Color(uiColor: .tertiaryLabel))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(Color(uiColor: .tertiarySystemFill), in: Capsule())
         }
     }
 }

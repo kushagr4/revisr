@@ -46,9 +46,13 @@ enum DebugTMUAScenarioService {
             }
             let section = sections[paper - 1]
             try TMUADiagnosticService.start(section, in: snapshot, at: .now, in: context)
-            let count = snapshot.items(in: section).count
-            let question = min(max(Int(value("--tmua-question") ?? "1") ?? 1, 1), count)
-            try TMUADiagnosticService.move(section, to: question - 1, count: count, in: context)
+            let items = snapshot.items(in: section)
+            let question = min(max(Int(value("--tmua-question") ?? "1") ?? 1, 1), items.count)
+            // With the typography bank, N means specimen N: each fresh profile has its own
+            // selection order, so a position would show a different specimen on every launch.
+            let specimen = DebugTypographySpecimens.specimenID(paper: paper, number: question)
+            let index = items.firstIndex { $0.itemStableID == specimen } ?? question - 1
+            try TMUADiagnosticService.move(section, to: index, count: items.count, in: context)
             return
         }
         if scenario == "session" {
