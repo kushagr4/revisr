@@ -357,5 +357,20 @@ class ApprovedManifestTests(unittest.TestCase):
             assemble.check_app(str(app), str(ROOT), "public")
 
 
+    def test_release_gate_rejects_private_fields_in_the_catalogue_reconciliation(self):
+        content, output = self.build([DRAFT], approve=[DRAFT])
+        assemble.assemble(content, str(ROOT), "public", output)
+        app = Path(output).parent
+        target = app / assemble.RECONCILIATION_FILENAME
+        target.write_text(json.dumps({"documents": [{"questions": [{"questionID": "X-Q1", "page": 3}]}]}))
+        assemble.check_app(str(app), str(ROOT), "public")
+        target.write_text(json.dumps({"documents": [{"driveFileID": "abc", "questions": [{"answerLetter": "C"}]}]}))
+        with self.assertRaises(SystemExit):
+            assemble.check_app(str(app), str(ROOT), "public")
+        bundled = ROOT / "revisr" / "Resources" / assemble.RECONCILIATION_FILENAME
+        self.assertEqual(assemble.reconciliation_failures(str(bundled.parent)), [],
+                         "the committed reconciliation file holds metadata only")
+
+
 if __name__ == "__main__":
     unittest.main()

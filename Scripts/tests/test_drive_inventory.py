@@ -64,5 +64,62 @@ class DuplicateDetectionTests(unittest.TestCase):
         self.assertIn("JZMaths", text)
 
 
+def snapshot(*files, taken="2026-10-29T00:00:00Z"):
+    return {"schema": 1, "takenAt": taken, "folders": [], "files": list(files)}
+
+
+def listed(record, **changes):
+    entry = {field: record.get(field) for field in ("driveId", "title", "folderPath", "mimeType", "fileSizeBytes")}
+    entry.update(createdTime="2026-08-01T00:00:00Z", modifiedTime="2026-08-01T00:00:00Z")
+    entry.update(changes)
+    return entry
+
+
+class IncrementalSyncTests(unittest.TestCase):
+    def setUp(self):
+        self.paper = dict(record("p", "TMUA 2019 Paper 1.pdf", 100), createdTime="2026-08-01T00:00:00Z",
+                          modifiedTime="2026-08-01T00:00:00Z", localDuplicate={"localID": "SRC-1"})
+        self.solutions = dict(record("s", "TMUA 2019 Solutions.pdf", 200, kind="worked_solutions"),
+                              createdTime="2026-08-01T00:00:00Z", modifiedTime="2026-08-01T00:00:00Z",
+                              localDuplicate={"localID": "SOL-1"})
+        self.notes = dict(record("n", "Notes.pdf", 5, kind="notes"), createdTime="2026-08-01T00:00:00Z",
+                          modifiedTime="2026-08-01T00:00:00Z")
+
+    def test_unchanged_files_keep_their_classification(self):
+        records, report = drive.sync([self.paper], snapshot(listed(self.paper)))
+        self.assertEqual(report["counts"]["unchanged"], 1)
+        self.assertEqual(records[0]["provider"], "UAT-UK")
+        self.assertEqual(records[0]["syncState"], "unchanged")
+        self.assertEqual(report["librarySourcesToReindex"], [])
+
+    def test_changed_moved_new_and_missing_files_are_told_apart(self):
+        changed = listed(self.paper, modifiedTime="2026-10-28T09:00:00Z", fileSizeBytes=150)
+        moved = listed(self.notes, folderPath="TMUA/archive")
+        new = {"driveId": "x", "title": "MAT 2024.pdf", "folderPath": "TMUA/MAT", "mimeType": "application/pdf",
+               "fileSizeBytes": 9, "createdTime": "2026-10-28T00:00:00Z", "modifiedTime": "2026-10-28T00:00:00Z"}
+        records, report = drive.sync([self.paper, self.solutions, self.notes], snapshot(changed, moved, new))
+        self.assertEqual(report["counts"], {"unchanged": 0, "changed": 1, "moved": 1, "new": 1, "missing": 1})
+        by_id = {r["driveId"]: r for r in records}
+        self.assertTrue(by_id["p"]["needsReindex"])
+        self.assertEqual(by_id["p"]["fileSizeBytes"], 150)
+        self.assertEqual(by_id["n"]["folderPath"], "TMUA/archive")
+        self.assertNotIn("needsReindex", by_id["n"], "a move alone is not a content change")
+        self.assertEqual(by_id["s"]["syncState"], "missing", "a vanished file is kept, never deleted")
+        self.assertEqual(by_id["s"]["missingSince"], "2026-10-29T00:00:00Z")
+        self.assertTrue(by_id["x"]["needsClassification"])
+        self.assertEqual(report["librarySourcesToReindex"], ["SOL-1", "SRC-1"])
+        self.assertEqual(drive.validate(records), [], "the updated inventory stays valid")
+
+    def test_a_file_that_returns_is_no_longer_missing(self):
+        gone, _ = drive.sync([self.paper], snapshot(taken="2026-10-30T00:00:00Z"))
+        back, report = drive.sync(gone, snapshot(listed(self.paper), taken="2026-11-01T00:00:00Z"))
+        self.assertEqual(report["counts"]["unchanged"], 1)
+        self.assertNotIn("missingSince", back[0])
+
+    def test_sync_report_has_no_titles(self):
+        _, report = drive.sync([self.paper], snapshot(listed(self.paper, modifiedTime="2026-10-28T00:00:00Z")))
+        self.assertNotIn("TMUA 2019", json.dumps(report))
+
+
 if __name__ == "__main__":
     unittest.main()

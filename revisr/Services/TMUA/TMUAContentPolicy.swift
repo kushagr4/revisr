@@ -13,9 +13,11 @@ enum TMUAContentPolicy {
     /// there is no fixed ratio.
     static let preferredLicensedShare = 0.5
 
-    /// Product decision: a public diagnostic must not silently become
-    /// original-only. Changing this requires an explicit product decision.
-    static let publicAllowsOriginalOnlyDiagnostic = false
+    /// Product decision (owner, R4): a public diagnostic may consist only of original Revisr
+    /// questions once enough of them have passed review and publication approval; third-party
+    /// questions are not required. The diagnostic says so (`TMUASourceMixStatus.originalOnlyApproved`),
+    /// and each length still needs its full section from approved questions alone.
+    static let publicAllowsOriginalOnlyDiagnostic = true
 
     static func publicGateFailures(_ item: TMUAContentItem) -> [String] {
         var failures: [String] = []

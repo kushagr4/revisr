@@ -118,15 +118,21 @@ final class TMUAContentAndSelectionTests: XCTestCase {
         XCTAssertTrue(context.eligibleItems.isEmpty)
     }
 
-    func testPublicOriginalOnlyDiagnosticIsBlockedNotSilentlySubstituted() throws {
+    /// R4: the owner allowed an original-only public diagnostic; it is disclosed, never silent.
+    func testPublicOriginalOnlyDiagnosticIsDisclosedNotSilentlySubstituted() throws {
         let originals = try TMUAFixtures.items(paperOne: 20, paperTwo: 20).map {
             TMUAFixtures.item($0.stableId, paper: $0.paper, topic: $0.taxonomy.topic, strand: $0.taxonomy.strand,
                               category: .revisrOriginal, cleared: true)
         }
         let publicContext = try TMUAFixtures.context(originals, distribution: .public)
-        XCTAssertEqual(publicContext.sourceMix, .blocked)
-        if case .blocked = publicContext.availability(for: .starter) {} else {
-            XCTFail("public original-only diagnostic must be blocked")
+        XCTAssertEqual(publicContext.sourceMix, .originalOnlyApproved)
+        XCTAssertTrue(publicContext.availability(for: .comprehensive).isAvailable)
+        XCTAssertEqual(publicContext.sourceMix.studentNotice, "This diagnostic uses original Revisr questions.")
+        let withheld = TMUAContentContext(bank: TMUAFixtures.bank(originals, distribution: .public),
+                                          syllabus: try TMUAFixtures.syllabus, allowsInternalContent: true,
+                                          allowsOriginalOnlyPublicDiagnostic: false)
+        if case .blocked = withheld.availability(for: .starter) {} else {
+            XCTFail("with the switch off, a public original-only diagnostic is blocked")
         }
         let internalContext = try TMUAFixtures.context(originals)
         XCTAssertEqual(internalContext.sourceMix, .originalOnlyDevelopment)

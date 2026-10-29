@@ -1,0 +1,1853 @@
+{
+ "version": 1,
+ "reviewedOn": "2026-10-29",
+ "legacyTopicMap": {
+  "Algebra: equations & inequalities": "equations-inequalities",
+  "Algebra: quadratics & polynomials": "algebra",
+  "Combinatorics & counting": "counting-probability",
+  "Coordinate geometry": "coordinate-geometry",
+  "Differentiation": "differentiation",
+  "Exponentials & logarithms": "exponentials-logarithms",
+  "Functional equations & recurrences": "functions-graphs",
+  "Geometry & mensuration": "geometry-measures",
+  "Graphs & transformations": "functions-graphs",
+  "Integration": "integration",
+  "Logic: implication / conditions": "logic",
+  "Number & arithmetic": "number",
+  "Number theory & divisibility": "number",
+  "Probability": "counting-probability",
+  "Ratio, proportion & rates": "ratio-proportion",
+  "Sequences & series": "sequences-series",
+  "Statistics": "statistics",
+  "Trigonometry": "trigonometry",
+  "Vectors": "geometry-measures"
+ },
+ "duplicates": [
+  {
+   "question": "BH-S2-P2-Q18",
+   "canonical": "BH-S1-P2-Q11",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S3-P2-Q02",
+   "canonical": "MAT-2014-Q1I",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S3-P2-Q16",
+   "canonical": "BH-S1-P2-Q17",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S3-P2-Q18",
+   "canonical": "BH-S1-P2-Q13",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TMUA-2020-P1-Q02",
+   "canonical": "TMUA-2019-P2-Q02",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-C-P2-Q15",
+   "canonical": "TYLER-LOGIC-Q20",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-LOGIC-Q06",
+   "canonical": "TMUA-2020-P2-Q10",
+   "relation": "same",
+   "evidence": "The same question reprinted: found by a shared-passage scan of the papers' text and confirmed by an AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S1-P1-Q02",
+   "canonical": "TMUAUK-R2DREW2-P1-Q15",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S2-P1-Q08",
+   "canonical": "TMUA-2022-P1-Q09",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S3-P1-Q11",
+   "canonical": "TMUA-2022-P1-Q15",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S3-P1-Q13",
+   "canonical": "BH-S1-P2-Q03",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "BH-S4-P1-Q17",
+   "canonical": "MAT-2019-Q1J",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "JZ-B-P2-Q18",
+   "canonical": "TMUA-2021-P2-Q12",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "JZ-C-P2-Q16",
+   "canonical": "TMUA-2019-P2-Q20",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "JZ-D-P2-Q17",
+   "canonical": "TMUA-2019-P2-Q20",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-A-P2-Q03",
+   "canonical": "TMUA-2020-P2-Q04",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-A-P2-Q05",
+   "canonical": "TMUA-2021-P2-Q03",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-A-P2-Q18",
+   "canonical": "MAT-2019-Q1G",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-ABSTRACT-FUNCTIONS-Q04",
+   "canonical": "TMUA-2017-P2-Q15",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-B-P1-Q18",
+   "canonical": "TMUA-2018-P1-Q16",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-B-P2-Q08",
+   "canonical": "TMUA-2021-P2-Q08",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-B-P2-Q11",
+   "canonical": "MAT-SPEC1-Q1E",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-B-P2-Q12",
+   "canonical": "MAT-SPEC1-Q1C",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-C-P1-Q05",
+   "canonical": "TMUA-2020-P1-Q04",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-D-P2-Q02",
+   "canonical": "TYLER-A-P1-Q13",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-D-P2-Q09",
+   "canonical": "TYLER-LOGIC-Q19",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-LOGIC-Q04",
+   "canonical": "TMUA-2019-P2-Q04",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-LOGIC-Q05",
+   "canonical": "TMUA-2020-P2-Q15",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  },
+  {
+   "question": "TYLER-MODULUS-Q13",
+   "canonical": "TYLER-D-P2-Q13",
+   "relation": "adapted",
+   "evidence": "Adapted from the other question with changed numbers, options or question asked: AI-assisted comparison (2026-10-29); not human-reviewed."
+  }
+ ],
+ "documents": [
+  {
+   "documentID": "SUP-TSPEC-P2",
+   "family": "TMUA Specimen",
+   "title": "TMUA Specimen Paper 2",
+   "year": null,
+   "paper": "Paper 2",
+   "questionPaper": "drive",
+   "solutionID": "SOL-932747FDB3AE8D4D",
+   "questions": [
+    {
+     "questionID": "TSPEC-P2-Q01",
+     "label": "1",
+     "page": 3,
+     "solutionPage": 4,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "TSPEC-P2-Q02",
+     "label": "2",
+     "page": 3,
+     "solutionPage": 5,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q03",
+     "label": "3",
+     "page": 4,
+     "solutionPage": 6,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q04",
+     "label": "4",
+     "page": 5,
+     "solutionPage": 7,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "TSPEC-P2-Q05",
+     "label": "5",
+     "page": 5,
+     "solutionPage": 8,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q06",
+     "label": "6",
+     "page": 6,
+     "solutionPage": 9,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q07",
+     "label": "7",
+     "page": 7,
+     "solutionPage": 10,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TSPEC-P2-Q08",
+     "label": "8",
+     "page": 8,
+     "solutionPage": 11,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q09",
+     "label": "9",
+     "page": 8,
+     "solutionPage": 12,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q10",
+     "label": "10",
+     "page": 9,
+     "solutionPage": 13,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TSPEC-P2-Q11",
+     "label": "11",
+     "page": 10,
+     "solutionPage": 14,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q12",
+     "label": "12",
+     "page": 10,
+     "solutionPage": 15,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q13",
+     "label": "13",
+     "page": 11,
+     "solutionPage": 16,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q14",
+     "label": "14",
+     "page": 11,
+     "solutionPage": 17,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TSPEC-P2-Q15",
+     "label": "15",
+     "page": 12,
+     "solutionPage": 19,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q16",
+     "label": "16",
+     "page": 12,
+     "solutionPage": 20,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TSPEC-P2-Q17",
+     "label": "17",
+     "page": 13,
+     "solutionPage": 21,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TSPEC-P2-Q18",
+     "label": "18",
+     "page": 14,
+     "solutionPage": 22,
+     "legacyTopic": "Statistics",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TSPEC-P2-Q19",
+     "label": "19",
+     "page": 15,
+     "solutionPage": 23,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TSPEC-P2-Q20",
+     "label": "20",
+     "page": 16,
+     "solutionPage": 24,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 5
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-TMUA-2023-P1",
+   "family": "TMUA Actual",
+   "title": "TMUA 2023 Paper 1",
+   "year": 2023,
+   "paper": "Paper 1",
+   "questionPaper": "none",
+   "solutionID": "SOL-217CFE9585DEB337",
+   "questions": [
+    {
+     "questionID": "TMUA-2023-P1-Q01",
+     "label": "1",
+     "page": null,
+     "solutionPage": 3,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q02",
+     "label": "2",
+     "page": null,
+     "solutionPage": 4,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q03",
+     "label": "3",
+     "page": null,
+     "solutionPage": 5,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q04",
+     "label": "4",
+     "page": null,
+     "solutionPage": 6,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q05",
+     "label": "5",
+     "page": null,
+     "solutionPage": 7,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q06",
+     "label": "6",
+     "page": null,
+     "solutionPage": 8,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q07",
+     "label": "7",
+     "page": null,
+     "solutionPage": 9,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q08",
+     "label": "8",
+     "page": null,
+     "solutionPage": 10,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q09",
+     "label": "9",
+     "page": null,
+     "solutionPage": 11,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q10",
+     "label": "10",
+     "page": null,
+     "solutionPage": 12,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q11",
+     "label": "11",
+     "page": null,
+     "solutionPage": 13,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q12",
+     "label": "12",
+     "page": null,
+     "solutionPage": 14,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q13",
+     "label": "13",
+     "page": null,
+     "solutionPage": 15,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q14",
+     "label": "14",
+     "page": null,
+     "solutionPage": 16,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q15",
+     "label": "15",
+     "page": null,
+     "solutionPage": 17,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q16",
+     "label": "16",
+     "page": null,
+     "solutionPage": 18,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q17",
+     "label": "17",
+     "page": null,
+     "solutionPage": 19,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q18",
+     "label": "18",
+     "page": null,
+     "solutionPage": 20,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q19",
+     "label": "19",
+     "page": null,
+     "solutionPage": 21,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P1-Q20",
+     "label": "20",
+     "page": null,
+     "solutionPage": 22,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-TMUA-2023-P2",
+   "family": "TMUA Actual",
+   "title": "TMUA 2023 Paper 2",
+   "year": 2023,
+   "paper": "Paper 2",
+   "questionPaper": "none",
+   "solutionID": "SOL-3F06F52EF8591BA7",
+   "questions": [
+    {
+     "questionID": "TMUA-2023-P2-Q01",
+     "label": "1",
+     "page": null,
+     "solutionPage": 3,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q02",
+     "label": "2",
+     "page": null,
+     "solutionPage": 4,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q03",
+     "label": "3",
+     "page": null,
+     "solutionPage": 5,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q04",
+     "label": "4",
+     "page": null,
+     "solutionPage": 6,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q05",
+     "label": "5",
+     "page": null,
+     "solutionPage": 7,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q06",
+     "label": "6",
+     "page": null,
+     "solutionPage": 8,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q07",
+     "label": "7",
+     "page": null,
+     "solutionPage": 9,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q08",
+     "label": "8",
+     "page": null,
+     "solutionPage": 10,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q09",
+     "label": "9",
+     "page": null,
+     "solutionPage": 11,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q10",
+     "label": "10",
+     "page": null,
+     "solutionPage": 12,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q11",
+     "label": "11",
+     "page": null,
+     "solutionPage": 13,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q12",
+     "label": "12",
+     "page": null,
+     "solutionPage": 14,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q13",
+     "label": "13",
+     "page": null,
+     "solutionPage": 15,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q14",
+     "label": "14",
+     "page": null,
+     "solutionPage": 16,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q15",
+     "label": "15",
+     "page": null,
+     "solutionPage": 17,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q16",
+     "label": "16",
+     "page": null,
+     "solutionPage": 19,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q17",
+     "label": "17",
+     "page": null,
+     "solutionPage": 20,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q18",
+     "label": "18",
+     "page": null,
+     "solutionPage": 21,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q19",
+     "label": "19",
+     "page": null,
+     "solutionPage": 22,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 5
+    },
+    {
+     "questionID": "TMUA-2023-P2-Q20",
+     "label": "20",
+     "page": null,
+     "solutionPage": 23,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 5
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-MAT-2009",
+   "family": "MAT",
+   "title": "MAT 2009",
+   "year": 2009,
+   "paper": null,
+   "questionPaper": "drive",
+   "solutionID": "SOL-A07689D165014F39",
+   "questions": [
+    {
+     "questionID": "MAT-2009-Q1A",
+     "label": "1A",
+     "page": 3,
+     "solutionPage": 1,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q1B",
+     "label": "1B",
+     "page": 3,
+     "solutionPage": 1,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2009-Q1C",
+     "label": "1C",
+     "page": 4,
+     "solutionPage": 1,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1 / Both",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q1D",
+     "label": "1D",
+     "page": 4,
+     "solutionPage": 1,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2009-Q1E",
+     "label": "1E",
+     "page": 5,
+     "solutionPage": 2,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q1F",
+     "label": "1F",
+     "page": 5,
+     "solutionPage": 2,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q1G",
+     "label": "1G",
+     "page": 6,
+     "solutionPage": 2,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q1H",
+     "label": "1H",
+     "page": 6,
+     "solutionPage": 2,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2009-Q1I",
+     "label": "1I",
+     "page": 7,
+     "solutionPage": 3,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q1J",
+     "label": "1J",
+     "page": 7,
+     "solutionPage": 3,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 1 / Both",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q02",
+     "label": "2",
+     "page": 8,
+     "solutionPage": 4,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2009-Q03",
+     "label": "3",
+     "page": 10,
+     "solutionPage": 5,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2009-Q04",
+     "label": "4",
+     "page": 12,
+     "solutionPage": 7,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2009-Q05",
+     "label": "5",
+     "page": 14,
+     "solutionPage": 8,
+     "legacyTopic": "Games, invariants & strategy",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2009-Q06",
+     "label": "6",
+     "page": 16,
+     "solutionPage": 9,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2009-Q07",
+     "label": "7",
+     "page": 18,
+     "solutionPage": 9,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-MAT-2012",
+   "family": "MAT",
+   "title": "MAT 2012",
+   "year": 2012,
+   "paper": null,
+   "questionPaper": "drive",
+   "solutionID": "SOL-5C73F8E2CD91CC60",
+   "questions": [
+    {
+     "questionID": "MAT-2012-Q1A",
+     "label": "1A",
+     "page": 3,
+     "solutionPage": 1,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2012-Q1B",
+     "label": "1B",
+     "page": 3,
+     "solutionPage": 1,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2 / Both",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2012-Q1C",
+     "label": "1C",
+     "page": 4,
+     "solutionPage": 1,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2012-Q1D",
+     "label": "1D",
+     "page": 4,
+     "solutionPage": 1,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2012-Q1E",
+     "label": "1E",
+     "page": 5,
+     "solutionPage": 1,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2012-Q1F",
+     "label": "1F",
+     "page": 5,
+     "solutionPage": 2,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2012-Q1G",
+     "label": "1G",
+     "page": 6,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2012-Q1H",
+     "label": "1H",
+     "page": 6,
+     "solutionPage": 2,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1 / Both",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2012-Q1I",
+     "label": "1I",
+     "page": 7,
+     "solutionPage": 3,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2012-Q1J",
+     "label": "1J",
+     "page": 7,
+     "solutionPage": 3,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1 / Both",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2012-Q02",
+     "label": "2",
+     "page": 8,
+     "solutionPage": 4,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2012-Q03",
+     "label": "3",
+     "page": 10,
+     "solutionPage": 5,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2012-Q04",
+     "label": "4",
+     "page": 12,
+     "solutionPage": 6,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2012-Q05",
+     "label": "5",
+     "page": 14,
+     "solutionPage": 7,
+     "legacyTopic": "Functional equations & recurrences",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2012-Q06",
+     "label": "6",
+     "page": 16,
+     "solutionPage": 8,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2012-Q07",
+     "label": "7",
+     "page": 18,
+     "solutionPage": 8,
+     "legacyTopic": "Games, invariants & strategy",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 3
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-MAT-2013",
+   "family": "MAT",
+   "title": "MAT 2013",
+   "year": 2013,
+   "paper": null,
+   "questionPaper": "drive",
+   "solutionID": "SOL-76D7D6790F27D4F8",
+   "questions": [
+    {
+     "questionID": "MAT-2013-Q1A",
+     "label": "1A",
+     "page": 5,
+     "solutionPage": 1,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2013-Q1B",
+     "label": "1B",
+     "page": 5,
+     "solutionPage": 1,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2013-Q1C",
+     "label": "1C",
+     "page": 6,
+     "solutionPage": 1,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q1D",
+     "label": "1D",
+     "page": 6,
+     "solutionPage": 1,
+     "legacyTopic": "Graphs & transformations",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q1E",
+     "label": "1E",
+     "page": 7,
+     "solutionPage": 2,
+     "legacyTopic": "Differentiation",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q1F",
+     "label": "1F",
+     "page": 7,
+     "solutionPage": 2,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q1G",
+     "label": "1G",
+     "page": 8,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q1H",
+     "label": "1H",
+     "page": 8,
+     "solutionPage": 3,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q1I",
+     "label": "1I",
+     "page": 9,
+     "solutionPage": 3,
+     "legacyTopic": "Functional equations & recurrences",
+     "paperFit": "Paper 2 / Both",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2013-Q1J",
+     "label": "1J",
+     "page": 9,
+     "solutionPage": 3,
+     "legacyTopic": "Integration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2013-Q02",
+     "label": "2",
+     "page": 10,
+     "solutionPage": 4,
+     "legacyTopic": "Functional equations & recurrences",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2013-Q03",
+     "label": "3",
+     "page": 12,
+     "solutionPage": 5,
+     "legacyTopic": "Integration",
+     "paperFit": "Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2013-Q04",
+     "label": "4",
+     "page": 14,
+     "solutionPage": 6,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2013-Q05",
+     "label": "5",
+     "page": 16,
+     "solutionPage": 7,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Both",
+     "format": "Long-form multi-part",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2013-Q06",
+     "label": "6",
+     "page": 18,
+     "solutionPage": 8,
+     "legacyTopic": "Logic: implication / conditions",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2013-Q07",
+     "label": "7",
+     "page": 20,
+     "solutionPage": 8,
+     "legacyTopic": "Games, invariants & strategy",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-MAT-2023",
+   "family": "MAT",
+   "title": "MAT 2023",
+   "year": 2023,
+   "paper": null,
+   "questionPaper": "none",
+   "solutionID": "SOL-7E9C8F87F9F99D07",
+   "questions": [
+    {
+     "questionID": "MAT-2023-Q1A",
+     "label": "1A",
+     "page": null,
+     "solutionPage": 1,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q1B",
+     "label": "1B",
+     "page": null,
+     "solutionPage": 1,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2 / Both",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2023-Q1C",
+     "label": "1C",
+     "page": null,
+     "solutionPage": 1,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q1D",
+     "label": "1D",
+     "page": null,
+     "solutionPage": 1,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q1E",
+     "label": "1E",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q1F",
+     "label": "1F",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2023-Q1G",
+     "label": "1G",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q1H",
+     "label": "1H",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "MAT-2023-Q1I",
+     "label": "1I",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q1J",
+     "label": "1J",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Sequences & series",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q02",
+     "label": "2",
+     "page": null,
+     "solutionPage": 3,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q03",
+     "label": "3",
+     "page": null,
+     "solutionPage": 4,
+     "legacyTopic": "Trigonometry",
+     "paperFit": "Paper 1",
+     "format": "Long-form multi-part",
+     "difficulty": 3
+    },
+    {
+     "questionID": "MAT-2023-Q04",
+     "label": "4",
+     "page": null,
+     "solutionPage": 5,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2023-Q05",
+     "label": "5",
+     "page": null,
+     "solutionPage": 6,
+     "legacyTopic": "Functional equations & recurrences",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2023-Q06",
+     "label": "6",
+     "page": null,
+     "solutionPage": 7,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-MAT-2024",
+   "family": "MAT",
+   "title": "MAT 2024",
+   "year": 2024,
+   "paper": null,
+   "questionPaper": "none",
+   "solutionID": "SOL-569D45DDDDF29F03",
+   "questions": [
+    {
+     "questionID": "MAT-2024-Q26",
+     "label": "26",
+     "page": null,
+     "solutionPage": 1,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2024-Q27",
+     "label": "27",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Games, invariants & strategy",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-MAT-2025",
+   "family": "MAT",
+   "title": "MAT 2025",
+   "year": 2025,
+   "paper": null,
+   "questionPaper": "none",
+   "solutionID": "SOL-48AC4A9A7017D612",
+   "questions": [
+    {
+     "questionID": "MAT-2025-Q26X",
+     "label": "26X",
+     "page": null,
+     "solutionPage": 1,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2025-Q26Y",
+     "label": "26Y",
+     "page": null,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2025-Q27X",
+     "label": "27X",
+     "page": null,
+     "solutionPage": 3,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    },
+    {
+     "questionID": "MAT-2025-Q27Y",
+     "label": "27Y",
+     "page": null,
+     "solutionPage": 4,
+     "legacyTopic": "Combinatorics & counting",
+     "paperFit": "Paper 2 / Both",
+     "format": "Long-form multi-part",
+     "difficulty": 4
+    }
+   ]
+  },
+  {
+   "documentID": "SUP-IMC-2022",
+   "family": "IMC",
+   "title": "IMC 2022",
+   "year": 2022,
+   "paper": null,
+   "questionPaper": "drive",
+   "solutionID": "SOL-E2D22CEB35B05670",
+   "questions": [
+    {
+     "questionID": "IMC-2022-Q01",
+     "label": "1",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q02",
+     "label": "2",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Ratio, proportion & rates",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q03",
+     "label": "3",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q04",
+     "label": "4",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Ratio, proportion & rates",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q05",
+     "label": "5",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q06",
+     "label": "6",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q07",
+     "label": "7",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q08",
+     "label": "8",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Number & arithmetic",
+     "paperFit": null,
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q09",
+     "label": "9",
+     "page": 2,
+     "solutionPage": 1,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q10",
+     "label": "10",
+     "page": 2,
+     "solutionPage": 2,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q11",
+     "label": "11",
+     "page": 2,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q12",
+     "label": "12",
+     "page": 3,
+     "solutionPage": 2,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q13",
+     "label": "13",
+     "page": 3,
+     "solutionPage": 2,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q14",
+     "label": "14",
+     "page": 3,
+     "solutionPage": 2,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 2",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q15",
+     "label": "15",
+     "page": 3,
+     "solutionPage": 2,
+     "legacyTopic": "Coordinate geometry",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q16",
+     "label": "16",
+     "page": 3,
+     "solutionPage": 2,
+     "legacyTopic": "Exponentials & logarithms",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q17",
+     "label": "17",
+     "page": 3,
+     "solutionPage": 3,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q18",
+     "label": "18",
+     "page": 3,
+     "solutionPage": 3,
+     "legacyTopic": "Algebra: quadratics & polynomials",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q19",
+     "label": "19",
+     "page": 4,
+     "solutionPage": 3,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 1
+    },
+    {
+     "questionID": "IMC-2022-Q20",
+     "label": "20",
+     "page": 4,
+     "solutionPage": 3,
+     "legacyTopic": "Statistics",
+     "paperFit": "Both",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "IMC-2022-Q21",
+     "label": "21",
+     "page": 4,
+     "solutionPage": 3,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q22",
+     "label": "22",
+     "page": 4,
+     "solutionPage": 3,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1 / Both",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "IMC-2022-Q23",
+     "label": "23",
+     "page": 4,
+     "solutionPage": 4,
+     "legacyTopic": "Geometry & mensuration",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 3
+    },
+    {
+     "questionID": "IMC-2022-Q24",
+     "label": "24",
+     "page": 4,
+     "solutionPage": 4,
+     "legacyTopic": "Algebra: equations & inequalities",
+     "paperFit": "Paper 1",
+     "format": "Multiple choice",
+     "difficulty": 2
+    },
+    {
+     "questionID": "IMC-2022-Q25",
+     "label": "25",
+     "page": 4,
+     "solutionPage": 4,
+     "legacyTopic": "Number theory & divisibility",
+     "paperFit": "Paper 1 / Both",
+     "format": "Multiple choice",
+     "difficulty": 3
+    }
+   ]
+  }
+ ]
+}

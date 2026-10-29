@@ -535,6 +535,32 @@ def strip_restricted(app, repo):
     print("Removed %d restricted legacy resources from %s" % (removed, app))
 
 
+# R4: the catalogue reconciliation file ships in every build, so it must hold identities and
+# metadata only: never answer keys, Drive file IDs or reviewers' notes from the private records.
+RECONCILIATION_FILENAME = "TMUACatalogueReconciliation.json"
+RECONCILIATION_FORBIDDEN_KEYS = {"answerLetter", "answerBasis", "driveFileID", "driveId", "note", "notes", "stem", "options"}
+
+
+def reconciliation_failures(app):
+    path = os.path.join(app, RECONCILIATION_FILENAME)
+    if not os.path.isfile(path):
+        return []
+    found = set()
+
+    def walk(value):
+        if isinstance(value, dict):
+            found.update(RECONCILIATION_FORBIDDEN_KEYS.intersection(value))
+            for child in value.values():
+                walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+
+    with open(path, encoding="utf-8") as handle:
+        walk(json.load(handle))
+    return ["%s carries private fields: %s" % (RECONCILIATION_FILENAME, ", ".join(sorted(found)))] if found else []
+
+
 def check_app(app, repo, distribution):
     failures = []
     if distribution == "public":
@@ -562,6 +588,7 @@ def check_app(app, repo, distribution):
                 for current, _, files in os.walk(app):
                     if name in files:
                         failures.append("private review file %s bundled" % os.path.join(current, name))
+    failures += reconciliation_failures(app)
     for failure in failures:
         sys.stderr.write("error: release gate: " + failure + "\n")
     if failures:

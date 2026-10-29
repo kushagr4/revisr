@@ -72,11 +72,11 @@ final class TMUAPublicContentTests: XCTestCase {
         }
         let bank = TMUAFixtures.bank(originals, distribution: .public)
         let syllabus = try TMUAFixtures.syllabus
-        let today = TMUAContentContext(bank: bank, syllabus: syllabus, allowsInternalContent: true)
-        XCTAssertFalse(TMUAContentPolicy.publicAllowsOriginalOnlyDiagnostic, "unchanged product decision")
-        XCTAssertEqual(today.sourceMix, .blocked)
-        let decided = TMUAContentContext(bank: bank, syllabus: syllabus, allowsInternalContent: true,
-                                         allowsOriginalOnlyPublicDiagnostic: true)
+        XCTAssertTrue(TMUAContentPolicy.publicAllowsOriginalOnlyDiagnostic, "the owner's R4 product decision")
+        let withheld = TMUAContentContext(bank: bank, syllabus: syllabus, allowsInternalContent: true,
+                                          allowsOriginalOnlyPublicDiagnostic: false)
+        XCTAssertEqual(withheld.sourceMix, .blocked, "the switch still withholds it when turned off")
+        let decided = TMUAContentContext(bank: bank, syllabus: syllabus, allowsInternalContent: true)
         XCTAssertEqual(decided.sourceMix, .originalOnlyApproved)
         XCTAssertTrue(decided.availability(for: .starter).isAvailable)
         XCTAssertTrue(decided.availability(for: .balanced).isAvailable)
