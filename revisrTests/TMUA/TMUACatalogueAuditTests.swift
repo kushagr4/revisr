@@ -51,6 +51,16 @@ final class TMUACatalogueAuditTests: XCTestCase {
         let uses = Dictionary(grouping: questionTasks.compactMap(\.questionID), by: { $0 }).mapValues(\.count)
         let official = questionTasks.filter { $0.questionID.flatMap { itemsByID[$0] }?.category == .pastPaperStudyCopy }.count
         let paperSessions = tasks.filter { $0.activity == .resourcePractice }
+        let worksheets = tasks.filter { $0.activity == .topicWorksheet }
+        let catalogue = TMUACatalogueStore.catalogue(content)
+        let worksheetQuestions = worksheets.flatMap { TMUAProgrammeService.worksheetQuestionIDs($0.sourceID) }
+        // R4: every library session names a real paper or real catalogue questions in this build.
+        XCTAssertTrue(paperSessions.allSatisfy { task in catalogue.sources.contains { $0.id == task.sourceID } })
+        XCTAssertTrue(worksheetQuestions.allSatisfy { catalogue.entry($0)?.answerMode == .selfMarked })
+        XCTAssertEqual(Set(worksheetQuestions).count, worksheetQuestions.count, "no worksheet question repeats")
+        let wholePapers = Set(paperSessions.map(\.sourceID))
+        XCTAssertTrue(worksheetQuestions.allSatisfy { !wholePapers.contains(catalogue.entry($0)?.sourceID ?? "") },
+                      "a question is never fresh twice: in a worksheet and in a paper set whole")
         let summary = TMUAProgrammeService.contentSummary(programme: programme, tasks: tasks,
             seenStableIDs: Set(snapshot.items.map(\.itemStableID)), availability: availability,
             today: today, calendar: calendar)
@@ -66,9 +76,10 @@ final class TMUACatalogueAuditTests: XCTestCase {
         if sessions {
             XCTAssertEqual(summary.emptyStudyDays, 0, "\(label): papers remain, so no study day is left empty")
         }
-        print(String(format: "AUDIT library %@ studyDays=%d questionTasks=%d distinct=%d official=%.0f%% maxUses=%d paperSessions=%d emptyDays=%d freshUntil=%d",
+        print(String(format: "AUDIT library %@ studyDays=%d questionTasks=%d distinct=%d official=%.0f%% maxUses=%d paperSessions=%d worksheets=%d worksheetQuestions=%d emptyDays=%d freshUntil=%d",
                      label, summary.studyDays, questionTasks.count, uses.count,
                      questionTasks.isEmpty ? 0 : Double(official) / Double(questionTasks.count) * 100,
-                     uses.values.max() ?? 0, paperSessions.count, summary.emptyStudyDays, summary.daysWithoutNewQuestions))
+                     uses.values.max() ?? 0, paperSessions.count, worksheets.count, worksheetQuestions.count,
+                     summary.emptyStudyDays, summary.daysWithoutNewQuestions))
     }
 }

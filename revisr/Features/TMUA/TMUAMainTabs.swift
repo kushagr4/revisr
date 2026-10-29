@@ -244,6 +244,7 @@ struct TMUATaskRow: View {
         case .spacedReview: "clock.arrow.circlepath"
         case .diagnosticRefinement: "plus.magnifyingglass"
         case .resourcePractice: "doc.richtext"
+        case .topicWorksheet: "list.bullet.clipboard"
         }
     }
 }
@@ -410,6 +411,8 @@ struct TMUATaskView: View {
             }
         } else if task.activity == .resourcePractice {
             TMUAResourceTaskView(settings: settings, task: task)
+        } else if task.activity == .topicWorksheet {
+            TMUAWorksheetTaskView(settings: settings, task: task)
         } else if let id = task.questionID, isReserved(id) {
             ContentUnavailableView("Finish your added diagnostic questions first", systemImage: "lock",
                 description: Text("This question is part of your open diagnostic round. Its practice task returns after you submit that round."))

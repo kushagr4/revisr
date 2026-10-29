@@ -77,6 +77,10 @@ enum TMUAProgrammeService {
         }
         let refinement = refinementMinutes(snapshot: snapshot, settings: settings, content: content,
                                            existingTasks: existingTasks, in: context)
+        // R4: when the library can supply fresh self-marked worksheets, a question is revisited once
+        // rather than drilled a third or fourth time; the days that frees go to the library.
+        let preferLibrary = resourceSessions
+            && TMUACatalogueStore.catalogue(content).practicable.contains { $0.answerMode == .selfMarked }
         let programme = try PublicProgrammeService.applyPlan(
             programmeID: programmeID(settings: settings), settings: settings, examDate: examDate,
             weeklyMinutes: weekly, today: today, calendar: calendar,
@@ -86,11 +90,11 @@ enum TMUAProgrammeService {
                           start: start, examDate: examDate, weeklyMinutes: weekly,
                           excludedQuestionIDs: excluded.union(reserved), refinement: refinement.map {
                               ($0, refinementSourceID(for: snapshot.diagnostic.targetLength)) },
-                          calendar: calendar)
+                          calendar: calendar, preferLibraryOverRepeats: preferLibrary)
         }
         if resourceSessions {
             try scheduleResourceSessions(programme: programme, settings: settings, content: content,
-                                         today: today, calendar: calendar, in: context)
+                                         today: today, calendar: calendar, report: report, in: context)
         }
         return programme
     }
@@ -128,7 +132,8 @@ enum TMUAProgrammeService {
         weeklyMinutes: Int,
         excludedQuestionIDs: Set<String>,
         refinement: (minutes: Int, sourceID: String)?,
-        calendar: Calendar
+        calendar: Calendar,
+        preferLibraryOverRepeats: Bool = false
     ) -> PublicPlanningInput {
         let latestAttempt = Dictionary(grouping: evidence.attempts, by: \.itemStableID)
             .compactMapValues { $0.max { $0.attemptedAt < $1.attemptedAt } }
@@ -171,6 +176,7 @@ enum TMUAProgrammeService {
         options.maximumSpacedRepeats = maximumSpacedRepeats(questionCount: questions.count, start: start,
             examDate: examDate, weeklyMinutes: weeklyMinutes, sessionMinutes: settings.publicSessionMinutes,
             availability: settings.publicAvailability, calendar: calendar)
+        if preferLibraryOverRepeats { options.maximumSpacedRepeats = libraryRevisitLimit }
         options.diagnosticRefinementMinutes = refinement?.minutes
         if let refinement { options.diagnosticRefinementSourceID = refinement.sourceID }
         return PublicPlanningInput(exam: .tmua, startDate: start, examDate: examDate,
@@ -183,6 +189,8 @@ enum TMUAProgrammeService {
     /// repeats of the same multiple-choice question add little, so a small
     /// bank leaves honest gaps (reported by `contentSummary`) instead.
     static let spacedRepeatLimit = 3
+    /// Revisits per question when fresh library worksheets can fill the days instead (R4).
+    static let libraryRevisitLimit = 1
 
     static func maximumSpacedRepeats(questionCount: Int, start: Date, examDate: Date, weeklyMinutes: Int,
                                      sessionMinutes: Int?, availability: [DayAvailability],
@@ -310,6 +318,8 @@ struct TMUAPlanContentSummary: Equatable {
     let distinctQuestions: Int
     /// Remaining study days given a self-marked paper session because the bank cannot fill them.
     var paperSessionDays = 0
+    /// Remaining study days with a self-marked topic worksheet from the library (R4).
+    var worksheetDays = 0
     let lastNewQuestionDate: Date?
     /// Days between the last newly introduced question and the exam.
     let daysWithoutNewQuestions: Int
@@ -326,6 +336,9 @@ struct TMUAPlanContentSummary: Equatable {
             parts.append(lastNewQuestionDate.map {
                 "Questions you have not seen before run out on \($0.formatted(date: .abbreviated, time: .omitted)). After that, your plan revisits earlier questions with widening gaps."
             } ?? "There are no questions you have not seen before left in this build, so your plan revisits earlier questions with widening gaps.")
+        }
+        if worksheetDays > 0 {
+            parts.append("\(worksheetDays) study day\(worksheetDays == 1 ? "" : "s") include a self-marked topic worksheet from your library.")
         }
         if paperSessionDays > 0 {
             parts.append("\(paperSessionDays) study day\(paperSessionDays == 1 ? "" : "s") use a self-marked paper from your library instead.")
@@ -365,9 +378,10 @@ extension TMUAProgrammeService {
         }
         let gap = calendar.dateComponents([.day], from: lastNew ?? start, to: examDay).day ?? 0
         let paperDays = Set(future.filter { $0.activity == .resourcePractice }.map { calendar.startOfDay(for: $0.scheduledDate) })
+        let worksheetDays = Set(future.filter { $0.activity == .topicWorksheet }.map { calendar.startOfDay(for: $0.scheduledDate) })
         return TMUAPlanContentSummary(studyDays: studyDays, emptyStudyDays: empty,
                                       distinctQuestions: Set(future.compactMap(\.questionID)).count,
-                                      paperSessionDays: paperDays.count,
+                                      paperSessionDays: paperDays.count, worksheetDays: worksheetDays.count,
                                       lastNewQuestionDate: lastNew, daysWithoutNewQuestions: gap)
     }
 

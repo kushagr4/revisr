@@ -397,3 +397,69 @@ struct TMUAResourceTaskView: View {
         } message: { Text(errorMessage ?? "") }
     }
 }
+
+/// A planned topic worksheet (R4): self-marked questions on one topic from papers in the library.
+/// Each question opens at its page; the worksheet completes with the student's own result.
+struct TMUAWorksheetTaskView: View {
+    @Environment(\.modelContext) private var modelContext
+    let settings: AppSettings
+    let task: PublicProgrammeTask
+    @Query private var attempts: [TMUAPracticeAttempt]
+    @Query private var logs: [TMUAResourceLog]
+    @Query private var flags: [TMUAReviewFlag]
+    @State private var recording = false
+    @State private var errorMessage: String?
+
+    var body: some View {
+        let content = TMUAContentStore.context()
+        let catalogue = TMUACatalogueStore.catalogue(content)
+        let entries = TMUAProgrammeService.worksheetQuestionIDs(task.sourceID).compactMap(catalogue.entry)
+        let progress = TMUACatalogueProgress(settings: settings, attempts: attempts, logs: logs, flags: flags)
+        List {
+            Section {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("\(task.activity.title) · \(task.allocatedMinutes) minutes").font(.subheadline.weight(.semibold))
+                    Text(task.reason).font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
+                }
+            }
+            Section("\(entries.count) question\(entries.count == 1 ? "" : "s")") {
+                if entries.isEmpty {
+                    Text("These questions are not available in this build. Refresh your plan to replace this worksheet; completed work is unchanged.")
+                        .foregroundStyle(RevisrColors.secondaryLabel)
+                }
+                ForEach(entries) { entry in
+                    TMUACatalogueLink(settings: settings, entry: entry, catalogue: catalogue, content: content) {
+                        TMUACatalogueRow(entry: entry, progress: progress, syllabus: content?.syllabus)
+                    }
+                }
+            }
+            Section {
+                if let done = task.completedAt {
+                    Label("Done \(done.formatted(date: .abbreviated, time: .omitted)) · \(task.completionNote)",
+                          systemImage: "checkmark.circle.fill").foregroundStyle(RevisrColors.success)
+                } else {
+                    Button("Record my result", systemImage: "square.and.pencil") { recording = true }
+                        .disabled(entries.isEmpty)
+                        .accessibilityIdentifier("worksheet.record")
+                }
+            } footer: {
+                Text("You mark these questions yourself. Your result counts towards your progress and plan, but not as evidence of topic mastery.")
+            }
+        }
+        .navigationTitle(task.topic)
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $recording) {
+            TMUARecordResultSheet(title: task.topic, questionCount: entries.count) { outcome, correct, minutes in
+                do {
+                    try TMUAProgrammeService.completeResourceSession(task, outcome: outcome, correct: correct,
+                        questionCount: entries.count, minutes: minutes, settings: settings, in: modelContext)
+                } catch {
+                    errorMessage = error.localizedDescription
+                }
+            }
+        }
+        .alert("Couldn’t Save", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
+            Button("OK", role: .cancel) { errorMessage = nil }
+        } message: { Text(errorMessage ?? "") }
+    }
+}

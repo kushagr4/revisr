@@ -75,6 +75,8 @@ enum PublicPlanningActivity: String, CaseIterable {
     case diagnosticRefinement
     /// A self-marked paper from the library, scheduled only on days the question bank cannot fill.
     case resourcePractice
+    /// R4: self-marked questions on one topic from papers in the library, on days the bank cannot fill.
+    case topicWorksheet
 
     var title: String {
         switch self {
@@ -88,6 +90,7 @@ enum PublicPlanningActivity: String, CaseIterable {
         case .spacedReview: "Spaced review"
         case .diagnosticRefinement: "Refine your diagnostic"
         case .resourcePractice: "Paper practice (self-marked)"
+        case .topicWorksheet: "Topic worksheet (self-marked)"
         }
     }
 }
