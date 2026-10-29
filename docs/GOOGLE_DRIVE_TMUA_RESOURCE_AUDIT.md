@@ -1,5 +1,7 @@
 # Google Drive TMUA resource audit
 
+**R4 (29 October 2026):** the folder was re-listed and is unchanged. Its five unindexed question papers, and the papers known only from their solutions, are now indexed, and the collection is reconciled question by question with the library and the original bank. Incremental sync is `drive_inventory.py sync`. See `R4_GOOGLE_DRIVE_RECONCILIATION.md`.
+
 Audited 26 October 2026 through the authorised Google Drive connection, read-only: nothing on Drive was created, moved, shared, modified or downloaded in bulk. The folder is "TMUA" (owner [redacted], folder ID [redacted]), the folder previously shared. Its title, owner and contents confirm it.
 
 The file-by-file inventory (titles, Drive IDs, provider evidence, duplicate matches) is private: `revisr-content-private/drive/tmua-drive-inventory.json` and `tmua-drive-summary.md`. This public summary gives counts only.

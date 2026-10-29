@@ -2,6 +2,8 @@
 
 How the original Revisr library, the official TMUA study copies and the Revisr bank come together in the student-facing app, and what each build shows. Sources and rights: `QUESTION_SOURCE_AND_LICENSING_MATRIX.md`. Why it was disconnected: `ORIGINAL_QUESTION_BANK_REINTEGRATION.md`.
 
+**Superseded in part by R4 (29 October 2026):** the library is now one catalogue of canonical questions (`TMUAQuestionCatalogue`), and the Questions tab shows it as Practice, Papers, Sources and Saved. See `R4_COMPLETE_QUESTION_BANK_ARCHITECTURE.md` and `R4_UNIFIED_QUESTION_CATALOGUE.md`. What follows describes the components R4 builds on.
+
 ## Components
 
 | Piece | File | Role |

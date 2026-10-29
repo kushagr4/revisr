@@ -114,7 +114,7 @@ The minimum below is derived, not invented:
 Beyond the first month, the 60- and 104-question sets keep days full by spaced review: questions are used up to four times, and new questions stop arriving 6 to 30 days before the exam. Wave 1 alone falls back on linked papers after a month and leaves 49 empty days in a six-month plan.
 
 **The minimum useful public set, given all this:**
-- **Tier A, a credible first release:** waves 1–2 approved, about 60 questions (30 per paper). That offers all four lengths with per-student variation and plans up to about two months without padding. It still needs either the original-only product decision or licensed questions, and it is short of demanding questions.
+- **Tier A, a credible first release:** waves 1–2 approved, about 60 questions (30 per paper). That offers all four lengths with per-student variation and plans up to about two months without padding. It still needs either the original-only product decision or licensed questions, and it is short of demanding questions. *(R4: the owner has since allowed an original-only public diagnostic; see `R4_DIAGNOSTIC_CONTENT_INTEGRATION.md`.)*
 - **Tier B, all four lengths offered well:** on top of Tier A, about 8 more level 4–5 questions in each paper, Paper 2 questions in ratio and proportion and in statistics, and about 15 more per paper for variety.
 - **Tier C, three to six months of fresh practice:** about 75 further questions for every extra month at a moderate load. The realistic route to that volume is licensed past and mock questions, not ever more originals.
 
