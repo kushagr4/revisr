@@ -121,6 +121,18 @@ struct TMUAContentRights: Codable, Hashable, Sendable {
     let attribution: String
 }
 
+/// Present only on items in a public bank: the approved-content manifest entry the build
+/// assembler checked against the human review register (and, for third-party items, a verified
+/// rights grant). It names the stages passed, never the reviewers.
+struct TMUAApprovalRecord: Codable, Hashable, Sendable {
+    let manifestRevision: Int?
+    let policyVersion: String
+    let approvedOn: String?
+    let contentHash: String
+    let stages: [String]
+    let rightsGrant: String?
+}
+
 struct TMUAContentReview: Codable, Hashable, Sendable {
     let mathematical: TMUAMathematicalReview
     let originality: TMUAOriginalityReview
@@ -157,6 +169,8 @@ struct TMUAContentItem: Codable, Hashable, Identifiable, Sendable {
     var difficultyProvenance: String? = nil
     /// The question's identity in the original Revisr library index (`AdmissionsManifest`).
     var libraryQuestionID: String? = nil
+    /// Set by the build assembler for approved items in a public bank only.
+    var approval: TMUAApprovalRecord? = nil
 
     var id: String { versionKey }
     var versionKey: String { "\(stableId)@v\(version)" }
@@ -191,6 +205,9 @@ struct TMUAContentBank: Codable, Sendable {
     let contentPolicyVersion: String
     let excludedItemCount: Int
     let items: [TMUAContentItem]
+    /// The approved-content manifest revision a public bank was assembled from; nil for
+    /// internal banks and for public banks built without a manifest.
+    var approvedManifestRevision: Int? = nil
 
     static let empty = TMUAContentBank(schemaVersion: 1, bankVersion: "empty", distribution: .public,
         taxonomyVersion: TMUASyllabus.currentVersion, contentPolicyVersion: TMUAContentPolicy.version,

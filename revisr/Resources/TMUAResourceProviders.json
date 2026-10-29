@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "checkedOn": "2026-10-26",
+  "checkedOn": "2026-10-28",
   "note": "Provider-level metadata only: credits, verified links and access decisions. No question content. Access categories: 'listed' = papers are listed individually and linked to the provider's own page, which offers them; 'provider' = the provider is credited and linked, but individual papers are not listed because their availability there is unconfirmed; 'restricted' = not shown in public builds (ownership unclear, terms forbid it, or no verifiable source). No provider has granted permission to reproduce questions in Revisr; internal builds show bundled papers only as personal study copies.",
   "providers": [
     {
@@ -61,7 +61,7 @@
       "linkTitle": "JZMaths",
       "publicAccess": "provider",
       "permission": "none",
-      "terms": "All rights reserved. Free practice and mock papers are offered on the site; some sets are in a paid bundle."
+      "terms": "All rights reserved (jzmaths.com/terms, checked 28 October 2026): a personal, non-commercial licence for your own TMUA preparation. Free practice and mock papers are offered on the site; some sets are in a paid bundle."
     },
     {
       "key": "tyler-tutoring",
@@ -69,11 +69,11 @@
       "credit": "Tyler Tutoring (Jacqueline Tyler)",
       "kind": "independent_mock",
       "families": ["Tyler Topic Bank"],
-      "url": null,
-      "linkTitle": null,
-      "publicAccess": "restricted",
+      "url": "https://www.tylertutoring.com/resources",
+      "linkTitle": "Tyler Tutoring resources",
+      "publicAccess": "provider",
       "permission": "none",
-      "terms": "Personal, non-commercial use only per the author's terms recorded in R1. No public page was verified on 26 October 2026; JZMaths sells sets from Tyler Tutoring in a paid bundle."
+      "terms": "Copyright of the author; no separate terms of use were found on the site (checked 28 October 2026). Free resources are offered on the author's own resources page."
     },
     {
       "key": "yotta",
@@ -97,7 +97,7 @@
       "linkTitle": null,
       "publicAccess": "restricted",
       "permission": "none",
-      "terms": "Personal, non-commercial use only per the terms recorded in R1; the provider's page could not be re-verified on 26 October 2026."
+      "terms": "All content is MioMath's property; personal study only, no copying or distribution (miomath.com/terms, checked 28 October 2026). Its TMUA products include post-exam recalls of live papers, so it is not linked."
     },
     {
       "key": "tmua-euclid",
@@ -105,11 +105,11 @@
       "credit": "TMUA Euclid",
       "kind": "independent_mock",
       "families": ["TMUA Euclid", "R2DREW2 / TMUA Euclid", "TMUA Euclid Ascent"],
-      "url": null,
-      "linkTitle": null,
-      "publicAccess": "restricted",
+      "url": "https://www.tmuaeuclid.com/",
+      "linkTitle": "TMUA Euclid",
+      "publicAccess": "provider",
       "permission": "none",
-      "terms": "Personal, non-commercial use only per the terms recorded in R1; the provider's page was not re-verified."
+      "terms": "Personal, non-commercial study only, per the site's terms (tmuaeuclid.com/terms, checked 28 October 2026, marked as pending legal review). Some sets are sold."
     },
     {
       "key": "tmua-co-uk",
@@ -121,7 +121,7 @@
       "linkTitle": "TMUA.co.uk",
       "publicAccess": "provider",
       "permission": "none",
-      "terms": "Paid practice platform; no terms page found. Several downloads in the owner's Drive are personalised to the account holder and are never shown."
+      "terms": "Paid practice platform; no terms page found (checked 28 October 2026). Several downloads in the owner's Drive are personalised to the account holder and are never shown."
     },
     {
       "key": "tmua-fyi",

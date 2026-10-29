@@ -4,7 +4,9 @@ import Foundation
 /// script applies the same public gate before content is bundled; this check
 /// repeats it at runtime so a mislabelled bank cannot widen eligibility.
 enum TMUAContentPolicy {
-    static let version = "tmua-content-policy-v1"
+    /// v2 (R3): a public build also needs each item's approved-content manifest record.
+    static let version = "tmua-content-policy-v2"
+    static let approvalPolicyVersion = "revisr-approval-policy-v1"
 
     /// A soft preference for real past or mock questions (licensed, or personal study copies
     /// in an internal build) when they are available. Coverage always outranks source mix;
@@ -41,6 +43,19 @@ enum TMUAContentPolicy {
         return failures
     }
 
+    /// Reasons an item lacks the approval chain a public build needs. The build assembler
+    /// verifies the chain itself (register decisions, content hash, rights grant); this repeats
+    /// the presence check at runtime so a bank whose fields claim approval cannot widen
+    /// eligibility on its own.
+    static func approvalFailures(_ item: TMUAContentItem) -> [String] {
+        guard let approval = item.approval else { return ["Not in the approved-content manifest"] }
+        var failures: [String] = []
+        if approval.policyVersion != approvalPolicyVersion { failures.append("Approval policy \(approval.policyVersion) not recognised") }
+        if approval.contentHash.count != 64 { failures.append("Approval does not identify the approved content") }
+        if item.category.isLicensedThirdParty && approval.rightsGrant == nil { failures.append("No rights grant recorded") }
+        return failures
+    }
+
     static func isStructurallyUsable(_ item: TMUAContentItem, syllabus: TMUASyllabus) -> Bool {
         guard let topic = syllabus.topic(item.taxonomy.topic),
               topic.strands.contains(where: { $0.key == item.taxonomy.strand }),
@@ -60,27 +75,35 @@ struct TMUAContentContext: Sendable {
     let distribution: TMUAContentDistribution
     let eligibleItems: [TMUAContentItem]
 
+    /// Whether a public build may offer a diagnostic made only of original questions
+    /// (`TMUAContentPolicy.publicAllowsOriginalOnlyDiagnostic` unless a test asks otherwise).
+    let allowsOriginalOnlyPublicDiagnostic: Bool
+
     /// - Parameter allowsInternalContent: false in release builds, so an
     ///   internal bank is still judged by the public gate.
     /// - Parameter allowsDevelopmentFixtures: only test code passes true.
     init(bank: TMUAContentBank, syllabus: TMUASyllabus,
          allowsInternalContent: Bool = TMUAContentContext.buildAllowsInternalContent,
-         allowsDevelopmentFixtures: Bool = false) {
+         allowsDevelopmentFixtures: Bool = false,
+         allowsOriginalOnlyPublicDiagnostic: Bool = TMUAContentPolicy.publicAllowsOriginalOnlyDiagnostic) {
         self.bank = bank
         self.syllabus = syllabus
+        self.allowsOriginalOnlyPublicDiagnostic = allowsOriginalOnlyPublicDiagnostic
         let distribution: TMUAContentDistribution = bank.distribution == .internal && allowsInternalContent
             ? .internal : .public
         self.distribution = distribution
         eligibleItems = bank.latestItems.filter { item in
             guard TMUAContentPolicy.isStructurallyUsable(item, syllabus: syllabus) else { return false }
             if item.category == .developmentFixture { return allowsDevelopmentFixtures }
-            return distribution == .internal || TMUAContentPolicy.publicGateFailures(item).isEmpty
+            return distribution == .internal || (TMUAContentPolicy.publicGateFailures(item).isEmpty
+                                                 && TMUAContentPolicy.approvalFailures(item).isEmpty)
         }
     }
 
     static var buildAllowsInternalContent: Bool {
 #if DEBUG
-        true
+        // `--tmua-public-content` lets simulator tests see exactly what a public build shows.
+        !ProcessInfo.processInfo.arguments.contains("--tmua-public-content")
 #else
         false
 #endif
@@ -100,13 +123,15 @@ struct TMUAContentContext: Sendable {
     var sourceMix: TMUASourceMixStatus {
         if licensedItemCount > 0 { return .mixedAvailable }
         if distribution == .internal { return studyCopyItemCount > 0 ? .mixedStudyCopies : .originalOnlyDevelopment }
-        return TMUAContentPolicy.publicAllowsOriginalOnlyDiagnostic ? .originalOnlyApproved : .blocked
+        return allowsOriginalOnlyPublicDiagnostic && originalItemCount > 0 ? .originalOnlyApproved : .blocked
     }
 
     func availability(for length: TMUADiagnosticLength,
                       excluding exposed: Set<String> = []) -> TMUADiagnosticAvailability {
         if sourceMix == .blocked {
-            return .blocked("No rights-cleared past or mock questions are available, so the mixed-source diagnostic cannot be offered in this build.")
+            return .blocked(eligibleItems.isEmpty
+                ? "No questions have completed independent review and rights clearance yet, so this version of Revisr cannot offer the diagnostic. You can still browse official papers and other sources on their publishers' websites."
+                : "No rights-cleared past or mock questions are available, so the mixed-source diagnostic cannot be offered in this build.")
         }
         for paper in TMUAPaper.allCases {
             let available = eligibleItems(for: paper).filter { !exposed.contains($0.stableId) }.count

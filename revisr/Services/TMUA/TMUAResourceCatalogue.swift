@@ -146,6 +146,13 @@ enum TMUAResourceCatalogue {
         return built
     }
 
+    /// Independent providers credited and linked to their own sites without listing their papers
+    /// (`publicAccess: provider`), so students can find them in any build.
+    nonisolated static func linkedProviders(_ registry: TMUAResourceRegistry?) -> [TMUAResourceProvider] {
+        (registry?.providers ?? []).filter { $0.publicAccess == .provider && $0.link?.scheme == "https" }
+            .sorted { $0.name < $1.name }
+    }
+
     /// Pure assembly, testable without bundle files.
     nonisolated static func build(manifest: AdmissionsManifest, solutions: AdmissionsSolutionsManifest?,
                                   registry: TMUAResourceRegistry, distribution: TMUAContentDistribution,

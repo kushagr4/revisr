@@ -31,7 +31,7 @@ enum TMUAFixtures {
                                 paperNumber: paper, questionNumber: 1, url: "https://example.invalid/fixture",
                                 attribution: "Fixture attribution")
             : nil
-        return TMUAContentItem(
+        var item = TMUAContentItem(
             stableId: id, version: version, paper: paper, category: category,
             title: "Fixture \(id)", stem: "Synthetic fixture \(id): choose option \(key).",
             options: ["A", "B", "C", "D", "E"].map { TMUAOption(id: $0, text: "Option \($0) for \(id)") },
@@ -44,6 +44,16 @@ enum TMUAFixtures {
             review: TMUAContentReview(mathematical: cleared ? .humanApproved : .aiDerivationOnly,
                 originality: cleared ? .humanApproved : .pending,
                 publication: cleared ? .approved : .notApproved, editorialStatus: "fixture"))
+        // A cleared fixture is one the approved-content manifest lists, as a public bank's items are.
+        if cleared { item.approval = approval(category: category) }
+        return item
+    }
+
+    static func approval(category: TMUAContentCategory) -> TMUAApprovalRecord {
+        TMUAApprovalRecord(manifestRevision: 1, policyVersion: TMUAContentPolicy.approvalPolicyVersion,
+                           approvedOn: "2026-10-28", contentHash: String(repeating: "f", count: 64),
+                           stages: ["mathematical", "publication"],
+                           rightsGrant: category.isLicensedThirdParty ? "fixture-grant" : nil)
     }
 
     /// Spreads `count` items per paper across every applicable strand.
