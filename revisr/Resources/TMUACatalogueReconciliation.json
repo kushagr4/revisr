@@ -22,6 +22,12 @@
   "Trigonometry": "trigonometry",
   "Vectors": "geometry-measures"
  },
+ "legacyTopicsOutside": [
+  "Games, invariants & strategy"
+ ],
+ "legacyTopicsUnclassified": [
+  "Mixed / problem solving"
+ ],
  "duplicates": [
   {
    "question": "BH-S2-P2-Q18",
@@ -1848,6 +1854,1113 @@
      "difficulty": 3
     }
    ]
+  }
+ ],
+ "topicDraftBasis": "Provisional topic: two independent AI classifications of the question's page agreed (2026-10-29). Not reviewed by a person.",
+ "topicDrafts": [
+  {
+   "question": "AF-P1-Q01",
+   "topic": "equations-inequalities",
+   "strand": "quadratics",
+   "confidence": "medium"
+  },
+  {
+   "question": "AF-P1-Q03",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "medium"
+  },
+  {
+   "question": "AF-P1-Q04",
+   "topic": "sequences-series",
+   "strand": "geometric-series",
+   "confidence": "high"
+  },
+  {
+   "question": "AF-P1-Q05",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "AF-P1-Q09",
+   "topic": "coordinate-geometry",
+   "strand": "circles",
+   "confidence": "medium"
+  },
+  {
+   "question": "AF-P1-Q17",
+   "topic": "functions-graphs",
+   "strand": "graph-transformations",
+   "confidence": "medium"
+  },
+  {
+   "question": "AF-P1-Q19",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "AF-P1-Q20",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P1-Q02",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P1-Q08",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S1-P1-Q09",
+   "topic": "sequences-series",
+   "strand": "sequences",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S1-P1-Q10",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P2-Q01",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S1-P2-Q02",
+   "topic": "ratio-proportion",
+   "strand": "ratio-proportion",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S1-P2-Q03",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P2-Q06",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P2-Q07",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P2-Q11",
+   "topic": "ratio-proportion",
+   "strand": "units",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S1-P2-Q16",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S2-P1-Q04",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S2-P1-Q06",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S2-P1-Q17",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S2-P1-Q19",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S2-P2-Q03",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S2-P2-Q08",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S2-P2-Q13",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S3-P1-Q04",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S3-P1-Q07",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S3-P1-Q08",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S3-P1-Q09",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P1-Q10",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P1-Q13",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P1-Q15",
+   "topic": "differentiation",
+   "strand": "derivatives",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P1-Q17",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P1-Q19",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P1-Q20",
+   "topic": "algebra",
+   "strand": "algebraic-manipulation",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P2-Q03",
+   "topic": "algebra",
+   "strand": "polynomials",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S3-P2-Q05",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P2-Q07",
+   "topic": "ratio-proportion",
+   "strand": "ratio-proportion",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P2-Q08",
+   "topic": "functions-graphs",
+   "strand": "function-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P2-Q10",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S3-P2-Q12",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S3-P2-Q15",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S4-P1-Q04",
+   "topic": "sequences-series",
+   "strand": "sequences",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S4-P1-Q05",
+   "topic": "equations-inequalities",
+   "strand": "simultaneous-equations",
+   "confidence": "medium"
+  },
+  {
+   "question": "BH-S4-P1-Q08",
+   "topic": "integration",
+   "strand": "differential-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S4-P1-Q10",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S4-P1-Q12",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "BH-S4-P1-Q14",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "DPID-S1-P1-Q05",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "DPID-S1-P1-Q06",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "DPID-S1-P1-Q10",
+   "topic": "sequences-series",
+   "strand": "sequences",
+   "confidence": "medium"
+  },
+  {
+   "question": "DPID-S1-P1-Q12",
+   "topic": "equations-inequalities",
+   "strand": "simultaneous-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "DPID-S1-P1-Q15",
+   "topic": "number",
+   "strand": "number-calculation",
+   "confidence": "medium"
+  },
+  {
+   "question": "EUCLID-R2DREW2-P1-Q02",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "EUCLID-R2DREW2-P1-Q04",
+   "topic": "equations-inequalities",
+   "strand": "quadratics",
+   "confidence": "medium"
+  },
+  {
+   "question": "EUCLID-R2DREW2-P1-Q05",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "EUCLID-R2DREW2-P1-Q12",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "EUCLID-SAMPLE-P2-Q01",
+   "topic": "proof",
+   "strand": "proof-ordering",
+   "confidence": "high"
+  },
+  {
+   "question": "EUCLID-SAMPLE-P2-Q16",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-A-P1-Q01",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-A-P1-Q07",
+   "topic": "equations-inequalities",
+   "strand": "quadratics",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-A-P1-Q08",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-A-P1-Q11",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-A-P2-Q07",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-A-P2-Q16",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-B-P1-Q06",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-B-P1-Q09",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-B-P1-Q12",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-B-P1-Q19",
+   "topic": "functions-graphs",
+   "strand": "graphs-and-roots",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-B-P2-Q06",
+   "topic": "functions-graphs",
+   "strand": "graphs-and-roots",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-B-P2-Q12",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-B-P2-Q16",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-C-P1-Q01",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-C-P1-Q03",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-C-P1-Q08",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-C-P1-Q13",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-C-P1-Q16",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-C-P2-Q02",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-C-P2-Q17",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-D-P1-Q01",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-D-P1-Q07",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-D-P2-Q03",
+   "topic": "trigonometry",
+   "strand": "trig-functions-identities",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-D-P2-Q04",
+   "topic": "proof",
+   "strand": "deduction",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-E-P1-Q01",
+   "topic": "equations-inequalities",
+   "strand": "quadratics",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-E-P1-Q03",
+   "topic": "coordinate-geometry",
+   "strand": "straight-lines",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-E-P1-Q05",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-E-P1-Q12",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-E-P1-Q14",
+   "topic": "exponentials-logarithms",
+   "strand": "logarithm-laws",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-E-P2-Q04",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "JZ-E-P2-Q09",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "JZ-E-P2-Q13",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q01",
+   "topic": "exponentials-logarithms",
+   "strand": "logarithm-laws",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q02",
+   "topic": "exponentials-logarithms",
+   "strand": "exponential-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q03",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q04",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q05",
+   "topic": "sequences-series",
+   "strand": "geometric-series",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q06",
+   "topic": "geometry-measures",
+   "strand": "plane-geometry",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q07",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q08",
+   "topic": "functions-graphs",
+   "strand": "graphs-and-roots",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q10",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q11",
+   "topic": "sequences-series",
+   "strand": "geometric-series",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q12",
+   "topic": "functions-graphs",
+   "strand": "graphs-and-roots",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q14",
+   "topic": "coordinate-geometry",
+   "strand": "circles",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q15",
+   "topic": "coordinate-geometry",
+   "strand": "straight-lines",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q16",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q17",
+   "topic": "geometry-measures",
+   "strand": "plane-geometry",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q18",
+   "topic": "geometry-measures",
+   "strand": "plane-geometry",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q19",
+   "topic": "coordinate-geometry",
+   "strand": "straight-lines",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P1-Q20",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q01",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q02",
+   "topic": "proof",
+   "strand": "proof-methods",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q03",
+   "topic": "logic",
+   "strand": "negation",
+   "confidence": "high"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q06",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q07",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q08",
+   "topic": "logic",
+   "strand": "necessary-sufficient",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q09",
+   "topic": "logic",
+   "strand": "necessary-sufficient",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q10",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q11",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q13",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q17",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q18",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q19",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "medium"
+  },
+  {
+   "question": "MIOMATH-2024-P2-Q20",
+   "topic": "errors-in-proofs",
+   "strand": "error-identification",
+   "confidence": "high"
+  },
+  {
+   "question": "SED-P1-Q01",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "SED-P1-Q06",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "SED-P2-Q06",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q05",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q07",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q08",
+   "topic": "algebra",
+   "strand": "algebraic-manipulation",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q11",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q12",
+   "topic": "integration",
+   "strand": "trapezium-rule",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q15",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P1-Q17",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P2-Q02",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P2-Q04",
+   "topic": "logic",
+   "strand": "quantifiers",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P2-Q06",
+   "topic": "errors-in-proofs",
+   "strand": "error-identification",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P2-Q17",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P2-Q18",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C1-P2-Q19",
+   "topic": "proof",
+   "strand": "deduction",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q04",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q05",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q07",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q08",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q09",
+   "topic": "algebra",
+   "strand": "algebraic-manipulation",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q12",
+   "topic": "equations-inequalities",
+   "strand": "quadratics",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C2-P1-Q15",
+   "topic": "functions-graphs",
+   "strand": "graphs-and-roots",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C2-P2-Q12",
+   "topic": "differentiation",
+   "strand": "applications-of-differentiation",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAFYI-C2-P2-Q13",
+   "topic": "counting-probability",
+   "strand": "counting",
+   "confidence": "high"
+  },
+  {
+   "question": "TMUAFYI-C2-P2-Q17",
+   "topic": "logic",
+   "strand": "implication",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAUK-R2DREW2-P1-Q07",
+   "topic": "algebra",
+   "strand": "polynomials",
+   "confidence": "medium"
+  },
+  {
+   "question": "TMUAUK-R2DREW2-P1-Q17",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "TYLER-A-P1-Q17",
+   "topic": "statistics",
+   "strand": "statistics",
+   "confidence": "high"
+  },
+  {
+   "question": "TYLER-B-P1-Q01",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "TYLER-B-P1-Q11",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "TYLER-B-P2-Q15",
+   "topic": "coordinate-geometry",
+   "strand": "circles",
+   "confidence": "medium"
+  },
+  {
+   "question": "TYLER-B-P2-Q19",
+   "topic": "logic",
+   "strand": "quantifiers",
+   "confidence": "high"
+  },
+  {
+   "question": "TYLER-C-P1-Q08",
+   "topic": "trigonometry",
+   "strand": "trig-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "TYLER-C-P2-Q01",
+   "topic": "integration",
+   "strand": "differential-equations",
+   "confidence": "high"
+  },
+  {
+   "question": "TYLER-C-P2-Q03",
+   "topic": "equations-inequalities",
+   "strand": "inequalities",
+   "confidence": "medium"
+  },
+  {
+   "question": "TYLER-C-P2-Q14",
+   "topic": "statistics",
+   "strand": "statistics",
+   "confidence": "medium"
+  },
+  {
+   "question": "TYLER-D-P1-Q19",
+   "topic": "coordinate-geometry",
+   "strand": "circles",
+   "confidence": "medium"
+  },
+  {
+   "question": "TYLER-D-P2-Q18",
+   "topic": "logic",
+   "strand": "quantifiers",
+   "confidence": "high"
+  },
+  {
+   "question": "YOTTA-P1-Q04",
+   "topic": "algebra",
+   "strand": "algebraic-manipulation",
+   "confidence": "medium"
+  },
+  {
+   "question": "YOTTA-P1-Q07",
+   "topic": "exponentials-logarithms",
+   "strand": "exponential-equations",
+   "confidence": "medium"
+  },
+  {
+   "question": "YOTTA-P2-Q03",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "YOTTA-P2-Q09",
+   "topic": "errors-in-proofs",
+   "strand": "error-identification",
+   "confidence": "high"
+  },
+  {
+   "question": "YOTTA-P2-Q17",
+   "topic": "differentiation",
+   "strand": "derivatives",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZACK-P1-Q03",
+   "topic": "coordinate-geometry",
+   "strand": "circles",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZACK-P1-Q04",
+   "topic": "sequences-series",
+   "strand": "geometric-series",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZACK-P1-Q05",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "ZACK-P1-Q06",
+   "topic": "ratio-proportion",
+   "strand": "ratio-proportion",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZACK-P1-Q07",
+   "topic": "ratio-proportion",
+   "strand": "ratio-proportion",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZACK-P1-Q09",
+   "topic": "sequences-series",
+   "strand": "binomial-expansion",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZACK-P1-Q10",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "high"
+  },
+  {
+   "question": "ZACK-P1-Q14",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZETTA-P1-Q01",
+   "topic": "integration",
+   "strand": "definite-integrals",
+   "confidence": "high"
+  },
+  {
+   "question": "ZETTA-P1-Q04",
+   "topic": "sequences-series",
+   "strand": "geometric-series",
+   "confidence": "high"
+  },
+  {
+   "question": "ZETTA-P1-Q05",
+   "topic": "number",
+   "strand": "number-properties",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZETTA-P1-Q06",
+   "topic": "sequences-series",
+   "strand": "sequences",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZETTA-P1-Q08",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZETTA-P1-Q10",
+   "topic": "algebra",
+   "strand": "indices-surds",
+   "confidence": "high"
+  },
+  {
+   "question": "ZETTA-P1-Q11",
+   "topic": "algebra",
+   "strand": "algebraic-manipulation",
+   "confidence": "medium"
+  },
+  {
+   "question": "ZETTA-P1-Q13",
+   "topic": "geometry-measures",
+   "strand": "mensuration",
+   "confidence": "medium"
   }
  ]
 }

@@ -93,6 +93,8 @@ struct TMUAResourceQuestion: Identifiable, Hashable, Sendable {
     var difficulty: Int? = nil
     /// The solution file (`SolutionFile.resourceName`) that `solutionPage` refers to.
     var solutionResource: String? = nil
+    /// R5: the part of the file the question is in ("Paper 1" in a file holding both papers).
+    var paperPart: String? = nil
 }
 
 /// A paper, mock, worksheet or reference document in the unified library.
@@ -202,10 +204,13 @@ enum TMUAResourceCatalogue {
             let override = registry.sourceOverrides.first { $0.sourceID == source.stableSourceID }
             let paperLabel = override?.paper ?? source.paper
             let questions = (questionsBySource[source.stableSourceID] ?? [])
-                // Paper part first, so a combined Paper 1 + Paper 2 file lists each paper in order; the
-                // question ID settles the rest, so the order never depends on the manifest's.
-                .sorted { ($0.paper ?? "", $0.questionNumber ?? Int($0.questionLabel) ?? 0, $0.questionLabel, $0.externalQuestionID)
-                    < ($1.paper ?? "", $1.questionNumber ?? Int($1.questionLabel) ?? 0, $1.questionLabel, $1.externalQuestionID) }
+                // Document order: paper part first (a file holding both papers), then page, so files that
+                // number questions per section or per year keep each section together; the question ID
+                // settles the rest, so the order never depends on the manifest's.
+                .sorted {
+                    ($0.paper ?? "", $0.page ?? .max, $0.questionNumber ?? Int($0.questionLabel) ?? 0, $0.questionLabel, $0.externalQuestionID)
+                        < ($1.paper ?? "", $1.page ?? .max, $1.questionNumber ?? Int($1.questionLabel) ?? 0, $1.questionLabel, $1.externalQuestionID)
+                }
                 .map { question in
                     TMUAResourceQuestion(
                         id: question.externalQuestionID, label: question.questionLabel,
@@ -214,7 +219,7 @@ enum TMUAResourceCatalogue {
                         paperFit: question.tmuaPaperFit, format: question.format,
                         autoMarkedItemID: autoMarked[question.externalQuestionID],
                         solutionPage: solutionPages[question.externalQuestionID]?.page, difficulty: question.difficulty,
-                        solutionResource: solutionPages[question.externalQuestionID]?.resource)
+                        solutionResource: solutionPages[question.externalQuestionID]?.resource, paperPart: question.paper)
                 }
             // Solution videos were saved with a YouTube downloader; they are not surfaced (R1 licensing plan).
             let files = (documentsBySource[source.stableSourceID] ?? [])

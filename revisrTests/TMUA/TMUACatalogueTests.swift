@@ -257,8 +257,11 @@ final class TMUACatalogueTests: XCTestCase {
             line("difficulty", Dictionary(grouping: entries, by: { $0.difficulty.map(String.init) ?? "none" }).mapValues(\.count))
             line("format", Dictionary(grouping: entries, by: { $0.format ?? "unknown" }).mapValues(\.count))
             line("practicableByMode", Dictionary(grouping: catalogue.practicable, by: \.answerMode.rawValue).mapValues(\.count))
+            line("topicBasis", Dictionary(grouping: entries, by: \.topicBasis.rawValue).mapValues(\.count))
+            line("paperFitBasis", Dictionary(grouping: entries, by: { "\($0.paperFit.rawValue)/\($0.paperFitBasis.rawValue)" }).mapValues(\.count))
+            // R5: worksheets need a syllabus topic but no paper fit.
             let pool = catalogue.entries.filter { $0.presentation == .document && $0.answerMode == .selfMarked
-                && $0.paperFit != .unclassified && $0.topicKey != nil && $0.format == "Multiple choice" }
+                && $0.topicKey != nil && $0.format == "Multiple choice" }
             let papers = Set(TMUAProgrammeService.resourceCandidates(catalogue.sources, completed: []).map(\.id))
             // The planner keeps a paper offered whole for that session, so worksheets draw from the rest.
             let outsidePapers = pool.filter { !papers.contains($0.sourceID ?? "") }.count

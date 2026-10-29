@@ -50,13 +50,27 @@ struct TMUACatalogueReconciliation: Decodable, Sendable {
         let questions: [Question]
     }
 
+    /// R5: a provisional syllabus topic for a question the library index left unclassified.
+    struct TopicDraft: Decodable, Hashable, Sendable {
+        let question: String
+        let topic: String
+        let strand: String?
+        let confidence: String
+    }
+
     let version: Int
     let reviewedOn: String
-    /// Library index topic → syllabus topic key. Topics outside the TMUA specification
-    /// ("Games, invariants & strategy", "Mixed / problem solving") are deliberately absent.
+    /// Library index topic → syllabus topic key. Index topics that do not map are absent.
     let legacyTopicMap: [String: String]
     let duplicates: [Duplicate]
     let documents: [Document]
+    /// R5: index topics confirmed to lie outside the TMUA specification ("Games, invariants & strategy").
+    var legacyTopicsOutside: [String]? = nil
+    /// R5: index topics that name no syllabus topic at all ("Mixed / problem solving"): unknown, not outside.
+    var legacyTopicsUnclassified: [String]? = nil
+    /// R5: how the drafts were made; shown with every drafted topic.
+    var topicDraftBasis: String? = nil
+    var topicDrafts: [TopicDraft]? = nil
 
     static func bundled(in bundle: Bundle = .main) -> TMUACatalogueReconciliation? {
         guard let url = bundle.url(forResource: "TMUACatalogueReconciliation", withExtension: "json"),
@@ -100,7 +114,7 @@ struct TMUACatalogueEntry: Identifiable, Hashable, Sendable {
             switch self {
             case .automatic: "Marked by Revisr"
             case .selfMarked: "Self-marked with solution"
-            case .manualResult: "Record your own result"
+            case .manualResult: "Self-recorded (no solution)"
             case .externalViewing: "On the publisher’s website"
             }
         }
@@ -117,6 +131,29 @@ struct TMUACatalogueEntry: Identifiable, Hashable, Sendable {
             case .unclassified: false
             }
         }
+    }
+
+    /// Where an entry's syllabus topic comes from (R5). Nothing here is a human review.
+    enum TopicBasis: String, Sendable {
+        /// The question's own Revisr record: the author's taxonomy for originals, an AI-assisted one otherwise.
+        case revisrRecord
+        /// The original library index's topic, mapped to the syllabus.
+        case libraryIndex
+        /// Two independent AI classifications of the page agreed; not reviewed by a person.
+        case provisionalDraft
+        /// The index places it outside the TMUA specification.
+        case outsideSpecification
+        /// No syllabus topic is known yet.
+        case unclassified
+    }
+
+    /// Where an entry's paper fit comes from (R5).
+    enum PaperFitBasis: String, Sendable {
+        /// The question appears in that paper (its record, the paper's own label or the question's part).
+        case appearsInPaper
+        /// The library index's judgement of which paper the question suits.
+        case libraryEstimate
+        case unknown
     }
 
     enum Rights: String, Sendable {
@@ -140,7 +177,11 @@ struct TMUACatalogueEntry: Identifiable, Hashable, Sendable {
     let label: String?
     let page: Int?
     let paperFit: PaperFit
+    var paperFitBasis: PaperFitBasis = .unknown
     let topicKey: String?
+    var topicBasis: TopicBasis = .unclassified
+    /// The syllabus strand, when known: a Revisr question's own, or a provisional draft's.
+    var strandKey: String? = nil
     let legacyTopic: String?
     let difficulty: Int?
     let difficultyProvenance: String
@@ -194,19 +235,31 @@ struct TMUAQuestionCatalogue: Sendable {
     let sources: [TMUAResourceSource]
     /// Merged reprint identity → canonical identity.
     let aliases: [String: String]
+    /// Questions that can be opened in this build, and those Revisr marks: filtered once, not per use.
+    let practicable: [TMUACatalogueEntry]
+    let automatic: [TMUACatalogueEntry]
     private let index: [String: Int]
+    private let bySource: [String: [Int]]
 
     init(entries: [TMUACatalogueEntry], sources: [TMUAResourceSource], aliases: [String: String]) {
         self.entries = entries
         self.sources = sources
         self.aliases = aliases
+        practicable = entries.filter(\.isPracticable)
+        automatic = entries.filter { $0.answerMode == .automatic }
         var index: [String: Int] = [:]
+        var bySource: [String: [Int]] = [:]
         for (offset, entry) in entries.enumerated() {
             index[entry.id] = offset
             for alias in entry.aliases where index[alias] == nil { index[alias] = offset }
+            if let source = entry.sourceID { bySource[source, default: []].append(offset) }
         }
         self.index = index
+        self.bySource = bySource
     }
+
+    /// Library order (paper, then question): the order Practice lists questions in.
+    func position(of id: String) -> Int { index[id] ?? Int.max }
 
     /// Resolves any identity: canonical, item stable ID or merged reprint.
     func entry(_ id: String) -> TMUACatalogueEntry? {
@@ -214,11 +267,8 @@ struct TMUAQuestionCatalogue: Sendable {
     }
 
     func entries(inSource sourceID: String) -> [TMUACatalogueEntry] {
-        entries.filter { $0.sourceID == sourceID }
+        (bySource[sourceID] ?? []).map { entries[$0] }
     }
-
-    var practicable: [TMUACatalogueEntry] { entries.filter(\.isPracticable) }
-    var automatic: [TMUACatalogueEntry] { entries.filter { $0.answerMode == .automatic } }
 
     func count(_ mode: TMUACatalogueEntry.AnswerMode) -> Int { entries.filter { $0.answerMode == mode }.count }
 
@@ -255,7 +305,7 @@ struct TMUAQuestionCatalogue: Sendable {
                 }
             }
         }
-        let topicMap = reconciliation?.legacyTopicMap ?? [:]
+        let topics = TopicSources(reconciliation: reconciliation, syllabus: syllabus)
         var entries: [TMUACatalogueEntry] = []
         var covered = Set<String>()
         for source in sources {
@@ -267,7 +317,7 @@ struct TMUAQuestionCatalogue: Sendable {
                                      versions: item.flatMap { versions[$0.stableId] } ?? [],
                                      aliases: (item.map { [$0.stableId] } ?? []) + extra.map(\.id),
                                      alsoAppearsIn: extra.map(\.title), variantOf: variants[question.id],
-                                     topicMap: topicMap, syllabus: syllabus, distribution: distribution))
+                                     topics: topics, distribution: distribution))
             }
         }
         // Originals, and any eligible item whose paper is not in this build's library.
@@ -277,9 +327,37 @@ struct TMUAQuestionCatalogue: Sendable {
         return TMUAQuestionCatalogue(entries: entries, sources: sources, aliases: merged)
     }
 
+    /// The topic sources for questions without a Revisr record: the index map, the lists of index
+    /// topics outside the specification or unclassified, and R5's provisional drafts.
+    private struct TopicSources {
+        let map: [String: String]
+        let outside: Set<String>
+        let drafts: [String: TMUACatalogueReconciliation.TopicDraft]
+        let syllabus: TMUASyllabus
+
+        init(reconciliation: TMUACatalogueReconciliation?, syllabus: TMUASyllabus) {
+            map = reconciliation?.legacyTopicMap ?? [:]
+            outside = Set(reconciliation?.legacyTopicsOutside ?? [])
+            // A draft naming a topic this syllabus lacks is ignored rather than trusted.
+            drafts = Dictionary((reconciliation?.topicDrafts ?? []).filter { syllabus.topic($0.topic) != nil }
+                .map { ($0.question, $0) }, uniquingKeysWith: { first, _ in first })
+            self.syllabus = syllabus
+        }
+
+        func resolve(_ question: TMUAResourceQuestion) -> (topic: String?, strand: String?, basis: TMUACatalogueEntry.TopicBasis) {
+            if let key = map[question.topic].flatMap({ syllabus.topic($0)?.key }) { return (key, nil, .libraryIndex) }
+            if outside.contains(question.topic) { return (nil, nil, .outsideSpecification) }
+            if let draft = drafts[question.id] {
+                let strand = syllabus.topic(draft.topic)?.strands.contains { $0.key == draft.strand } == true ? draft.strand : nil
+                return (draft.topic, strand, .provisionalDraft)
+            }
+            return (nil, nil, .unclassified)
+        }
+    }
+
     private static func entry(question: TMUAResourceQuestion, source: TMUAResourceSource, item: TMUAContentItem?,
                               versions: [String], aliases: [String], alsoAppearsIn: [String], variantOf: String?,
-                              topicMap: [String: String], syllabus: TMUASyllabus,
+                              topics: TopicSources,
                               distribution: TMUAContentDistribution) -> TMUACatalogueEntry {
         let presentation: TMUACatalogueEntry.Presentation
         let mode: TMUACatalogueEntry.AnswerMode
@@ -295,7 +373,9 @@ struct TMUAQuestionCatalogue: Sendable {
             presentation = .external
             mode = .externalViewing
         }
-        let topic = item?.taxonomy.topic ?? topicMap[question.topic].flatMap { syllabus.topic($0)?.key }
+        let resolved = topics.resolve(question)
+        let fit = item.map { ($0.paper == 1 ? TMUACatalogueEntry.PaperFit.paper1 : .paper2, TMUACatalogueEntry.PaperFitBasis.appearsInPaper) }
+            ?? paperFit(question, source: source)
         let review: String
         if let item {
             review = item.keyProvenance.map { "Answer key: \($0). Not checked by a person." }
@@ -308,8 +388,9 @@ struct TMUAQuestionCatalogue: Sendable {
         return TMUACatalogueEntry(
             id: question.id, aliases: aliases, origin: .collection, sourceID: source.id, sourceTitle: source.title,
             provider: source.provider, label: question.label, page: question.page,
-            paperFit: item.map { $0.paper == 1 ? .paper1 : .paper2 } ?? paperFit(question, source: source),
-            topicKey: topic, legacyTopic: question.topic,
+            paperFit: fit.0, paperFitBasis: fit.1,
+            topicKey: item?.taxonomy.topic ?? resolved.topic, topicBasis: item != nil ? .revisrRecord : resolved.basis,
+            strandKey: item?.taxonomy.strand ?? resolved.strand, legacyTopic: question.topic,
             difficulty: item?.difficulty ?? question.difficulty,
             difficultyProvenance: item?.difficultyProvenance
                 ?? (source.holdingNote != nil || question.difficulty == nil
@@ -339,7 +420,8 @@ struct TMUAQuestionCatalogue: Sendable {
             id: item.stableId, aliases: [], origin: original ? .revisrOriginal : .collection,
             sourceID: nil, sourceTitle: original ? "Original Revisr questions" : (item.source?.examination ?? item.title),
             provider: nil, label: item.source?.questionNumber.map(String.init), page: nil,
-            paperFit: item.paper == 1 ? .paper1 : .paper2, topicKey: item.taxonomy.topic, legacyTopic: nil,
+            paperFit: item.paper == 1 ? .paper1 : .paper2, paperFitBasis: .appearsInPaper,
+            topicKey: item.taxonomy.topic, topicBasis: .revisrRecord, strandKey: item.taxonomy.strand, legacyTopic: nil,
             difficulty: item.difficulty,
             difficultyProvenance: item.difficultyProvenance ?? "Author’s estimate; not calibrated",
             format: "Multiple choice", presentation: .native, answerMode: .automatic, item: item,
@@ -350,17 +432,22 @@ struct TMUAQuestionCatalogue: Sendable {
             variantOf: nil, alsoAppearsIn: [])
     }
 
-    /// TMUA-format papers name their paper; other papers carry the library index's fit judgement.
-    nonisolated static func paperFit(_ question: TMUAResourceQuestion, source: TMUAResourceSource) -> TMUACatalogueEntry.PaperFit {
-        if source.kind == .officialTMUA || source.kind == .independentMock, let label = source.paperLabel {
-            if label.contains("Paper 1") { return .paper1 }
-            if label.contains("Paper 2") { return .paper2 }
+    /// TMUA-format papers say which paper a question is in: the question's own part first (a file
+    /// holding both papers), then the paper's label. Other papers carry the library index's
+    /// judgement of the paper a question suits, which is an estimate.
+    nonisolated static func paperFit(_ question: TMUAResourceQuestion,
+                                     source: TMUAResourceSource) -> (TMUACatalogueEntry.PaperFit, TMUACatalogueEntry.PaperFitBasis) {
+        if source.kind == .officialTMUA || source.kind == .independentMock {
+            for label in [question.paperPart, source.paperLabel].compactMap({ $0 }) {
+                if label.contains("Paper 1") { return (.paper1, .appearsInPaper) }
+                if label.contains("Paper 2") { return (.paper2, .appearsInPaper) }
+            }
         }
         switch question.paperFit {
-        case "Paper 1", "Paper 1 / Both": return .paper1
-        case "Paper 2", "Paper 2 / Both": return .paper2
-        case "Both": return .both
-        default: return .unclassified
+        case "Paper 1", "Paper 1 / Both": return (.paper1, .libraryEstimate)
+        case "Paper 2", "Paper 2 / Both": return (.paper2, .libraryEstimate)
+        case "Both": return (.both, .libraryEstimate)
+        default: return (.unclassified, .unknown)
         }
     }
 }
