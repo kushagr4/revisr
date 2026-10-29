@@ -4,7 +4,8 @@ import SwiftData
 
 /// Launch-argument scenarios for screenshot QA of the flexible TMUA journey.
 /// Applied only to a fresh public profile, using the bundled development bank.
-///   --tmua-scenario session|results|programme|layout
+///   --tmua-scenario session|results|programme|worksheet|layout
+///     (worksheet: the programme scenario, with today's study day guaranteed a topic worksheet)
 ///   --tmua-paper 1|2 --tmua-question N   (layout: open that question, timer running)
 ///   --tmua-length starter|quick|balanced|comprehensive
 ///   --tmua-tab today|plan|progress|topics|questions|settings
@@ -82,8 +83,11 @@ enum DebugTMUAScenarioService {
             try TMUADiagnosticService.submit(section, in: snapshot,
                 at: start.addingTimeInterval(Double(section.paperRawValue) * 2_400), in: context)
         }
-        guard scenario == "programme" else { return }
+        guard scenario == "programme" || scenario == "worksheet" else { return }
         try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, today: start, resourceSessions: true, in: context)
+        if scenario == "worksheet" {
+            try scheduleWorksheetToday(settings: settings, content: content, today: today, in: context)
+        }
         let tasks = try TMUAProgrammeService.tasks(settings: settings, in: context)
             .filter { $0.isActive && $0.questionID != nil && $0.scheduledDate < today }
         for (offset, task) in tasks.prefix(5).enumerated() {
@@ -93,6 +97,49 @@ enum DebugTMUAScenarioService {
                                                     settings: settings, at: task.scheduledDate.addingTimeInterval(64_800),
                                                     in: context)
         }
+    }
+
+    /// UI tests need a worksheet on today's study day. When the plan did not put one there, the
+    /// first worksheet the planner would offer next is placed on today, through the planner's own
+    /// candidate rules and task identity, as one more library session.
+    private static func scheduleWorksheetToday(settings: AppSettings, content: TMUAContentContext, today: Date,
+                                               in context: ModelContext) throws {
+        let calendar = DateUtilities.appCalendar()
+        guard let programme = try TMUAProgrammeService.load(settings: settings, in: context) else { return }
+        let tasks = try PublicProgrammeService.tasks(for: programme, in: context)
+        guard !tasks.contains(where: { $0.isActive && $0.activity == .topicWorksheet
+            && calendar.isDate($0.scheduledDate, inSameDayAs: today) }) else { return }
+        let catalogue = TMUACatalogueStore.catalogue(content)
+        let active = tasks.filter(\.isActive)
+        let used = Set(active.flatMap { TMUAProgrammeService.worksheetQuestionIDs($0.sourceID) })
+        let report = (try TMUADiagnosticService.load(settings: settings, in: context))
+            .map { TMUADiagnosticReportBuilder.build(snapshot: $0, syllabus: content.syllabus) }
+        // Four questions, from papers the plan does not set whole, timed as the planner times them.
+        guard let sheet = TMUAProgrammeService.worksheetCandidates(catalogue.entries,
+            topicOrder: TMUAProgrammeService.worksheetTopicOrder(report: report, syllabus: content.syllabus),
+            excluded: used, excludedSources: Set(active.filter { $0.activity == .resourcePractice }.map(\.sourceID)),
+            size: 4).first(where: { $0.questions.count == 4 }) else { return }
+        let minutes = sheet.questions.reduce(0) {
+            $0 + TMUAProgrammeService.worksheetQuestionMinutes(difficulty: catalogue.entry($1)?.difficulty)
+        }
+        let id = "\(programme.stableID)\(TMUAProgrammeService.resourceTaskMarker)\(TMUAProgrammeService.dayKey(today, calendar: calendar))"
+        let title = content.syllabus.topicTitle(sheet.topic)
+        let planned = PublicPlannedTask(date: calendar.startOfDay(for: today), questionID: nil,
+            sourceID: TMUAProgrammeService.worksheetSourceID(topic: sheet.topic, questions: sheet.questions),
+            topic: title, minutes: minutes, activity: .topicWorksheet,
+            reason: TMUAProgrammeService.worksheetReason(topic: title, count: sheet.questions.count))
+        if let existing = tasks.first(where: { $0.stableID == id }) {
+            guard existing.completedAt == nil else { return }
+            existing.isActive = true
+            existing.sourceID = planned.sourceID
+            existing.topic = planned.topic
+            existing.activityRawValue = planned.activity.rawValue
+            existing.allocatedMinutes = planned.minutes
+            existing.reason = planned.reason
+        } else {
+            context.insert(PublicProgrammeTask(stableID: id, programmeID: programme.stableID, task: planned))
+        }
+        try context.save()
     }
 }
 #endif

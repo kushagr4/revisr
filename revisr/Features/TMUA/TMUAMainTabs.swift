@@ -72,7 +72,9 @@ private struct TMUATodayView: View {
     let programme: PublicProgramme
     @Query(sort: \PublicProgrammeTask.scheduledDate) private var allTasks: [PublicProgrammeTask]
     @Query private var sections: [TMUADiagnosticSection]
+    @Query private var logs: [TMUAResourceLog]
     @State private var errorMessage: String?
+    @State private var confirmingRefresh = false
     @ScaledMetric(relativeTo: .largeTitle) private var countdownSize: CGFloat = 48
 
     var body: some View {
@@ -82,7 +84,13 @@ private struct TMUATodayView: View {
         let tasks = programmeTasks.filter { $0.isActive && calendar.isDate($0.scheduledDate, inSameDayAs: today) }
         let complete = tasks.filter { $0.completedAt != nil }.count
         let minutes = tasks.reduce(0) { $0 + $1.allocatedMinutes }
-        let next = tasks.first { $0.completedAt == nil }
+        let remainingMinutes = tasks.filter { $0.completedAt == nil }.reduce(0) { $0 + $1.allocatedMinutes }
+        let missed = programmeTasks.filter { $0.isActive && $0.completedAt == nil && $0.scheduledDate < today }
+        let mine = logs.filter { $0.profileSettingsID == settings.id }
+        // A worksheet already under way comes first; then today's plan in order; then the next study day.
+        let started = TMUAProgrammeService.startedWorksheetTaskIDs(mine)
+        let next = tasks.first { $0.completedAt == nil && started.contains($0.stableID) }
+            ?? tasks.first { $0.completedAt == nil }
             ?? programmeTasks.first { $0.isActive && $0.completedAt == nil && $0.scheduledDate > today }
         let days = PublicPreparationService.daysUntilExam(programme.examDateSnapshot)
         let state = TMUAStudentState(settings: settings, context: modelContext)
@@ -90,7 +98,6 @@ private struct TMUATodayView: View {
         let completedSinceRefresh = programmeTasks.filter { $0.completedAt != nil }.count - programme.completedCountAtRefresh
         let restDay = PublicProgrammeAvailability.isAvailable(on: today, schedule: programme.availabilitySnapshot,
                                                               calendar: calendar) == false
-        let missed = programmeTasks.filter { $0.isActive && $0.completedAt == nil && $0.scheduledDate < today }.count
 
         NavigationStack {
             List {
@@ -115,24 +122,41 @@ private struct TMUATodayView: View {
                             ProgressView(value: Double(complete), total: Double(tasks.count))
                                 .tint(RevisrColors.accentTeal)
                                 .accessibilityHidden(true)
-                        }
-                        if let next {
-                            // Value-based links keep an open task fixed: when it is
-                            // completed, "next" moves on but the pushed screen must not.
-                            NavigationLink(value: TMUATaskRoute(id: next.stableID)) {
-                                Label(calendar.isDate(next.scheduledDate, inSameDayAs: today)
-                                      ? "Next: \(next.activity.title) · \(next.topic)"
-                                      : "Next on \(next.scheduledDate.formatted(.dateTime.weekday(.wide))): \(next.topic)",
-                                      systemImage: "arrow.right.circle.fill")
+                            if remainingMinutes > 0 {
+                                Text("\(tasks.count - complete) to do · about \(remainingMinutes) minutes left")
+                                    .font(.subheadline).foregroundStyle(RevisrColors.secondaryLabel)
+                                    .accessibilityIdentifier("today.remaining")
                             }
-                            .buttonStyle(.borderedProminent).tint(RevisrColors.accentFill)
-                            .accessibilityIdentifier("today.next")
-                        } else if !tasks.isEmpty {
+                        }
+                        if next == nil, !tasks.isEmpty {
                             RevisrStatusLabel(title: "Everything for today is done", systemImage: "checkmark.seal.fill",
                                               color: RevisrColors.success)
                         }
                     }
                     .padding(.vertical, RevisrSpacing.small)
+                }
+                if let next {
+                    let isToday = calendar.isDate(next.scheduledDate, inSameDayAs: today)
+                    Section {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Label(next.activity.title, systemImage: TMUATaskRow.symbol(next.activity))
+                                .font(.headline)
+                            Text(next.topic).font(.subheadline)
+                            Text(TMUATaskRow.involves(next, logs: mine)).font(.subheadline)
+                                .foregroundStyle(RevisrColors.secondaryLabel)
+                        }
+                        .accessibilityElement(children: .combine)
+                        // Value-based links keep an open task fixed: when it is
+                        // completed, "next" moves on but the pushed screen must not.
+                        NavigationLink(value: TMUATaskRoute(id: next.stableID)) {
+                            Label(started.contains(next.stableID) ? "Continue" : isToday ? "Start" : "Look ahead",
+                                  systemImage: "arrow.right.circle.fill")
+                                .font(.headline)
+                        }
+                        .accessibilityIdentifier("today.next")
+                    } header: {
+                        Text(isToday ? "Up next" : "Next study day · \(next.scheduledDate.formatted(.dateTime.weekday(.wide).day().month()))")
+                    }
                 }
                 if openDiagnostic {
                     Section {
@@ -143,14 +167,32 @@ private struct TMUATodayView: View {
                         }
                     }
                 }
-                if missed > 0 {
+                if !tasks.isEmpty {
+                    Section("Today") {
+                        ForEach(tasks, id: \.stableID) { task in
+                            NavigationLink(value: TMUATaskRoute(id: task.stableID)) {
+                                TMUATaskRow(task: task, logs: mine)
+                            }
+                        }
+                    }
+                }
+                if !missed.isEmpty {
                     Section {
-                        Label("\(missed) task\(missed == 1 ? "" : "s") from earlier days \(missed == 1 ? "was" : "were") not completed. Refreshing fits that practice back into your future plan; nothing you completed changes.",
-                              systemImage: "calendar.badge.exclamationmark")
-                            .font(.subheadline)
+                        ForEach(missed.prefix(5), id: \.stableID) { task in
+                            NavigationLink(value: TMUATaskRoute(id: task.stableID)) {
+                                TMUATaskRow(task: task, logs: mine, showsDate: true)
+                            }
+                        }
+                        Button("Move unfinished work into my plan", systemImage: "arrow.triangle.2.circlepath") {
+                            confirmingRefresh = true
+                        }
+                        .accessibilityIdentifier("today.refresh")
+                    } header: {
+                        Text("Unfinished from earlier days (\(missed.count))")
                             .accessibilityIdentifier("today.missed")
-                        Button("Refresh my plan", systemImage: "arrow.triangle.2.circlepath", action: refresh)
-                            .accessibilityIdentifier("today.refresh")
+                    } footer: {
+                        Text(missed.count > 5 ? "Showing 5 of \(missed.count). " : "")
+                            + Text("You can still do these. Refreshing your plan returns their questions to the days ahead and keeps any worksheet you have started; nothing you completed changes.")
                     }
                 }
                 if TMUAProgrammeService.settingsChanged(programme, settings: settings) || completedSinceRefresh >= 5 {
@@ -160,15 +202,6 @@ private struct TMUATodayView: View {
                               : "You have completed \(completedSinceRefresh) tasks since your plan was last refreshed. Refreshing lets your recent results shape what comes next.",
                               systemImage: "arrow.triangle.2.circlepath")
                             .font(.subheadline)
-                    }
-                }
-                if !tasks.isEmpty {
-                    Section("Today") {
-                        ForEach(tasks, id: \.stableID) { task in
-                            NavigationLink(value: TMUATaskRoute(id: task.stableID)) {
-                                TMUATaskRow(task: task)
-                            }
-                        }
                     }
                 }
                 if let report = state.report {
@@ -183,7 +216,7 @@ private struct TMUATodayView: View {
                     } header: {
                         Text("Current priorities")
                     } footer: {
-                        Text("Based on a \(report.length.title.lowercased()) diagnostic (\(report.length.confidenceTitle.lowercased()) evidence) and your recent practice.")
+                        Text("From your \(report.length.title.lowercased()) diagnostic (\(report.length.confidenceTitle.lowercased()) evidence). Your plan also gives a topic more practice when recent answers Revisr marked were wrong; results you mark yourself only decide which questions come back.")
                     }
                 }
             }
@@ -193,6 +226,14 @@ private struct TMUATodayView: View {
                 if let task = programmeTasks.first(where: { $0.stableID == route.id }) {
                     TMUATaskView(settings: settings, task: task)
                 }
+            }
+            .confirmationDialog("Move unfinished work into your plan?", isPresented: $confirmingRefresh,
+                                titleVisibility: .visible) {
+                Button("Refresh my plan") { refresh() }
+            } message: {
+                Text(TMUAProgrammeService.settingsChanged(programme, settings: settings)
+                     ? "Your settings changed, so your plan is rebuilt from today for them. Completed work is kept, and a worksheet you have started stays where it is."
+                     : "Your plan is rebuilt from today. Tasks in the next three days stay as they are, completed work is kept, and a worksheet you have started stays where it is.")
             }
             .alert("Couldn’t Refresh", isPresented: Binding(
                 get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
@@ -213,23 +254,64 @@ private struct TMUATodayView: View {
 
 struct TMUATaskRow: View {
     let task: PublicProgrammeTask
+    var logs: [TMUAResourceLog] = []
+    var showsDate = false
 
     var body: some View {
+        let progress = task.activity == .topicWorksheet ? TMUAProgrammeService.worksheetProgress(task, logs: logs) : nil
         HStack(alignment: .top, spacing: RevisrSpacing.compact) {
             Image(systemName: task.completedAt == nil ? Self.symbol(task.activity) : "checkmark.circle.fill")
                 .foregroundStyle(task.completedAt == nil ? RevisrColors.accentTeal : RevisrColors.success)
                 .frame(width: 24)
             VStack(alignment: .leading, spacing: 2) {
                 Text(task.activity.title).font(.headline)
-                Text(task.topic).font(.subheadline)
-                Text(task.reason).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                Text(task.completedAt == nil ? "\(task.allocatedMinutes) minutes"
-                     : "Completed\(task.completionNote.isEmpty ? "" : " · \(task.completionNote)")")
-                    .font(.caption).foregroundStyle(task.completedAt == nil ? RevisrColors.secondaryLabel : RevisrColors.success)
+                Text(showsDate ? "\(task.topic) · \(task.scheduledDate.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))"
+                     : task.topic).font(.subheadline)
+                Text(Self.firstSentence(task.reason)).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                Text(status(progress))
+                    .font(.caption.weight(progress?.state == .inProgress ? .semibold : .regular))
+                    .foregroundStyle(task.completedAt == nil ? RevisrColors.secondaryLabel : RevisrColors.success)
             }
         }
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("task.row")
+    }
+
+    private func status(_ progress: TMUAWorksheetProgress?) -> String {
+        if task.completedAt != nil {
+            return "Completed" + (task.completionNote.isEmpty ? "" : " · \(task.completionNote)")
+        }
+        if let progress {
+            return progress.recorded > 0
+                ? "In progress · \(progress.recorded) of \(progress.questionIDs.count) recorded · \(task.allocatedMinutes) minutes"
+                : "Not started · \(task.allocatedMinutes) minutes"
+        }
+        return "\(task.allocatedMinutes) minutes"
+    }
+
+    /// The opening sentence: the full reason stays on the task screen.
+    static func firstSentence(_ text: String) -> String {
+        guard let range = text.range(of: ". ") else { return text }
+        return String(text[..<range.lowerBound]) + "."
+    }
+
+    /// What the task involves, in a line: questions, how they are marked and the time.
+    static func involves(_ task: PublicProgrammeTask, logs: [TMUAResourceLog]) -> String {
+        switch task.activity {
+        case .topicWorksheet:
+            let progress = TMUAProgrammeService.worksheetProgress(task, logs: logs)
+            let count = progress.questionIDs.count
+            return "\(count) self-marked questions · about \(task.allocatedMinutes) minutes"
+                + (progress.recorded > 0 ? " · \(progress.recorded) recorded" : "")
+        case .resourcePractice:
+            return "A paper from your library, self-marked · \(task.allocatedMinutes) minutes"
+        case .diagnosticRefinement:
+            return "Optional extra diagnostic questions · about \(task.allocatedMinutes) minutes"
+        case .fullPaper:
+            return "A full paper · \(task.allocatedMinutes) minutes"
+        default:
+            return "1 question marked by Revisr · \(task.allocatedMinutes) minutes"
+        }
     }
 
     static func symbol(_ activity: PublicPlanningActivity) -> String {
@@ -373,6 +455,7 @@ private struct TMUADayView: View {
     let settings: AppSettings
     let date: Date
     let tasks: [PublicProgrammeTask]
+    @Query private var logs: [TMUAResourceLog]
 
     var body: some View {
         List {
@@ -381,7 +464,9 @@ private struct TMUADayView: View {
                     description: Text("Use this day to rest or for optional practice in Questions."))
             } else {
                 ForEach(tasks, id: \.stableID) { task in
-                    NavigationLink { TMUATaskView(settings: settings, task: task) } label: { TMUATaskRow(task: task) }
+                    NavigationLink { TMUATaskView(settings: settings, task: task) } label: {
+                        TMUATaskRow(task: task, logs: logs.filter { $0.profileSettingsID == settings.id })
+                    }
                 }
             }
         }
@@ -394,6 +479,21 @@ private struct TMUADayView: View {
 /// Navigation value for one planned task.
 struct TMUATaskRoute: Hashable {
     let id: String
+}
+
+/// A planned task looked up by its identity, for stacks that do not already hold the task list.
+struct TMUATaskRouteDestination: View {
+    let settings: AppSettings
+    @Query private var tasks: [PublicProgrammeTask]
+
+    init(settings: AppSettings, id: String) {
+        self.settings = settings
+        _tasks = Query(filter: #Predicate<PublicProgrammeTask> { $0.stableID == id })
+    }
+
+    var body: some View {
+        if let task = tasks.first { TMUATaskView(settings: settings, task: task) }
+    }
 }
 
 struct TMUATaskView: View {
@@ -436,6 +536,7 @@ struct TMUATaskView: View {
 struct TMUAPracticeView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dismiss) private var dismiss
     let settings: AppSettings
     let item: TMUAContentItem
     var task: PublicProgrammeTask?
@@ -453,8 +554,15 @@ struct TMUAPracticeView: View {
             .sorted { $0.attemptedAt > $1.attemptedAt }
     }
 
+    /// Every identity of the question: its item ID and, in the catalogue, its question ID and reprints.
+    private var identities: [String] {
+        let entry = TMUACatalogueStore.catalogue(TMUAContentStore.context()).entry(item.stableId)
+        return [item.stableId] + ([entry?.id].compactMap { $0 } + (entry?.aliases ?? [])).filter { $0 != item.stableId }
+    }
+
     private var flagged: Bool {
-        flags.contains { $0.profileSettingsID == settings.id && $0.itemStableID == item.stableId && $0.isFlagged }
+        let ids = Set(identities)
+        return flags.contains { $0.profileSettingsID == settings.id && ids.contains($0.itemStableID) && $0.isFlagged }
     }
 
     private var taskDone: Bool { task?.completedAt != nil }
@@ -479,12 +587,23 @@ struct TMUAPracticeView: View {
                 }
                 TMUASourceCredit(content: item)
                 if showsAnswer {
-                    let correct = (result?.isCorrect) ?? (history.first?.isCorrect ?? false)
+                    // A finished task shows its own attempt, not a later one from elsewhere in the app.
+                    let correct = result?.isCorrect ?? taskAttempt?.isCorrect ?? history.first?.isCorrect ?? false
                     RevisrStatusLabel(title: correct ? "Correct" : "Not this time — review the solution",
                                       systemImage: correct ? "checkmark.circle.fill" : "xmark.circle.fill",
                                       color: correct ? RevisrColors.success : RevisrColors.critical)
                         .accessibilityIdentifier("practice.result")
                     TMUAWorkedSolution(item: item)
+                    if task != nil {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Label("Done · back to your plan", systemImage: "chevron.backward")
+                                .frame(maxWidth: .infinity).padding(.vertical, 6)
+                        }
+                        .buttonStyle(.bordered)
+                        .accessibilityIdentifier("practice.done")
+                    }
                 } else {
                     Button {
                         check()
@@ -496,7 +615,10 @@ struct TMUAPracticeView: View {
                     .accessibilityIdentifier("practice.check")
                 }
                 Toggle("Flag for later review", isOn: Binding(get: { flagged }, set: { setFlag($0) }))
-                if !history.isEmpty {
+                    .accessibilityIdentifier("practice.flag")
+                // Earlier answers name the option chosen, so they stay hidden until this attempt is
+                // checked: a review question is answered afresh, not from memory of the last result.
+                if showsAnswer, !history.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Your attempts").font(.headline)
                         ForEach(history.prefix(5), id: \.id) { attempt in
@@ -522,9 +644,14 @@ struct TMUAPracticeView: View {
         } message: { Text(errorMessage ?? "") }
     }
 
+    private var taskAttempt: TMUAPracticeAttempt? {
+        guard taskDone, let id = task?.completionAttemptID else { return nil }
+        return attempts.first { $0.id == id }
+    }
+
     private var shownSelection: String? {
         if let result { return result.selectedOptionID }
-        if taskDone, let id = task?.completionAttemptID { return attempts.first { $0.id == id }?.selectedOptionID }
+        if let taskAttempt { return taskAttempt.selectedOptionID }
         return selection
     }
 
@@ -552,7 +679,13 @@ struct TMUAPracticeView: View {
 
     private func setFlag(_ value: Bool) {
         do {
-            try TMUAProgrammeService.setReviewFlag(value, itemStableID: item.stableId, settings: settings, in: modelContext)
+            // Unflagging clears every identity, so a flag saved under another one cannot keep it in Saved.
+            let ids = value ? [item.stableId] : identities.filter { id in
+                id == item.stableId || flags.contains { $0.profileSettingsID == settings.id && $0.itemStableID == id && $0.isFlagged }
+            }
+            for id in ids {
+                try TMUAProgrammeService.setReviewFlag(value, itemStableID: id, settings: settings, in: modelContext)
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -567,9 +700,16 @@ private struct TMUAProgressView: View {
     let programme: PublicProgramme
     @Query private var allTasks: [PublicProgrammeTask]
     @Query(sort: \TMUAPracticeAttempt.attemptedAt, order: .reverse) private var allAttempts: [TMUAPracticeAttempt]
+    @Query private var allLogs: [TMUAResourceLog]
 
     var body: some View {
         let tasks = allTasks.filter { $0.programmeID == programme.stableID }
+        let selfMarked = allLogs.filter { $0.profileSettingsID == settings.id && $0.questionID != nil }
+        // One question, however many identities its results were saved under.
+        let catalogue = TMUACatalogueStore.catalogue(TMUAContentStore.context())
+        let selfMarkedLatest = Dictionary(grouping: selfMarked, by: { log in
+            log.questionID.map { catalogue.entry($0)?.id ?? $0 } ?? ""
+        }).compactMapValues { $0.max(by: TMUAResourceLog.isEarlier)?.outcome }
         let progress = PublicProgrammeProgressSnapshot(tasks: tasks)
         let attempts = allAttempts.filter { $0.profileSettingsID == settings.id }
         let correct = attempts.filter(\.isCorrect).count
@@ -603,9 +743,24 @@ private struct TMUAProgressView: View {
                         LabeledContent("Diagnostic time", value: "\(report.activeSeconds / 60) min")
                     }
                 } header: {
-                    Text("Practice")
+                    Text("Marked by Revisr")
                 } footer: {
                     Text("Attempts count every answer you check, including repeats; tasks count planned work. Neither on its own shows mastery.")
+                }
+                Section {
+                    LabeledContent("Questions you recorded", value: "\(selfMarkedLatest.count)")
+                        .accessibilityIdentifier("progress.selfMarked")
+                    if !selfMarkedLatest.isEmpty {
+                        let count = { (outcome: TMUAResourceOutcome) in selfMarkedLatest.values.filter { $0 == outcome }.count }
+                        LabeledContent("Correct by your marking", value: "\(count(.correct)) of \(selfMarkedLatest.count)")
+                        LabeledContent("Incorrect or partly right", value: "\(count(.incorrect) + count(.partial))")
+                        LabeledContent("Not yet checked · skipped", value: "\(count(.attempted)) · \(count(.skipped))")
+                    }
+                    LabeledContent("Worksheets finished", value: "\(tasks.filter { $0.activity == .topicWorksheet && $0.completedAt != nil }.count)")
+                } header: {
+                    Text("Self-marked practice")
+                } footer: {
+                    Text("Questions from papers in your library that you marked against their solutions, counted by your latest result. Revisr cannot check these, so they never count as evidence of topic mastery; a question you marked incorrect may come back in a later worksheet.")
                 }
                 if let report = state.report {
                     Section("Diagnostic history") {
@@ -734,6 +889,9 @@ private struct TMUAQuestionsView: View {
     @Query private var sections: [TMUADiagnosticSection]
     @Query private var diagnosticItems: [TMUADiagnosticItem]
     @State private var library = Self.initialLibrary
+    /// Kept here, not in each view, so the filters survive switching between Practice and the others.
+    @State private var practiceFilters = TMUAPracticeFilters()
+    @State private var paperFilters = TMUAPaperFilters()
     @State private var debugPractice: TMUAContentItem?
 
     /// The unified library's four views (R4).
@@ -766,11 +924,13 @@ private struct TMUAQuestionsView: View {
     var body: some View {
         let content = TMUAContentStore.context()
         let catalogue = TMUACatalogueStore.catalogue(content)
-        let openSectionIDs = Set(sections.filter { $0.status != .submitted }.map(\.stableID))
+        let diagnosticID = TMUADiagnosticService.diagnosticID(profileID: settings.id)
+        let openSectionIDs = Set(sections.filter { $0.diagnosticID == diagnosticID && $0.status != .submitted }.map(\.stableID))
         // Questions waiting in an unsubmitted diagnostic section stay hidden so
         // practice cannot reveal their solutions early.
         let reserved = Set(diagnosticItems.filter { openSectionIDs.contains($0.sectionID) }.map(\.itemStableID))
-        let progress = TMUACatalogueProgress(settings: settings, attempts: attempts, logs: logs, flags: flags)
+        let progress = TMUACatalogueProgress(settings: settings, attempts: attempts, logs: logs, flags: flags,
+            diagnostic: TMUACatalogueProgress.diagnosticResults(settings: settings, sections: sections, items: diagnosticItems))
         NavigationStack {
             List {
                 Section {
@@ -783,9 +943,10 @@ private struct TMUAQuestionsView: View {
                 switch library {
                 case .practice:
                     TMUACataloguePracticeList(settings: settings, content: content, catalogue: catalogue,
-                                              progress: progress, reserved: reserved)
+                                              progress: progress, reserved: reserved, filters: $practiceFilters)
                 case .papers:
-                    TMUAResourceLibraryView(settings: settings, content: content, showsSites: false)
+                    TMUAResourceLibraryView(settings: settings, content: content, showsSites: false,
+                                            filters: $paperFilters, reserved: reserved)
                 case .sources:
                     TMUASourcesListView(settings: settings, content: content, catalogue: catalogue)
                 case .saved:
@@ -795,6 +956,14 @@ private struct TMUAQuestionsView: View {
             }
             .navigationTitle("Questions")
             .tmuaSettingsButton()
+            .navigationDestination(for: TMUACatalogueRoute.self) { route in
+                if let entry = catalogue.entry(route.id) {
+                    TMUACatalogueDestination(settings: settings, entry: entry, catalogue: catalogue, content: content)
+                }
+            }
+            .navigationDestination(for: TMUATaskRoute.self) { route in
+                TMUATaskRouteDestination(settings: settings, id: route.id)
+            }
             .navigationDestination(item: $debugPractice) { TMUAPracticeView(settings: settings, item: $0) }
 #if DEBUG
             .onAppear {

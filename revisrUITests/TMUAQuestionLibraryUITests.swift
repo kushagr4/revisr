@@ -45,15 +45,22 @@ final class TMUAQuestionLibraryUITests: XCTestCase {
         app.buttons["catalogue.next"].tap()
         XCTAssertTrue(credit.waitForExistence(timeout: 5), "moving to the next question keeps the screen")
 
-        app.buttons["catalogue.record"].tap()
+        // R5: one tap records the student's own result; the footer says it is never evidence of mastery.
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@",
-            "not used as evidence of topic mastery")).firstMatch.waitForExistence(timeout: 10))
-        app.buttons["Save"].tap()
-        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Your results"))
-            .firstMatch.waitForExistence(timeout: 10) || app.staticTexts["YOUR RESULTS"].waitForExistence(timeout: 5))
+            "never used as evidence of topic mastery")).firstMatch.waitForExistence(timeout: 10))
+        let notChecked = app.buttons["selfmark.attempted"]
+        if !notChecked.isHittable { app.swipeUp() }
+        notChecked.tap()
+        let chosen = expectation(for: NSPredicate(format: "value == %@", "Recorded"), evaluatedWith: notChecked)
+        wait(for: [chosen], timeout: 10)
+        // The history section is at the foot of a lazily loaded list.
+        let history = app.staticTexts.containing(NSPredicate(format: "label CONTAINS[c] %@", "Your results for this question")).firstMatch
+        for _ in 0..<4 where !history.exists { app.swipeUp() }
+        XCTAssertTrue(history.waitForExistence(timeout: 10))
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
-        // Saved lists it; Sources credits providers.
+        // Saved lists it; Sources credits providers. The segmented control is in a lazy list section.
+        for _ in 0..<6 where !app.buttons["Saved"].isHittable { app.swipeDown() }
         app.buttons["Saved"].tap()
         XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "catalogue.question").firstMatch
             .waitForExistence(timeout: 10), "the recorded question appears under Saved")

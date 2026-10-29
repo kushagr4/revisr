@@ -66,6 +66,10 @@ final class TMUAPublicContentUITests: XCTestCase {
         journey.tap("library.recordPaper")
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@",
             "not used as evidence of topic mastery")).firstMatch.waitForExistence(timeout: journey.timeout))
+        // R5: saving needs an explicit result; an untouched form cannot record one.
+        XCTAssertFalse(app.buttons["Save"].isEnabled, "nothing is recorded until a result is chosen")
+        journey.tap("record.result")
+        app.buttons["Not yet checked"].firstMatch.tap()
         app.buttons["Save"].tap()
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS[c] %@",
             "last whole-paper result")).firstMatch.waitForExistence(timeout: journey.timeout))
