@@ -6,6 +6,8 @@ import SwiftUI
 struct TMUAResourceLibraryView: View {
     let settings: AppSettings
     let content: TMUAContentContext?
+    /// Questions → Papers lists the linked sites under Sources instead.
+    var showsSites = true
     @Query private var logs: [TMUAResourceLog]
     @State private var kind: String = ""
     @State private var provider: String = ""
@@ -65,7 +67,7 @@ struct TMUAResourceLibraryView: View {
                 }
             }
         }
-        let sites = TMUAResourceCatalogue.linkedProviders(TMUAResourceRegistry.bundled())
+        let sites = showsSites ? TMUAResourceCatalogue.linkedProviders(TMUAResourceRegistry.bundled()) : []
         if !sites.isEmpty {
             Section {
                 ForEach(sites, id: \.key) { site in
@@ -96,7 +98,8 @@ struct TMUAResourceLibraryView: View {
                 ? "Personal study copy · \(source.autoMarkedCount) auto-marked from the official solutions"
                 : "Personal study copy · self-marked"
         case .providerLink:
-            "Opens on \(source.provider.name)'s website · self-marked"
+            source.solutions.isEmpty ? "Opens on \(source.provider.name)'s website · self-marked"
+                : "Opens on \(source.provider.name)'s website · solutions in your library"
         }
     }
 }
@@ -111,7 +114,6 @@ struct TMUAResourceSourceView: View {
     @Query private var attempts: [TMUAPracticeAttempt]
     @State private var openPage: Int??
     @State private var openSolution: TMUAResourceSource.SolutionFile?
-    @State private var recording: TMUAResourceQuestion?
     @State private var recordingPaper = false
     @State private var errorMessage: String?
 
@@ -128,6 +130,9 @@ struct TMUAResourceSourceView: View {
                         .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
                     if let correction = source.labelCorrection {
                         Text("Label corrected: \(correction).").font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                    }
+                    if let note = source.holdingNote {
+                        Text(note).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
                     }
                 }
                 .accessibilityElement(children: .combine)
@@ -183,11 +188,6 @@ struct TMUAResourceSourceView: View {
                 NavigationStack { SourcePDFView(url: url, page: nil) }
             }
         }
-        .sheet(item: $recording) { question in
-            TMUARecordResultSheet(title: "\(source.title) · Q\(question.label)", questionCount: nil) { outcome, _, _ in
-                record(questionID: question.id, outcome: outcome)
-            }
-        }
         .sheet(isPresented: $recordingPaper) {
             TMUARecordResultSheet(title: source.title, questionCount: source.questions.isEmpty ? nil : source.questions.count) { outcome, correct, minutes in
                 record(questionID: nil, outcome: outcome, correct: correct, minutes: minutes)
@@ -201,46 +201,45 @@ struct TMUAResourceSourceView: View {
     @ViewBuilder
     private func questionRow(_ question: TMUAResourceQuestion, logs: [TMUAResourceLog],
                              practised: [String: [TMUAPracticeAttempt]]) -> some View {
-        let last = logs.filter { $0.questionID == question.id }.max { $0.recordedAt < $1.recordedAt }
+        let catalogue = TMUACatalogueStore.catalogue(content)
         let detail = VStack(alignment: .leading, spacing: 2) {
             Text("Q\(question.label) · \(question.topic)").font(.subheadline)
             Text([question.difficultyLabel + " (estimated)", question.page.map { "page \($0)" }]
                 .compactMap { $0 }.joined(separator: " · "))
                 .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
         }
-        if let itemID = question.autoMarkedItemID,
-           let item = content?.eligibleItems.first(where: { $0.stableId == itemID }) {
-            NavigationLink {
-                TMUAPracticeView(settings: settings, item: item)
-            } label: {
+        if let entry = catalogue.entry(question.id) {
+            TMUACatalogueLink(settings: settings, entry: entry, catalogue: catalogue, content: content) {
                 HStack {
-                    detail
+                    VStack(alignment: .leading, spacing: 2) {
+                        detail
+                        if entry.id != question.id {
+                            // A reprint: one identity, so it is never practised twice as fresh.
+                            Text("Same question as \(entry.sourceTitle) · Q\(entry.label ?? "")")
+                                .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                        }
+                    }
                     Spacer()
-                    let history = practised[itemID] ?? []
-                    Text(history.isEmpty ? "Auto-marked" : (history.max { $0.attemptedAt < $1.attemptedAt }?.isCorrect == true ? "Correct" : "Incorrect"))
-                        .font(.caption.weight(.semibold)).foregroundStyle(RevisrColors.accentStrong)
+                    Text(status(entry, question: question, logs: logs, practised: practised))
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(entry.answerMode == .automatic ? RevisrColors.accentStrong : RevisrColors.secondaryLabel)
                 }
                 .accessibilityElement(children: .combine)
             }
         } else {
-            HStack {
-                detail
-                Spacer()
-                if let last {
-                    Text(last.outcome.title).font(.caption.weight(.semibold)).foregroundStyle(RevisrColors.secondaryLabel)
-                }
-                Menu {
-                    if source.access == .studyCopy, SourceLibraryServiceLookup.paperURL(source.id) != nil {
-                        Button("Open at page \(question.page ?? 1)", systemImage: "doc.text") { openPage = .some(question.page) }
-                    }
-                    Button("Record result", systemImage: "square.and.pencil") { recording = question }
-                } label: {
-                    Image(systemName: "ellipsis.circle").imageScale(.large)
-                        .frame(minWidth: RevisrMetrics.minimumTapTarget, minHeight: RevisrMetrics.minimumTapTarget)
-                }
-                .accessibilityLabel("Actions for question \(question.label)")
-            }
+            detail
         }
+    }
+
+    private func status(_ entry: TMUACatalogueEntry, question: TMUAResourceQuestion, logs: [TMUAResourceLog],
+                        practised: [String: [TMUAPracticeAttempt]]) -> String {
+        if let item = entry.item {
+            let history = practised[item.stableId] ?? []
+            guard let last = history.max(by: { $0.attemptedAt < $1.attemptedAt }) else { return "Auto-marked" }
+            return last.isCorrect ? "Correct" : "Incorrect"
+        }
+        let ids = Set([entry.id] + entry.aliases)
+        return logs.filter { ids.contains($0.questionID ?? "") }.max { $0.recordedAt < $1.recordedAt }?.outcome.title ?? ""
     }
 
     private func paperSummary(_ log: TMUAResourceLog) -> String {

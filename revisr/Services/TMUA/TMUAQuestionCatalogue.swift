@@ -99,7 +99,7 @@ struct TMUACatalogueEntry: Identifiable, Hashable, Sendable {
         var title: String {
             switch self {
             case .automatic: "Marked by Revisr"
-            case .selfMarked: "Self-marked with the publisher’s solution"
+            case .selfMarked: "Self-marked with solution"
             case .manualResult: "Record your own result"
             case .externalViewing: "On the publisher’s website"
             }

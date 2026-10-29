@@ -659,6 +659,7 @@ private struct TMUATopicsView: View {
         let diagnosticItems = state.snapshot?.submittedItems ?? []
         let evidence = Dictionary(uniqueKeysWithValues: (state.report?.topics ?? []).map { ($0.name, $0) })
         let eligible = state.content?.eligibleItems ?? []
+        let catalogue = TMUACatalogueStore.catalogue(state.content).practicable
 
         NavigationStack {
             List {
@@ -673,6 +674,7 @@ private struct TMUATopicsView: View {
                         let scheduled = tasks.filter { $0.isActive && $0.completedAt == nil && $0.topic == topic.title }.count
                         let completed = tasks.filter { $0.completedAt != nil && $0.topic == topic.title }.count
                         let available = eligible.filter { $0.taxonomy.topic == topic.key }.count
+                        let selfMarked = catalogue.filter { $0.topicKey == topic.key && $0.answerMode != .automatic }.count
                         Section {
                             VStack(alignment: .leading, spacing: 4) {
                                 if let result = evidence[topic.title] {
@@ -684,8 +686,12 @@ private struct TMUATopicsView: View {
                                 }
                                 Text("Diagnostic: \(topicDiagnostic.filter { $0.marking == .correct }.count)/\(topicDiagnostic.count) · Practice: \(topicAttempts.filter(\.isCorrect).count)/\(topicAttempts.count) correct")
                                     .font(.footnote.monospacedDigit())
-                                Text("Plan: \(completed) done, \(scheduled) scheduled · \(available) question\(available == 1 ? "" : "s") available")
+                                Text("Plan: \(completed) done, \(scheduled) scheduled · \(available) question\(available == 1 ? "" : "s") marked by Revisr")
                                     .font(.footnote.monospacedDigit()).foregroundStyle(RevisrColors.secondaryLabel)
+                                if selfMarked > 0 {
+                                    Text("\(selfMarked) more to self-mark in papers from your library")
+                                        .font(.footnote.monospacedDigit()).foregroundStyle(RevisrColors.secondaryLabel)
+                                }
                             }
                             .accessibilityElement(children: .combine)
                             DisclosureGroup("Syllabus strands") {
@@ -718,59 +724,70 @@ private struct TMUATopicsView: View {
 // MARK: - Questions
 
 private struct TMUAQuestionsView: View {
-    @Environment(\.modelContext) private var modelContext
     let settings: AppSettings
     @Query private var attempts: [TMUAPracticeAttempt]
+    @Query private var logs: [TMUAResourceLog]
     @Query private var flags: [TMUAReviewFlag]
     @Query private var sections: [TMUADiagnosticSection]
     @Query private var diagnosticItems: [TMUADiagnosticItem]
     @State private var library = Self.initialLibrary
-    @State private var paper: Int = 0
-    @State private var topic: String = ""
-    @State private var strand: String = ""
-    @State private var difficulty: Int = 0
-    @State private var source: String = ""
-    @State private var status: Status = .all
     @State private var debugPractice: TMUAContentItem?
 
-    enum Status: String, CaseIterable {
-        case all, notAttempted, attempted, incorrect, flagged
+    /// The unified library's four views (R4).
+    enum Library: String, CaseIterable {
+        case practice, papers, sources, saved
 
         var title: String {
             switch self {
-            case .all: "Any status"
-            case .notAttempted: "Not attempted"
-            case .attempted: "Attempted"
-            case .incorrect: "Incorrect last time"
-            case .flagged: "Flagged for review"
+            case .practice: "Practice"
+            case .papers: "Papers"
+            case .sources: "Sources"
+            case .saved: "Saved"
             }
         }
     }
 
-    private static var initialLibrary: String {
+    private static var initialLibrary: Library {
 #if DEBUG
-        DebugTMUAScenarioService.value("--tmua-library") ?? "questions"
+        // "questions" and "sources" are the pre-R4 names of Practice and Papers.
+        switch DebugTMUAScenarioService.value("--tmua-library") {
+        case "sources": .papers
+        case let value?: Library(rawValue: value) ?? .practice
+        case nil: .practice
+        }
 #else
-        "questions"
+        .practice
 #endif
     }
 
     var body: some View {
         let content = TMUAContentStore.context()
+        let catalogue = TMUACatalogueStore.catalogue(content)
+        let openSectionIDs = Set(sections.filter { $0.status != .submitted }.map(\.stableID))
+        // Questions waiting in an unsubmitted diagnostic section stay hidden so
+        // practice cannot reveal their solutions early.
+        let reserved = Set(diagnosticItems.filter { openSectionIDs.contains($0.sectionID) }.map(\.itemStableID))
+        let progress = TMUACatalogueProgress(settings: settings, attempts: attempts, logs: logs, flags: flags)
         NavigationStack {
             List {
                 Section {
                     Picker("Library", selection: $library) {
-                        Text("Practice questions").tag("questions")
-                        Text("Papers & sources").tag("sources")
+                        ForEach(Library.allCases, id: \.self) { Text($0.title).tag($0) }
                     }
                     .pickerStyle(.segmented)
                     .accessibilityIdentifier("questions.library")
                 }
-                if library == "sources" {
-                    TMUAResourceLibraryView(settings: settings, content: content)
-                } else {
-                    questionList(content)
+                switch library {
+                case .practice:
+                    TMUACataloguePracticeList(settings: settings, content: content, catalogue: catalogue,
+                                              progress: progress, reserved: reserved)
+                case .papers:
+                    TMUAResourceLibraryView(settings: settings, content: content, showsSites: false)
+                case .sources:
+                    TMUASourcesListView(settings: settings, content: content, catalogue: catalogue)
+                case .saved:
+                    TMUASavedListView(settings: settings, content: content, catalogue: catalogue,
+                                      progress: progress, reserved: reserved)
                 }
             }
             .navigationTitle("Questions")
@@ -784,103 +801,6 @@ private struct TMUAQuestionsView: View {
                 }
             }
 #endif
-        }
-    }
-
-    @ViewBuilder
-    private func questionList(_ content: TMUAContentContext?) -> some View {
-        let openSectionIDs = Set(sections.filter { $0.status != .submitted }.map(\.stableID))
-        // Questions waiting in an unsubmitted diagnostic section stay hidden so
-        // practice cannot reveal their solutions early.
-        let reserved = Set(diagnosticItems.filter { openSectionIDs.contains($0.sectionID) }.map(\.itemStableID))
-        let mine = attempts.filter { $0.profileSettingsID == settings.id }
-        let byItem = Dictionary(grouping: mine, by: \.itemStableID)
-        let flagged = Set(flags.filter { $0.profileSettingsID == settings.id && $0.isFlagged }.map(\.itemStableID))
-        let eligible = (content?.eligibleItems ?? []).filter { !reserved.contains($0.stableId) }
-        let categories = TMUAContentCategory.allCases.filter { category in eligible.contains { $0.category == category } }
-        let items = eligible.filter { item in
-            let history = byItem[item.stableId] ?? []
-            let last = history.max { $0.attemptedAt < $1.attemptedAt }
-            let statusMatches = switch status {
-            case .all: true
-            case .notAttempted: history.isEmpty
-            case .attempted: !history.isEmpty
-            case .incorrect: last?.isCorrect == false
-            case .flagged: flagged.contains(item.stableId)
-            }
-            return statusMatches
-                && (paper == 0 || item.paper == paper)
-                && (topic.isEmpty || item.taxonomy.topic == topic)
-                && (strand.isEmpty || item.taxonomy.strand == strand)
-                && (difficulty == 0 || item.difficulty == difficulty)
-                && (source.isEmpty || item.category.rawValue == source)
-        }
-
-        Section {
-            Picker("Paper", selection: $paper) {
-                Text("All").tag(0); Text("Paper 1").tag(1); Text("Paper 2").tag(2)
-            }
-            .pickerStyle(.segmented)
-            Picker("Topic", selection: $topic) {
-                Text("All topics").tag("")
-                ForEach(content?.syllabus.topics ?? [], id: \.key) { Text($0.title).tag($0.key) }
-            }
-            .onChange(of: topic) { _, _ in strand = "" }
-            if let selected = content?.syllabus.topic(topic) {
-                Picker("Strand", selection: $strand) {
-                    Text("All strands").tag("")
-                    ForEach(selected.strands, id: \.key) { Text($0.title).tag($0.key) }
-                }
-            }
-            Picker("Difficulty (estimated)", selection: $difficulty) {
-                Text("Any").tag(0)
-                ForEach(1...5, id: \.self) { Text("Level \($0)").tag($0) }
-            }
-            if categories.count > 1 {
-                Picker("Source", selection: $source) {
-                    Text("All sources").tag("")
-                    ForEach(categories, id: \.self) { Text($0.attributionTitle).tag($0.rawValue) }
-                }
-            }
-            Picker("Status", selection: $status) {
-                ForEach(Status.allCases, id: \.self) { Text($0.title).tag($0) }
-            }
-        } footer: {
-            if let content, content.distribution == .internal {
-                Text("Development build: \(content.originalItemCount) original Revisr questions are unreviewed drafts; \(content.studyCopyItemCount) official past-paper questions are personal study copies, with answer keys read from the official worked solutions and not yet checked by a person. Difficulty levels are estimates, not calibrated ratings.")
-            } else {
-                Text("Difficulty levels are estimates until student results calibrate them.")
-            }
-        }
-        Section("\(items.count) question\(items.count == 1 ? "" : "s")") {
-            if items.isEmpty {
-                Text("No questions match these filters.").foregroundStyle(RevisrColors.secondaryLabel)
-            }
-            ForEach(items, id: \.versionKey) { item in
-                NavigationLink {
-                    TMUAPracticeView(settings: settings, item: item)
-                } label: {
-                    let history = byItem[item.stableId] ?? []
-                    VStack(alignment: .leading, spacing: 2) {
-                        HStack {
-                            // Titles of unattempted questions stay hidden: some name the method.
-                            Text(history.isEmpty ? (content?.syllabus.strandTitle(item.taxonomy.strand) ?? "Practice question")
-                                 : item.title).font(.subheadline.weight(.semibold))
-                            if flagged.contains(item.stableId) {
-                                Image(systemName: "flag.fill").foregroundStyle(RevisrColors.warning)
-                                    .accessibilityLabel("Flagged")
-                            }
-                        }
-                        Text(history.isEmpty ? "Paper \(item.paper) · level \(item.difficulty) (estimated)"
-                             : "Paper \(item.paper) · \(content?.syllabus.strandTitle(item.taxonomy.strand) ?? "") · level \(item.difficulty) (estimated)")
-                            .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                        Text(history.isEmpty ? item.creditLine
-                             : "\(history.count) attempt\(history.count == 1 ? "" : "s") · last \(history.max { $0.attemptedAt < $1.attemptedAt }?.isCorrect == true ? "correct" : "incorrect")")
-                            .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
-                    }
-                    .accessibilityElement(children: .combine)
-                }
-            }
         }
     }
 }
