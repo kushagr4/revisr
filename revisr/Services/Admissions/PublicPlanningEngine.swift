@@ -41,6 +41,9 @@ struct PublicPlanningOptions: Equatable {
     /// While unseen questions remain, pacing never leaves a study day empty:
     /// one unseen question may be introduced early instead.
     var minimumOneTaskPerStudyDay = false
+    /// R5: rotate the timed slot by calendar day rather than by study days counted from the start,
+    /// so a refresh on another day does not relabel (and re-identify) unchanged tasks.
+    var calendarDayRotation = false
 
     static let legacy = PublicPlanningOptions()
 }
@@ -227,11 +230,11 @@ enum PublicPlanningEngine {
         while cursor < examDay {
             if let weekday = Weekday(rawValue: calendar.component(.weekday, from: cursor)),
                available.contains(where: { $0.weekday == weekday }) { totalStudyDays += 1 }
-            cursor = calendar.date(byAdding: .day, value: 1, to: cursor) ?? examDay
+            cursor = Self.nextDay(after: cursor, calendar: calendar, limit: examDay)
         }
         var date = start
         while date < examDay {
-            defer { date = calendar.date(byAdding: .day, value: 1, to: date) ?? examDay }
+            defer { date = Self.nextDay(after: date, calendar: calendar, limit: examDay) }
             guard let weekday = Weekday(rawValue: calendar.component(.weekday, from: date)),
                   let day = available.first(where: { $0.weekday == weekday }) else { continue }
             availableDays += 1
@@ -300,9 +303,11 @@ enum PublicPlanningEngine {
                 let preferred = slot == 1
                     ? (ranked.first(where: { $0.topic != previousTopic }) ?? ranked[0])
                     : ranked[0]
+                let rotation = options.calendarDayRotation
+                    ? (calendar.ordinality(of: .day, in: .era, for: date) ?? availableDays) : availableDays
                 let activity: PublicPlanningActivity = finalWindow ? .finalReview
                     : slot == 0 ? .targeted
-                    : slot == 1 && availableDays % 3 == 0 ? .timed
+                    : slot == 1 && rotation % 3 == 0 ? .timed
                     : slot == 1 ? .mixed : .consolidation
                 let reviewPool = input.questions.filter { question in
                     guard !used.contains(question.id), question.topic == preferred.topic else { return false }
@@ -411,5 +416,11 @@ enum PublicPlanningEngine {
         guard !tasks.isEmpty else { throw PublicPlanningError.noEligibleQuestions }
         return PublicPlanningResult(tasks: tasks, priorities: priorities,
             availableDays: availableDays, unfilledDays: unfilledDays)
+    }
+
+    /// The start of the next calendar day. Adding a day to a midnight that a clock change skips
+    /// lands at 01:00; normalising keeps every later day at its start, so day keys always match.
+    static func nextDay(after date: Date, calendar: Calendar, limit: Date) -> Date {
+        calendar.date(byAdding: .day, value: 1, to: date).map { calendar.startOfDay(for: $0) } ?? limit
     }
 }

@@ -125,6 +125,7 @@ enum PublicProgrammeService {
             if let existing = taskByID[taskID] {
                 guard existing.completedAt == nil else { continue }
                 existing.isActive = true
+                existing.scheduledDate = planned.date
                 existing.reason = planned.reason
                 existing.allocatedMinutes = planned.minutes
             } else {
@@ -213,7 +214,9 @@ enum PublicProgrammeService {
             guard let id = attempt.question?.externalQuestionID else { return nil }
             return (id, attempt)
         }, by: \.0).mapValues { rows in
-            rows.map(\.1).max { $0.attemptedAt < $1.attemptedAt }!
+            // Same-instant attempts are ordered by what they record, never by fetch order or record ID.
+            rows.map(\.1).max { ($0.attemptedAt, $0.outcomeRawValue, $0.timeTakenSeconds, $0.notes)
+                < ($1.attemptedAt, $1.outcomeRawValue, $1.timeTakenSeconds, $1.notes) }!
         }
         let legacyReservedIDs = Set(try context.fetch(FetchDescriptor<ProgrammeAssignment>())
             .filter(\.isImportedActive).compactMap { $0.question?.externalQuestionID })

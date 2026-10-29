@@ -53,13 +53,16 @@ enum TMUAProgrammeService {
             || programme.sessionMinutesSnapshot != settings.publicSessionMinutes
     }
 
-    /// - Parameter resourceSessions: also fill study days the question bank cannot fill with
-    ///   self-marked papers from the library (`TMUAResourcePlanning`). The app passes true.
+    /// - Parameters:
+    ///   - resourceSessions: also fill study days the question bank cannot fill with
+    ///     self-marked papers from the library (`TMUAResourcePlanning`). The app passes true.
+    ///   - catalogue: the library to plan from; nil uses this build's (`TMUACatalogueStore`).
     @discardableResult
     static func generateOrRefresh(settings: AppSettings, content: TMUAContentContext,
                                   today: Date = .now, calendar: Calendar = DateUtilities.appCalendar(),
-                                  resourceSessions: Bool = false,
+                                  resourceSessions: Bool = false, catalogue: TMUAQuestionCatalogue? = nil,
                                   in context: ModelContext) throws -> PublicProgramme {
+        let catalogue = catalogue ?? TMUACatalogueStore.catalogue(content)
         guard let examDate = settings.publicExamDate, let weekly = settings.publicWeeklyTargetMinutes,
               let snapshot = try TMUADiagnosticService.load(settings: settings, in: context),
               snapshot.isInitialComplete else {
@@ -75,12 +78,21 @@ enum TMUAProgrammeService {
             && task.questionID.map(reserved.contains) == true {
             task.isActive = false
         }
-        let refinement = refinementMinutes(snapshot: snapshot, settings: settings, content: content,
-                                           existingTasks: existingTasks, in: context)
+        // An invitation already in the next three days stays there through an unchanged refresh,
+        // so the plan does not gain a second one further on.
+        let windowStart = calendar.startOfDay(for: today)
+        let windowEnd = calendar.date(byAdding: .day, value: 3, to: windowStart) ?? windowStart
+        let keepsInvitation = (try load(settings: settings, in: context)).map {
+            !settingsChanged($0, settings: settings, calendar: calendar)
+        } == true && existingTasks.contains {
+            $0.activity == .diagnosticRefinement && $0.isActive && $0.completedAt == nil
+                && $0.scheduledDate >= windowStart && $0.scheduledDate < windowEnd
+        }
+        let refinement = keepsInvitation ? nil : refinementMinutes(snapshot: snapshot, settings: settings,
+                                                                   content: content, existingTasks: existingTasks, in: context)
         // R4: when the library can supply fresh self-marked worksheets, a question is revisited once
         // rather than drilled a third or fourth time; the days that frees go to the library.
-        let preferLibrary = resourceSessions
-            && TMUACatalogueStore.catalogue(content).practicable.contains { $0.answerMode == .selfMarked }
+        let preferLibrary = resourceSessions && catalogue.practicable.contains { $0.answerMode == .selfMarked }
         let programme = try PublicProgrammeService.applyPlan(
             programmeID: programmeID(settings: settings), settings: settings, examDate: examDate,
             weeklyMinutes: weekly, today: today, calendar: calendar,
@@ -94,7 +106,8 @@ enum TMUAProgrammeService {
         }
         if resourceSessions {
             try scheduleResourceSessions(programme: programme, settings: settings, content: content,
-                                         today: today, calendar: calendar, report: report, in: context)
+                                         today: today, calendar: calendar, report: report, catalogue: catalogue,
+                                         in: context)
         }
         return programme
     }
@@ -135,9 +148,12 @@ enum TMUAProgrammeService {
         calendar: Calendar,
         preferLibraryOverRepeats: Bool = false
     ) -> PublicPlanningInput {
+        // Two attempts at the same instant are told apart by what they record, never by fetch order
+        // or random record IDs, so the same history always gives the same plan.
         let latestAttempt = Dictionary(grouping: evidence.attempts, by: \.itemStableID)
-            .compactMapValues { $0.max { $0.attemptedAt < $1.attemptedAt } }
-        let diagnosticByID = Dictionary(evidence.diagnosticItems.map { ($0.itemStableID, $0) },
+            .compactMapValues { $0.max(by: TMUAPracticeAttempt.isEarlier) }
+        let diagnosticByID = Dictionary(evidence.diagnosticItems
+            .sorted { ($0.sectionID, $0.ordinal) < ($1.sectionID, $1.ordinal) }.map { ($0.itemStableID, $0) },
                                         uniquingKeysWith: { first, _ in first })
         let questions = content.eligibleItems
             .filter { !excludedQuestionIDs.contains($0.stableId) }
@@ -172,6 +188,7 @@ enum TMUAProgrammeService {
         options.paceFreshQuestions = true
         options.balanceFallbackTopics = true
         options.minimumOneTaskPerStudyDay = true
+        options.calendarDayRotation = true
         options.spacedReviewIntervalDays = spacedReviewIntervalDays
         options.maximumSpacedRepeats = maximumSpacedRepeats(questionCount: questions.count, start: start,
             examDate: examDate, weeklyMinutes: weeklyMinutes, sessionMinutes: settings.publicSessionMinutes,
@@ -367,7 +384,7 @@ extension TMUAProgrammeService {
                 studyDays += 1
                 if !busyDays.contains(date) { empty += 1 }
             }
-            date = calendar.date(byAdding: .day, value: 1, to: date) ?? examDay
+            date = PublicPlanningEngine.nextDay(after: date, calendar: calendar, limit: examDay)
         }
         var seen = seenStableIDs
         var lastNew: Date?

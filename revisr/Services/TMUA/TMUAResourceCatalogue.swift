@@ -143,7 +143,9 @@ enum TMUAResourceCatalogue {
 
     static func sources(distribution: TMUAContentDistribution, items: [TMUAContentItem],
                         bundle: Bundle = .main) -> [TMUAResourceSource] {
-        let key = "\(distribution.rawValue)#\(items.count)"
+        // Keyed by the items themselves and the bundle, not just their number, so a different bank
+        // of the same size (in tests) never reuses another's library.
+        let key = "\(distribution.rawValue)#\(items.count)#\(items.first?.versionKey ?? "")#\(items.last?.versionKey ?? "")#\(bundle.bundlePath)"
         if let cached, cached.key == key { return cached.sources }
         guard let manifest = try? AdmissionsManifest.bundled(),
               let registry = TMUAResourceRegistry.bundled(in: bundle) else { return [] }
@@ -200,7 +202,10 @@ enum TMUAResourceCatalogue {
             let override = registry.sourceOverrides.first { $0.sourceID == source.stableSourceID }
             let paperLabel = override?.paper ?? source.paper
             let questions = (questionsBySource[source.stableSourceID] ?? [])
-                .sorted { ($0.questionNumber ?? Int($0.questionLabel) ?? 0, $0.questionLabel) < ($1.questionNumber ?? Int($1.questionLabel) ?? 0, $1.questionLabel) }
+                // Paper part first, so a combined Paper 1 + Paper 2 file lists each paper in order; the
+                // question ID settles the rest, so the order never depends on the manifest's.
+                .sorted { ($0.paper ?? "", $0.questionNumber ?? Int($0.questionLabel) ?? 0, $0.questionLabel, $0.externalQuestionID)
+                    < ($1.paper ?? "", $1.questionNumber ?? Int($1.questionLabel) ?? 0, $1.questionLabel, $1.externalQuestionID) }
                 .map { question in
                     TMUAResourceQuestion(
                         id: question.externalQuestionID, label: question.questionLabel,
@@ -231,7 +236,7 @@ enum TMUAResourceCatalogue {
             if left != right { return left < right }
             if lhs.provider.name != rhs.provider.name { return lhs.provider.name < rhs.provider.name }
             if lhs.year != rhs.year { return (lhs.year ?? 0) > (rhs.year ?? 0) }
-            return lhs.title < rhs.title
+            return (lhs.title, lhs.id) < (rhs.title, rhs.id)
         }
     }
 

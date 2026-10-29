@@ -98,11 +98,16 @@ enum TMUAFixtures {
         try context(items(paperOne: 34, paperTwo: 30))
     }
 
+    /// A fixed student identity for tests that compare plans across runs or processes.
+    static let pinnedProfileID = UUID(uuidString: "5E1F0000-0000-4000-8000-00000000A001")!
+
     /// A clean public profile with the flexible TMUA flow and a saved setup.
     static func profile(in context: ModelContext, today: Date, examInDays days: Int = 60,
                         weeklyMinutes: Int = 300, availability: [DayAvailability] = AppSettings.publicDefaultAvailability,
-                        session: Int? = nil) throws -> AppSettings {
+                        session: Int? = nil, id: UUID? = nil) throws -> AppSettings {
         let settings = try SeedDataService.bootstrapForLaunch(in: context)
+        // A pinned identity makes the profile's diagnostic selection, and so its plan, reproducible.
+        if let id { settings.id = id }
         let examDate = calendar.date(byAdding: .day, value: days, to: calendar.startOfDay(for: today))!
         try PublicPreparationService.saveFlexibleTMUAProfile(examDate: examDate, weeklyMinutes: weeklyMinutes,
             availability: availability, sessionMinutes: session, today: today, calendar: calendar,

@@ -372,7 +372,7 @@ enum TMUACatalogueStore {
 
     static func catalogue(_ content: TMUAContentContext?, bundle: Bundle = .main) -> TMUAQuestionCatalogue {
         guard let content else { return TMUAQuestionCatalogue(entries: [], sources: [], aliases: [:]) }
-        let key = "\(content.distribution.rawValue)#\(content.bank.bankVersion)#\(content.eligibleItems.count)"
+        let key = "\(content.distribution.rawValue)#\(content.bank.bankVersion)#\(content.eligibleItems.count)#\(bundle.bundlePath)"
         if let cached, cached.key == key { return cached.catalogue }
         let sources = TMUAResourceCatalogue.sources(distribution: content.distribution, items: content.eligibleItems,
                                                     bundle: bundle)

@@ -39,7 +39,8 @@ final class TMUACatalogueAuditTests: XCTestCase {
             return day
         }
         let settings = try TMUAFixtures.profile(in: context, today: today, examInDays: days,
-                                                weeklyMinutes: capacity.weekly, availability: availability)
+                                                weeklyMinutes: capacity.weekly, availability: availability,
+                                                id: TMUAFixtures.pinnedProfileID)
         let snapshot = try TMUADiagnosticService.create(settings: settings, length: .balanced, content: content,
                                                         at: today, in: context)
         try TMUAFixtures.completeAll(snapshot, at: today, in: context)

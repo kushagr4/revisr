@@ -187,6 +187,14 @@ final class TMUAPracticeAttempt {
 
     var origin: TMUAPracticeOrigin { TMUAPracticeOrigin(rawValue: originRawValue) ?? .questionBank }
 
+    /// Orders attempts by time, and attempts at the same instant by what they record, an incorrect
+    /// one counting as the later (the cautious reading). Never by record ID or fetch order, so the
+    /// same history always reads the same way.
+    static func isEarlier(_ lhs: TMUAPracticeAttempt, _ rhs: TMUAPracticeAttempt) -> Bool {
+        (lhs.attemptedAt, lhs.isCorrect ? 0 : 1, lhs.selectedOptionID, lhs.seconds, lhs.programmeTaskID ?? "", lhs.itemVersion)
+            < (rhs.attemptedAt, rhs.isCorrect ? 0 : 1, rhs.selectedOptionID, rhs.seconds, rhs.programmeTaskID ?? "", rhs.itemVersion)
+    }
+
     init(profileSettingsID: UUID, item: TMUAContentItem, selectedOptionID: String,
          seconds: Int, origin: TMUAPracticeOrigin, programmeTaskID: String?, at date: Date) {
         self.id = UUID()

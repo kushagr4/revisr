@@ -126,9 +126,9 @@ extension TMUAProgrammeService {
 
     static func scheduleResourceSessions(programme: PublicProgramme, settings: AppSettings,
                                          content: TMUAContentContext, today: Date, calendar: Calendar,
-                                         report: TMUADiagnosticReport? = nil,
+                                         report: TMUADiagnosticReport? = nil, catalogue: TMUAQuestionCatalogue? = nil,
                                          in context: ModelContext) throws {
-        let catalogue = TMUACatalogueStore.catalogue(content)
+        let catalogue = catalogue ?? TMUACatalogueStore.catalogue(content)
         let sources = catalogue.sources
         let all = try PublicProgrammeService.tasks(for: programme, in: context)
         let profile = settings.id
@@ -193,10 +193,13 @@ extension TMUAProgrammeService {
         var date = calendar.startOfDay(for: today)
         var nextIsWorksheet = true
         while date < examDay, !paperQueue.isEmpty || !sheetQueue.isEmpty {
-            defer { date = calendar.date(byAdding: .day, value: 1, to: date) ?? examDay }
+            defer { date = PublicPlanningEngine.nextDay(after: date, calendar: calendar, limit: examDay) }
             guard PublicProgrammeAvailability.isAvailable(on: date, schedule: settings.publicAvailability,
                                                           calendar: calendar) == true,
                   !sessionDays.contains(date) else { continue }
+            let id = "\(programme.stableID)\(resourceTaskMarker)\(Self.dayKey(date, calendar: calendar))"
+            // A completed, kept or started session is never rewritten, whatever happened to its date.
+            if let existing = byID[id], existing.completedAt != nil || existing.isActive { continue }
             let used = planned[date] ?? 0
             let session: Session
             if used == 0 {
@@ -216,7 +219,6 @@ extension TMUAProgrammeService {
                 continue
             }
             planned[date, default: 0] += session.minutes
-            let id = "\(programme.stableID)\(resourceTaskMarker)\(Self.dayKey(date, calendar: calendar))"
             let task = PublicPlannedTask(date: date, questionID: nil, sourceID: session.sourceID, topic: session.topic,
                                          minutes: session.minutes, activity: session.activity, reason: session.reason)
             if let existing = byID[id] {
