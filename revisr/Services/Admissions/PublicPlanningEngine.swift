@@ -44,6 +44,15 @@ struct PublicPlanningOptions: Equatable {
     /// R5: rotate the timed slot by calendar day rather than by study days counted from the start,
     /// so a refresh on another day does not relabel (and re-identify) unchanged tasks.
     var calendarDayRotation = false
+    /// R5: recent results that shift topic priority come only from practice. A diagnostic answer
+    /// already sets the topic's evidence level, so it is not counted a second time as "recent".
+    var recentRankFromPracticeOnly = false
+    /// R5: questions already planned in the unchanged next three days. They are not planned again,
+    /// but their results still count towards topic priority.
+    var plannedElsewhereQuestionIDs: Set<String> = []
+    /// R5: minutes already booked on a day by work the engine does not plan (a worksheet the student
+    /// has started), keyed by the start of the day. Those minutes are not planned again.
+    var bookedMinutesByDay: [Date: Int] = [:]
 
     static let legacy = PublicPlanningOptions()
 }
@@ -58,6 +67,8 @@ struct PublicPlanningQuestion: Equatable {
     let latestAttemptDate: Date?
     let reviewFlag: Bool
     let hasSolution: Bool
+    /// The latest outcome came from a practice attempt, not from the diagnostic.
+    var outcomeFromPractice = true
 }
 
 struct PublicPlanningPaper: Equatable {
@@ -178,6 +189,7 @@ enum PublicPlanningEngine {
         for topic in groups.keys {
             let signal = signals[topic]
             let recent = groups[topic, default: []].filter { question in
+                if options.recentRankFromPracticeOnly && !question.outcomeFromPractice { return false }
                 guard let date = question.latestAttemptDate else { return false }
                 guard let days = calendar.dateComponents([.day], from: date, to: start).day else { return false }
                 return (0...21).contains(days)
@@ -189,7 +201,7 @@ enum PublicPlanningEngine {
             switch signal?.level {
             case .strongDifficulty?:
                 evidenceRank = 40
-                reason = "Several assessed diagnostic questions in \(topic) were missed across both papers."
+                reason = "Several assessed diagnostic questions in \(topic) were missed."
             case .possibleImprovement?:
                 evidenceRank = 30
                 reason = "Your diagnostic suggests \(topic) may need more practice."
@@ -213,7 +225,8 @@ enum PublicPlanningEngine {
             if lhs.difficulty != rhs.difficulty { return lhs.difficulty < rhs.difficulty }
             return lhs.id < rhs.id
         }
-        var used = Set<String>()
+        // Questions planned in the frozen window are already in the plan: never planned twice.
+        var used = options.plannedElsewhereQuestionIDs
         var usedPapers = Set<String>()
         var topicCounts: [String: Int] = [:]
         var tasks: [PublicPlannedTask] = []
@@ -222,7 +235,9 @@ enum PublicPlanningEngine {
         var lastPlanned: [String: Date] = [:]
         var spacedRepeats: [String: Int] = [:]
         var refinementPlaced = options.diagnosticRefinementMinutes == nil
-        let freshTotal = input.questions.filter { !$0.diagnostic && $0.latestOutcome == nil }.count
+        let freshTotal = input.questions.filter {
+            !$0.diagnostic && $0.latestOutcome == nil && !options.plannedElsewhereQuestionIDs.contains($0.id)
+        }.count
         var freshPlacedTotal = 0
         var studyDayIndex = 0
         var totalStudyDays = 0
@@ -248,7 +263,7 @@ enum PublicPlanningEngine {
             let daysRemaining = calendar.dateComponents([.day], from: date, to: examDay).day ?? 0
             let finalWindow = daysRemaining <= 3
             let usableCapacity = finalWindow ? max(minutes, capacity / 2) : capacity
-            var remaining = min(capacity, usableCapacity)
+            var remaining = max(0, min(capacity, usableCapacity) - (options.bookedMinutesByDay[date] ?? 0))
             var placed = 0
             // Cumulative pacing: by each study day, roughly that share of the
             // window's unseen questions has been introduced.
@@ -339,6 +354,7 @@ enum PublicPlanningEngine {
                         .compactMap(\.questionID))
                     let spaced = input.questions.filter { question in
                         guard !placedToday.contains(question.id),
+                              !options.plannedElsewhereQuestionIDs.contains(question.id),
                               spacedRepeats[question.id, default: 0] < options.maximumSpacedRepeats,
                               let last = lastPlanned[question.id] ?? question.latestAttemptDate,
                               let gap = calendar.dateComponents([.day], from: calendar.startOfDay(for: last), to: date).day

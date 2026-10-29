@@ -31,9 +31,13 @@ extension TMUAProgrammeService {
     /// topic in `topicOrder` (weakest diagnostic evidence first). TMUA-format papers come first, then
     /// other admissions tests, then competitions; a question already recorded, already in a worksheet,
     /// in a paper the plan uses whole, or adapted from one already chosen is never offered again.
+    /// R5: `weakTopics` (assessed weaknesses from the diagnostic) get two worksheets in each round
+    /// instead of one, and `revisits` (questions the student marked wrong earlier) may come back once,
+    /// first in their topic's queue.
     nonisolated static func worksheetCandidates(_ entries: [TMUACatalogueEntry], topicOrder: [String],
                                                 excluded: Set<String>, excludedSources: Set<String>,
-                                                size: Int) -> [(topic: String, questions: [String])] {
+                                                size: Int, weakTopics: Set<String> = [],
+                                                revisits: Set<String> = []) -> [(topic: String, questions: [String])] {
         func rank(_ entry: TMUACatalogueEntry) -> Int {
             switch entry.provider?.kind {
             case .officialTMUA?: 0
@@ -42,29 +46,52 @@ extension TMUAProgrammeService {
             default: 3
             }
         }
-        var used = excluded
+        var used = excluded.subtracting(revisits)
+        // Adaptations are blocked by everything already practised, revisits included.
+        var practised = excluded
+        // A syllabus topic is required (a question outside the specification or not yet classified is
+        // never set as topic practice); paper fit is not, since worksheets are grouped by topic only.
         let usable = entries.filter { entry in
-            entry.presentation == .document && entry.answerMode == .selfMarked && entry.paperFit != .unclassified
+            entry.presentation == .document && entry.answerMode == .selfMarked
                 && entry.topicKey != nil && !excludedSources.contains(entry.sourceID ?? "")
                 && !used.contains(entry.id) && entry.format == "Multiple choice"
         }
-        let byTopic = Dictionary(grouping: usable, by: { $0.topicKey ?? "" })
-            .mapValues { $0.sorted { (rank($0), $0.difficulty ?? 3, $0.id) < (rank($1), $1.difficulty ?? 3, $1.id) } }
+        // Adaptations in both directions: an original is skipped once one of its adaptations is set.
+        let adaptations = Dictionary(grouping: entries.filter { $0.variantOf != nil }, by: { $0.variantOf ?? "" })
+            .mapValues { $0.map(\.id) }
+        // Within a topic: revisits first, then official papers, mocks, other admissions tests and
+        // competitions. Inside each of those tiers, publishers take turns (each easiest first), so a
+        // worksheet is not drawn from one topic bank and its easiest questions alone.
+        func queue(_ topicEntries: [TMUACatalogueEntry]) -> [TMUACatalogueEntry] {
+            let tiers = Dictionary(grouping: topicEntries) { (revisits.contains($0.id) ? 0 : 1) * 10 + rank($0) }
+            return tiers.keys.sorted().flatMap { tier -> [TMUACatalogueEntry] in
+                let byProvider = Dictionary(grouping: tiers[tier] ?? [], by: { $0.provider?.key ?? "" })
+                    .mapValues { $0.sorted { ($0.difficulty ?? 3, $0.id) < ($1.difficulty ?? 3, $1.id) } }
+                let lists = byProvider.keys.sorted().compactMap { byProvider[$0] }
+                return (0..<(lists.map(\.count).max() ?? 0)).flatMap { index in lists.compactMap { index < $0.count ? $0[index] : nil } }
+            }
+        }
+        let byTopic = Dictionary(grouping: usable, by: { $0.topicKey ?? "" }).mapValues(queue)
+        let level = Dictionary(usable.map { ($0.id, $0.difficulty ?? 3) }, uniquingKeysWith: { first, _ in first })
         var queues = byTopic.mapValues { $0[...] }
         var result: [(String, [String])] = []
         var progressed = true
-        // Round-robin over topics in priority order, one worksheet per topic per round.
+        // Round-robin over topics in priority order: one worksheet per topic per round, two for a weak topic.
         while progressed {
             progressed = false
-            for topic in topicOrder {
+            for topic in topicOrder.flatMap({ weakTopics.contains($0) ? [$0, $0] : [$0] }) {
                 var picked: [String] = []
                 while picked.count < size, let entry = queues[topic]?.popFirst() {
-                    if used.contains(entry.id) || entry.variantOf.map(used.contains) == true { continue }
+                    if used.contains(entry.id) || entry.variantOf.map(practised.contains) == true
+                        || adaptations[entry.id]?.contains(where: practised.contains) == true { continue }
                     picked.append(entry.id)
                     used.insert(entry.id)
+                    practised.insert(entry.id)
                 }
                 if picked.count >= max(2, size / 2) {
-                    result.append((topic, picked))
+                    // Easier questions first within the worksheet, then harder ones.
+                    let ramp = picked.enumerated().sorted { (level[$0.element] ?? 3, $0.offset) < (level[$1.element] ?? 3, $1.offset) }
+                    result.append((topic, ramp.map(\.element)))
                     progressed = true
                 }
             }
@@ -86,6 +113,26 @@ extension TMUAProgrammeService {
         return syllabus.topics.enumerated()
             .sorted { (weight(levels[$0.element.title]), $0.offset) < (weight(levels[$1.element.title]), $1.offset) }
             .map(\.element.key)
+    }
+
+    /// Topics the diagnostic assessed as weak (clear difficulty or possible improvement): verified
+    /// evidence only, so self-marked results never add worksheets to a topic.
+    nonisolated static func worksheetWeakTopics(report: TMUADiagnosticReport?, syllabus: TMUASyllabus) -> Set<String> {
+        let weak = Set((report?.topics ?? []).filter { $0.level == .strongDifficulty || $0.level == .possibleImprovement }.map(\.name))
+        return Set(syllabus.topics.filter { weak.contains($0.title) }.map(\.key))
+    }
+
+    /// R5: a planning estimate for one self-marked worksheet question, including marking it against
+    /// the solution: 5 minutes at levels 1–2, 6 at level 3 or unknown, 8 at level 4 and 10 at level 5.
+    /// The TMUA allows 75 minutes for 20 questions (3¾ each); these leave time to mark. They are
+    /// conservative estimates, not measured timings, and levels are themselves estimates.
+    nonisolated static func worksheetQuestionMinutes(difficulty: Int?) -> Int {
+        switch difficulty {
+        case let level? where level <= 2: 5
+        case 4?: 8
+        case let level? where level >= 5: 10
+        default: 6
+        }
     }
 
     /// Sources worth a TMUA student's practice time, in the order they are offered: official TMUA
@@ -113,9 +160,12 @@ extension TMUAProgrammeService {
         return ranked.map(\.source)
     }
 
-    nonisolated static func resourceSessionMinutes(weeklyMinutes: Int, availability: [DayAvailability]) -> Int {
+    /// A library session's length on an empty study day: the day's share of the week, capped by the
+    /// session length the student set and by the 75 minutes of a full paper. Never more than the day holds.
+    nonisolated static func resourceSessionMinutes(weeklyMinutes: Int, availability: [DayAvailability],
+                                                   sessionCap: Int? = nil) -> Int {
         let days = max(1, availability.filter(\.isAvailable).count)
-        return min(75, max(20, weeklyMinutes / days))
+        return min(75, weeklyMinutes / days, sessionCap ?? .max)
     }
 
     nonisolated static func resourceReason(_ source: TMUAResourceSource, minutes: Int) -> String {
@@ -127,45 +177,71 @@ extension TMUAProgrammeService {
     static func scheduleResourceSessions(programme: PublicProgramme, settings: AppSettings,
                                          content: TMUAContentContext, today: Date, calendar: Calendar,
                                          report: TMUADiagnosticReport? = nil, catalogue: TMUAQuestionCatalogue? = nil,
-                                         in context: ModelContext) throws {
+                                         reserved: Set<String> = [], in context: ModelContext) throws {
         let catalogue = catalogue ?? TMUACatalogueStore.catalogue(content)
         let sources = catalogue.sources
         let all = try PublicProgrammeService.tasks(for: programme, in: context)
         let profile = settings.id
         let logs = try context.fetch(FetchDescriptor<TMUAResourceLog>(predicate: #Predicate { $0.profileSettingsID == profile }))
         let resourceTasks = all.filter { $0.stableID.contains(resourceTaskMarker) }
+        // R5: a worksheet with recorded results is the student's work in progress. A refresh keeps it,
+        // with its questions and on its day, rather than retiring it or reusing its day for other work.
+        let started = startedWorksheetTaskIDs(logs)
+        for task in resourceTasks where task.completedAt == nil && !task.isActive && started.contains(task.stableID) {
+            task.isActive = true
+        }
         var completed = Set(logs.filter { $0.questionID == nil }.map(\.sourceID))
         completed.formUnion(resourceTasks.filter { $0.completedAt != nil }.map(\.sourceID))
         // Sessions inside the frozen window stay as they are; their papers are not offered twice.
         let kept = resourceTasks.filter { $0.isActive && $0.completedAt == nil }
+        // A paper holding a question from an open diagnostic round is never set whole, so the paper
+        // cannot show that question before it is answered.
         let papers = resourceCandidates(sources, completed: completed.union(kept.map(\.sourceID)))
+            .filter { paper in !paper.questions.contains { $0.autoMarkedItemID.map(reserved.contains) == true } }
         let minutes = resourceSessionMinutes(weeklyMinutes: programme.weeklyMinutesSnapshot,
-                                             availability: settings.publicAvailability)
+                                             availability: settings.publicAvailability, sessionCap: settings.publicSessionMinutes)
         // Questions already recorded or in another worksheet are not offered again. A paper the plan
         // sets whole keeps its questions for that session, and a paper with a question in a worksheet
         // is not then set whole; papers merely eligible for a session reserve nothing.
-        let worksheetQuestions = resourceTasks.filter { $0.isActive || $0.completedAt != nil }
-            .flatMap { worksheetQuestionIDs($0.sourceID) }
+        let sheetTasks = resourceTasks.filter { ($0.isActive || $0.completedAt != nil) && $0.activity == .topicWorksheet }
+        let worksheetQuestions = sheetTasks.flatMap { worksheetQuestionIDs($0.sourceID) }
+        let revisits = worksheetRevisits(logs: logs, worksheets: sheetTasks.map {
+            (questions: worksheetQuestionIDs($0.sourceID), date: $0.scheduledDate, active: $0.completedAt == nil)
+        }, today: today, calendar: calendar)
+        let weak = worksheetWeakTopics(report: report, syllabus: content.syllabus)
         let worksheets = worksheetCandidates(
             catalogue.entries, topicOrder: worksheetTopicOrder(report: report, syllabus: content.syllabus),
             excluded: Set(logs.compactMap(\.questionID) + worksheetQuestions),
             excludedSources: completed.union(kept.map(\.sourceID)),
-            size: worksheetSize(minutes: minutes))
+            size: 8, weakTopics: weak, revisits: revisits)
         var paperQueue = papers[...]
         var sheetQueue = worksheets[...]
         var wholePapers = Set<String>()
         var worksheetPapers = Set(worksheetQuestions.compactMap { catalogue.entry($0)?.sourceID })
         typealias Session = (sourceID: String, topic: String, activity: PublicPlanningActivity, reason: String, minutes: Int)
+        // A worksheet takes its next questions while their estimated time fits the room, up to eight.
+        // A sheet too long for a short room waits for a later day rather than being cut to one question.
+        let sessionMinutes = minutes
         func worksheet(minutes: Int) -> Session? {
-            while let sheet = sheetQueue.popFirst() {
-                let questions = Array(sheet.questions
-                    .filter { !wholePapers.contains(catalogue.entry($0)?.sourceID ?? "") }
-                    .prefix(worksheetSize(minutes: minutes)))
+            while let sheet = sheetQueue.first {
+                var questions: [String] = []
+                var total = 0
+                for id in sheet.questions where !wholePapers.contains(catalogue.entry(id)?.sourceID ?? "") {
+                    let cost = worksheetQuestionMinutes(difficulty: catalogue.entry(id)?.difficulty)
+                    guard questions.count < 8, total + cost <= minutes else { break }
+                    questions.append(id)
+                    total += cost
+                }
+                let available = sheet.questions.filter { !wholePapers.contains(catalogue.entry($0)?.sourceID ?? "") }.count
+                // Too long for this room: wait for a longer one, unless even a full session is too short.
+                if questions.count < 2 && available >= 2 && minutes < sessionMinutes { return nil }
+                sheetQueue.removeFirst()
                 guard questions.count >= 2 else { continue }
                 worksheetPapers.formUnion(questions.compactMap { catalogue.entry($0)?.sourceID })
                 let title = content.syllabus.topicTitle(sheet.topic)
                 return (worksheetSourceID(topic: sheet.topic, questions: questions), title, .topicWorksheet,
-                        worksheetReason(topic: title, count: questions.count), minutes)
+                        worksheetReason(topic: title, count: questions.count, revisits: questions.filter(revisits.contains).count,
+                                        weak: weak.contains(sheet.topic)), total)
             }
             return nil
         }
@@ -192,7 +268,8 @@ extension TMUAProgrammeService {
         let examDay = calendar.startOfDay(for: programme.examDateSnapshot)
         var date = calendar.startOfDay(for: today)
         var nextIsWorksheet = true
-        while date < examDay, !paperQueue.isEmpty || !sheetQueue.isEmpty {
+        // A day too short for any library session (under 15 minutes) gets none.
+        while date < examDay, minutes >= 15, !paperQueue.isEmpty || !sheetQueue.isEmpty {
             defer { date = PublicPlanningEngine.nextDay(after: date, calendar: calendar, limit: examDay) }
             guard PublicProgrammeAvailability.isAvailable(on: date, schedule: settings.publicAvailability,
                                                           calendar: calendar) == true,
@@ -241,8 +318,34 @@ extension TMUAProgrammeService {
 
     nonisolated static func worksheetSize(minutes: Int) -> Int { min(8, max(3, minutes / 6)) }
 
-    nonisolated static func worksheetReason(topic: String, count: Int) -> String {
-        "\(count) questions on \(topic.lowercased()) from papers in your library, which Revisr cannot mark. Open each at its page, mark it against the publisher’s solution and record how it went. Your results count towards your progress and plan, not as evidence of topic mastery."
+    /// Questions the student marked incorrect or partly right at least a week ago that have not come
+    /// back since their first such result and are not planned now: each may come back once. Self-marked
+    /// results only decide which questions return; they never change topic priorities.
+    static func worksheetRevisits(logs: [TMUAResourceLog], worksheets: [(questions: [String], date: Date, active: Bool)],
+                                  today: Date, calendar: Calendar) -> Set<String> {
+        let active = Set(worksheets.filter(\.active).flatMap(\.questions))
+        let byQuestion = Dictionary(grouping: logs.filter { $0.questionID != nil }, by: { $0.questionID ?? "" })
+        return Set(byQuestion.compactMap { id, rows -> String? in
+            guard let latest = rows.max(by: TMUAResourceLog.isEarlier),
+                  latest.outcome == .incorrect || latest.outcome == .partial, !active.contains(id),
+                  let firstMiss = rows.filter({ $0.outcome == .incorrect || $0.outcome == .partial })
+                    .min(by: TMUAResourceLog.isEarlier),
+                  (calendar.dateComponents([.day], from: calendar.startOfDay(for: latest.recordedAt),
+                                           to: calendar.startOfDay(for: today)).day ?? 0) >= 7 else { return nil }
+            // A return is a worksheet holding the question on a later day than its first miss.
+            let missDay = calendar.startOfDay(for: firstMiss.recordedAt)
+            let returns = worksheets.filter { $0.questions.contains(id) && calendar.startOfDay(for: $0.date) > missDay }
+            return returns.isEmpty ? id : nil
+        })
+    }
+
+    nonisolated static func worksheetReason(topic: String, count: Int, revisits: Int = 0, weak: Bool = false) -> String {
+        var text = "\(count) questions on \(topic.lowercased()) from papers in your library, which Revisr cannot mark."
+        if weak { text += " Your diagnostic showed this topic needs more practice, so it gets extra worksheets." }
+        if revisits > 0 {
+            text += " \(revisits == 1 ? "One question" : "\(revisits) questions") you marked incorrect or partly right before \(revisits == 1 ? "comes" : "come") back once."
+        }
+        return text + " Open each at its page, mark it against the publisher’s solution and record how it went. Your results decide which questions come back for review; they never count as evidence of topic mastery."
     }
 
     /// Completes a resource session with the student's own result.

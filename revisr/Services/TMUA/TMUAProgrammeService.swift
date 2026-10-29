@@ -71,20 +71,36 @@ enum TMUAProgrammeService {
         let evidence = try gatherEvidence(settings: settings, snapshot: snapshot, in: context)
         let report = TMUADiagnosticReportBuilder.build(snapshot: snapshot, syllabus: content.syllabus)
         let existingTasks = try tasks(settings: settings, in: context)
+        let windowStart = calendar.startOfDay(for: today)
+        let windowEnd = calendar.date(byAdding: .day, value: 3, to: windowStart) ?? windowStart
+        let hadProgramme = try load(settings: settings, in: context) != nil
+        let keepsWindow = (try load(settings: settings, in: context)).map {
+            !settingsChanged($0, settings: settings, calendar: calendar)
+        } == true
+        // Read before anything is retired. Library sessions are planned after the engine's tasks, so the
+        // summary is taken over everything a refresh could change: incomplete work outside the kept window.
+        let unchanged = keepsWindow
+        func changeable(_ task: PublicProgrammeTask) -> Bool {
+            task.isActive && task.completedAt == nil
+                && !(unchanged && task.scheduledDate >= windowStart && task.scheduledDate < windowEnd)
+        }
+        let beforeTopics = existingTasks.filter(changeable).map(\.topic)
+        let kept = existingTasks.filter { $0.isActive && $0.completedAt == nil && !changeable($0) }.count
         // Questions in an unsubmitted diagnostic round leave the plan, so
         // practice can never show their solutions before they are answered.
         let reserved = reservedStableIDs(snapshot: snapshot)
+        // A kept paper session holding such a question leaves too, so the paper is not sat first.
+        let reservedPapers = Set(catalogue.sources.filter { source in
+            source.questions.contains { $0.autoMarkedItemID.map(reserved.contains) == true }
+        }.map(\.id))
         for task in existingTasks where task.isActive && task.completedAt == nil
-            && task.questionID.map(reserved.contains) == true {
+            && (task.questionID.map(reserved.contains) == true
+                || (task.activity == .resourcePractice && reservedPapers.contains(task.sourceID))) {
             task.isActive = false
         }
         // An invitation already in the next three days stays there through an unchanged refresh,
         // so the plan does not gain a second one further on.
-        let windowStart = calendar.startOfDay(for: today)
-        let windowEnd = calendar.date(byAdding: .day, value: 3, to: windowStart) ?? windowStart
-        let keepsInvitation = (try load(settings: settings, in: context)).map {
-            !settingsChanged($0, settings: settings, calendar: calendar)
-        } == true && existingTasks.contains {
+        let keepsInvitation = keepsWindow && existingTasks.contains {
             $0.activity == .diagnosticRefinement && $0.isActive && $0.completedAt == nil
                 && $0.scheduledDate >= windowStart && $0.scheduledDate < windowEnd
         }
@@ -93,6 +109,17 @@ enum TMUAProgrammeService {
         // R4: when the library can supply fresh self-marked worksheets, a question is revisited once
         // rather than drilled a third or fourth time; the days that frees go to the library.
         let preferLibrary = resourceSessions && catalogue.practicable.contains { $0.answerMode == .selfMarked }
+        // A worksheet the student has started keeps its day, so its minutes are booked before the
+        // engine plans that day.
+        var booked: [Date: Int] = [:]
+        if resourceSessions {
+            let profile = settings.id
+            let started = startedWorksheetTaskIDs(try context.fetch(FetchDescriptor<TMUAResourceLog>(
+                predicate: #Predicate { $0.profileSettingsID == profile })))
+            for task in existingTasks where task.completedAt == nil && started.contains(task.stableID) {
+                booked[calendar.startOfDay(for: task.scheduledDate), default: 0] += task.allocatedMinutes
+            }
+        }
         let programme = try PublicProgrammeService.applyPlan(
             programmeID: programmeID(settings: settings), settings: settings, examDate: examDate,
             weeklyMinutes: weekly, today: today, calendar: calendar,
@@ -100,14 +127,20 @@ enum TMUAProgrammeService {
             in: context) { start, excluded in
             planningInput(settings: settings, content: content, report: report, evidence: evidence,
                           start: start, examDate: examDate, weeklyMinutes: weekly,
-                          excludedQuestionIDs: excluded.union(reserved), refinement: refinement.map {
+                          excludedQuestionIDs: reserved, plannedElsewhere: excluded, refinement: refinement.map {
                               ($0, refinementSourceID(for: snapshot.diagnostic.targetLength)) },
-                          calendar: calendar, preferLibraryOverRepeats: preferLibrary)
+                          calendar: calendar, preferLibraryOverRepeats: preferLibrary, bookedMinutes: booked)
         }
         if resourceSessions {
             try scheduleResourceSessions(programme: programme, settings: settings, content: content,
                                          today: today, calendar: calendar, report: report, catalogue: catalogue,
-                                         in: context)
+                                         reserved: reserved, in: context)
+        }
+        if hadProgramme {
+            let after = try tasks(settings: settings, in: context).filter(changeable)
+            programme.refreshSummary = PublicProgrammeService.refreshSummary(before: beforeTopics, after: after.map(\.topic),
+                completed: programme.completedCountAtRefresh, frozen: kept)
+            try context.save()
         }
         return programme
     }
@@ -144,9 +177,11 @@ enum TMUAProgrammeService {
         examDate: Date,
         weeklyMinutes: Int,
         excludedQuestionIDs: Set<String>,
+        plannedElsewhere: Set<String> = [],
         refinement: (minutes: Int, sourceID: String)?,
         calendar: Calendar,
-        preferLibraryOverRepeats: Bool = false
+        preferLibraryOverRepeats: Bool = false,
+        bookedMinutes: [Date: Int] = [:]
     ) -> PublicPlanningInput {
         // Two attempts at the same instant are told apart by what they record, never by fetch order
         // or random record IDs, so the same history always gives the same plan.
@@ -181,7 +216,7 @@ enum TMUAProgrammeService {
                     latestOutcome: outcome,
                     latestAttemptDate: outcomeDate ?? (skipped ? evidence.diagnosticSubmittedAt[diagnostic?.sectionID ?? ""] : nil),
                     reviewFlag: evidence.flaggedStableIDs.contains(item.stableId) || skipped,
-                    hasSolution: true)
+                    hasSolution: true, outcomeFromPractice: attempt != nil)
             }
         var options = PublicPlanningOptions()
         options.dailyMinutesCap = settings.publicSessionMinutes
@@ -189,6 +224,9 @@ enum TMUAProgrammeService {
         options.balanceFallbackTopics = true
         options.minimumOneTaskPerStudyDay = true
         options.calendarDayRotation = true
+        options.recentRankFromPracticeOnly = true
+        options.plannedElsewhereQuestionIDs = plannedElsewhere
+        options.bookedMinutesByDay = bookedMinutes
         options.spacedReviewIntervalDays = spacedReviewIntervalDays
         options.maximumSpacedRepeats = maximumSpacedRepeats(questionCount: questions.count, start: start,
             examDate: examDate, weeklyMinutes: weeklyMinutes, sessionMinutes: settings.publicSessionMinutes,
@@ -350,9 +388,16 @@ struct TMUAPlanContentSummary: Equatable {
         guard isContentLimited else { return nil }
         var parts: [String] = []
         if newQuestionsRunOutEarly {
+            // With library sessions a question marked by Revisr returns once, and the library fills
+            // the days; without them it returns up to three times at widening gaps.
+            let after = worksheetDays > 0
+                ? "your plan returns to earlier questions less often and fills the other days with self-marked worksheets from your library"
+                : paperSessionDays > 0
+                    ? "your plan revisits earlier questions with widening gaps, and some days use a self-marked paper instead"
+                    : "your plan revisits earlier questions with widening gaps"
             parts.append(lastNewQuestionDate.map {
-                "Questions you have not seen before run out on \($0.formatted(date: .abbreviated, time: .omitted)). After that, your plan revisits earlier questions with widening gaps."
-            } ?? "There are no questions you have not seen before left in this build, so your plan revisits earlier questions with widening gaps.")
+                "Questions marked by Revisr that you have not seen before run out on \($0.formatted(date: .abbreviated, time: .omitted)). After that, \(after)."
+            } ?? "There are no questions marked by Revisr that you have not seen before left in this build, so \(after).")
         }
         if worksheetDays > 0 {
             parts.append("\(worksheetDays) study day\(worksheetDays == 1 ? "" : "s") include a self-marked topic worksheet from your library.")
@@ -361,7 +406,7 @@ struct TMUAPlanContentSummary: Equatable {
             parts.append("\(paperSessionDays) study day\(paperSessionDays == 1 ? "" : "s") use a self-marked paper from your library instead.")
         }
         if emptyStudyDays > 0 {
-            parts.append("\(emptyStudyDays) of your \(studyDays) remaining study days have no task because Revisr’s question bank is not yet large enough to fill them.")
+            parts.append("\(emptyStudyDays) of your \(studyDays) remaining study days have no task because this build does not yet have enough questions to fill them.")
         }
         return parts.joined(separator: " ")
     }

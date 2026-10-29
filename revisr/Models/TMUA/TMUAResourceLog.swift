@@ -5,16 +5,23 @@ enum TMUAResourceOutcome: String, CaseIterable, Codable, Sendable {
     case correct
     case incorrect
     case partial
+    /// Worked but not yet marked against the solution.
     case attempted
+    /// R5: left out on purpose. Never counted as worked, let alone correct.
+    case skipped
 
     var title: String {
         switch self {
         case .correct: "Correct"
         case .incorrect: "Incorrect"
         case .partial: "Partly right"
-        case .attempted: "Attempted"
+        case .attempted: "Not yet checked"
+        case .skipped: "Skipped"
         }
     }
+
+    /// A whole paper is recorded as worked or not; skipping it is not a result.
+    static let paperOutcomes: [Self] = [.correct, .partial, .incorrect, .attempted]
 }
 
 /// A result the student recorded themselves for a paper or question that Revisr cannot mark:
@@ -35,7 +42,16 @@ final class TMUAResourceLog {
     var recordedAt: Date
     var programmeTaskID: String?
 
+    /// The raw value is a string, so outcomes added later need no migration; an unknown one reads as
+    /// "not yet checked" rather than as a result.
     var outcome: TMUAResourceOutcome { TMUAResourceOutcome(rawValue: outcomeRawValue) ?? .attempted }
+
+    /// Orders results by time, then by content (never by record ID), so ties read the same way in
+    /// every store.
+    static func isEarlier(_ lhs: TMUAResourceLog, _ rhs: TMUAResourceLog) -> Bool {
+        (lhs.recordedAt, lhs.outcomeRawValue, lhs.programmeTaskID ?? "", lhs.sourceID, lhs.minutes ?? -1)
+            < (rhs.recordedAt, rhs.outcomeRawValue, rhs.programmeTaskID ?? "", rhs.sourceID, rhs.minutes ?? -1)
+    }
 
     init(profileSettingsID: UUID, sourceID: String, questionID: String?, outcome: TMUAResourceOutcome,
          correctCount: Int? = nil, questionCount: Int? = nil, minutes: Int? = nil,

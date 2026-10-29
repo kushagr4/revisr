@@ -82,5 +82,31 @@ final class TMUACatalogueAuditTests: XCTestCase {
                      questionTasks.isEmpty ? 0 : Double(official) / Double(questionTasks.count) * 100,
                      uses.values.max() ?? 0, paperSessions.count, worksheets.count, worksheetQuestions.count,
                      summary.emptyStudyDays, summary.daysWithoutNewQuestions))
+        // R5 realism: time per question, source concentration, difficulty, paper balance, topic spread,
+        // solution pages, near-duplicates and the share of worksheets on weak topics.
+        let sheetEntries = worksheetQuestions.compactMap(catalogue.entry)
+        XCTAssertFalse(sheetEntries.contains { entry in entry.variantOf.map(worksheetQuestions.contains) == true },
+                       "\(label): a question and its adaptation are never both set")
+        XCTAssertTrue(sheetEntries.allSatisfy { $0.topicKey != nil && $0.topicBasis != .outsideSpecification })
+        let providers = Dictionary(grouping: sheetEntries, by: { $0.provider?.key ?? "revisr" }).mapValues(\.count)
+        let levels = (1...5).map { level in sheetEntries.filter { $0.difficulty == level }.count }
+        let fits = Dictionary(grouping: sheetEntries, by: \.paperFit.rawValue).mapValues(\.count)
+        let weak = TMUAProgrammeService.worksheetWeakTopics(
+            report: TMUADiagnosticReportBuilder.build(snapshot: snapshot, syllabus: content.syllabus), syllabus: content.syllabus)
+        let weakSheets = worksheets.filter { TMUAProgrammeService.worksheetTopic($0.sourceID).map(weak.contains) == true }.count
+        let sheetMinutes = worksheets.reduce(0) { $0 + $1.allocatedMinutes }
+        let maxDay = byDay.values.map { $0.reduce(0) { $0 + $1.allocatedMinutes } }.max() ?? 0
+        if !worksheets.isEmpty {
+            print(String(format: "REALISM %@ minPerQ=%.1f topProvider=%@ %.0f%% levels=%@ fit=%@ topics=%d drafts=%d solutionPages=%.0f%% weakTopics=%d weakSheets=%.0f%% maxDay=%d cap=%d",
+                         label, Double(sheetMinutes) / Double(max(1, sheetEntries.count)),
+                         providers.max { ($0.value, $0.key) < ($1.value, $1.key) }?.key ?? "-",
+                         Double(providers.values.max() ?? 0) / Double(max(1, sheetEntries.count)) * 100,
+                         levels.map(String.init).joined(separator: "/"),
+                         ["paper1", "paper2", "both", "unclassified"].map { "\(fits[$0] ?? 0)" }.joined(separator: "/"),
+                         Set(sheetEntries.compactMap(\.topicKey)).count,
+                         sheetEntries.filter { $0.topicBasis == .provisionalDraft }.count,
+                         Double(sheetEntries.filter { $0.solutionPage != nil }.count) / Double(max(1, sheetEntries.count)) * 100,
+                         weak.count, Double(weakSheets) / Double(max(1, worksheets.count)) * 100, maxDay, max(perDay, 20)))
+        }
     }
 }

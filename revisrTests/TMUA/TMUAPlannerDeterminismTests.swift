@@ -40,14 +40,17 @@ final class TMUAPlannerDeterminismTests: XCTestCase {
                  weekdays: everyDay.subtracting([.sunday]), history: true),
     ]
 
-    /// Recorded from a separate process; see the type comment before changing one.
+    /// Recorded from a separate process; see the type comment before changing one. Re-recorded once in
+    /// R5 for the planning changes in docs/R5_ADAPTIVE_REVISION_VALIDATION.md (worksheet time by
+    /// question, weak-topic weighting, revisits, publishers taking turns, the evidence hierarchy and the
+    /// frozen-window rule).
     private static let golden: [String: String] = [
-        "14d-3h-3d": "a0c7aef7c5a3cc8c4460c564e3f5ac67465202f462ab0f0154161b9a1128048c",
-        "14d-12h-7d-strong": "afda998cdad0a73bd220142318d22be2438253e6ad8eb83eca0edc70888145e0",
-        "30d-5h-6d-questions-only": "d38ea6f6d54867ac6fcb73747def505506faddef1b5d3566d4ad1bfa965de596",
-        "120d-5h-6d": "042181d3ab33b67f4751fd8ff43f1adebd2c4734346e0f6547c0ea521837db41",
-        "180d-12h-7d": "7e6248fc5c25819872fdb563ff9ad94110ac3be137789c06f19580a5f654523e",
-        "60d-5h-6d-history": "0f80918a7e4b5492cd09df2b73aae7d6ae3702367b8077da6928ce2aa9d741fc",
+        "14d-3h-3d": "ebc606d826d3e4643847c946b4d7cdcf2f03891f5e0fa628be0f61374e03ea18",
+        "14d-12h-7d-strong": "98f05f8ea7c38a58f65a3aa96f98d63de7496ab59b36e3c1b63040699401f079",
+        "30d-5h-6d-questions-only": "0e258cfc178762831fd1be8b644efbab97ca18e2459162a2bc58d0cccfea38dd",
+        "120d-5h-6d": "132109cbbd40f4033ac083120049f923560020ca0ff4a69438ec44cf97365b23",
+        "180d-12h-7d": "267c0359ee2eff5391cd1bab34089a58b511a89194e365fde76f64d01790c5bc",
+        "60d-5h-6d-history": "b1990a029f84e74b2bb10f7833190130e633be0f3113a42646a7e523e8d823c1",
     ]
 
     func testPlansMatchGoldenDigestsAcrossProcesses() throws {
@@ -80,6 +83,55 @@ final class TMUAPlannerDeterminismTests: XCTestCase {
     }
 
     // MARK: Refresh stability
+
+    /// A worksheet with recorded results is work in progress: a refresh, even after a settings
+    /// change empties the three-day window, keeps it with the same questions on the same day.
+    func testStartedWorksheetSurvivesRefreshAfterSettingsChange() throws {
+        let container = try TMUAFixtures.memoryContainer()
+        let context = container.mainContext
+        let content = try TMUAFixtures.standardContext()
+        let catalogue = try Self.syntheticCatalogue(content: content)
+        let weekdays = Self.everyDay.subtracting([.sunday])
+        let settings = try TMUAFixtures.profile(in: context, today: today, examInDays: 60, weeklyMinutes: 300,
+            availability: Self.availability(weekdays), id: TMUAFixtures.pinnedProfileID)
+        let snapshot = try TMUADiagnosticService.create(settings: settings, length: .balanced, content: content,
+                                                        at: today, in: context)
+        try TMUAFixtures.completeAll(snapshot, at: today, in: context)
+        let programme = try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, today: today,
+            calendar: calendar, resourceSessions: true, catalogue: catalogue, in: context)
+        let windowEnd = calendar.date(byAdding: .day, value: 3, to: today)!
+        let sheets = try PublicProgrammeService.tasks(for: programme, in: context)
+            .filter { $0.isActive && $0.activity == .topicWorksheet && $0.scheduledDate >= windowEnd }
+        let started = try XCTUnwrap(sheets.first, "a worksheet beyond the three-day window")
+        let untouched = try XCTUnwrap(sheets.dropFirst().first)
+        let (startedID, startedSource, startedDate) = (started.stableID, started.sourceID, started.scheduledDate)
+        let untouchedSource = untouched.sourceID
+        let first = try XCTUnwrap(TMUAProgrammeService.worksheetQuestionIDs(started.sourceID).first)
+        try TMUAProgrammeService.recordWorksheetResult(.incorrect, questionID: first,
+            paperSourceID: try XCTUnwrap(catalogue.entry(first)?.sourceID), task: started, settings: settings,
+            at: today, in: context)
+        // The student drops Saturdays: every incomplete task outside the started worksheet may change.
+        try PublicPreparationService.saveFlexibleTMUAProfile(examDate: programme.examDateSnapshot, weeklyMinutes: 300,
+            availability: Self.availability(weekdays.subtracting([.saturday])), sessionMinutes: nil, today: today,
+            calendar: calendar, settings: settings, in: context)
+        try TMUAProgrammeService.generateOrRefresh(settings: settings, content: content, today: today,
+            calendar: calendar, resourceSessions: true, catalogue: catalogue, in: context)
+        let after = try PublicProgrammeService.tasks(for: programme, in: context)
+        let kept = try XCTUnwrap(after.first { $0.stableID == startedID })
+        XCTAssertTrue(kept.isActive)
+        XCTAssertEqual(kept.sourceID, startedSource, "same questions")
+        XCTAssertEqual(kept.scheduledDate, startedDate, "same day")
+        XCTAssertEqual(TMUAProgrammeService.worksheetProgress(kept, logs: try context.fetch(FetchDescriptor<TMUAResourceLog>())).recorded, 1)
+        let activeSheets = after.filter { $0.isActive && $0.activity == .topicWorksheet }
+        XCTAssertFalse(activeSheets.contains { $0.stableID != startedID && $0.sourceID == startedSource },
+                       "its questions are not offered again in another worksheet")
+        // Its minutes were booked before the engine planned the day, so the day stays within capacity.
+        let cap = 300 / 5
+        for (day, tasks) in Dictionary(grouping: after.filter(\.isActive), by: { calendar.startOfDay(for: $0.scheduledDate) }) {
+            XCTAssertLessThanOrEqual(tasks.reduce(0) { $0 + $1.allocatedMinutes }, cap + 1, "\(day)")
+        }
+        _ = untouchedSource
+    }
 
     /// An optional diagnostic invitation in the next three days stays the only one after a refresh.
     func testRefreshDoesNotAddASecondRefinementInvitation() throws {

@@ -116,6 +116,10 @@ enum PublicProgrammeService {
         if old == nil { context.insert(programme) }
 
         let frozenIDs = Set(frozen.map(\.stableID))
+        // The work this refresh may change, read before any task is retired, so the summary can
+        // report topics that lose practice as well as those that gain it.
+        let beforeTopics = oldTasks.filter { $0.isActive && $0.completedAt == nil && !frozenIDs.contains($0.stableID) }
+            .map(\.topic)
         for task in oldTasks where task.completedAt == nil && !frozenIDs.contains(task.stableID) {
             task.isActive = false
         }
@@ -140,8 +144,7 @@ enum PublicProgrammeService {
         programme.completedCountAtRefresh = oldTasks.filter { $0.completedAt != nil }.count
         programme.sessionMinutesSnapshot = settings.publicSessionMinutes
         if old != nil {
-            let before = oldTasks.filter { $0.isActive && $0.completedAt == nil && !frozenIDs.contains($0.stableID) }
-            programme.refreshSummary = refreshSummary(before: before.map(\.topic),
+            programme.refreshSummary = refreshSummary(before: beforeTopics,
                 after: result.tasks.map(\.topic), completed: programme.completedCountAtRefresh,
                 frozen: frozen.count)
         }
