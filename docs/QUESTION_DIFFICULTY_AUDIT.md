@@ -37,6 +37,8 @@ The 259 official study copies (2017–2022 Papers 1 and 2, Specimen Paper 1) are
 
 Those labels were inferred when the library was indexed. They are useful for ordering, but they are not official item statistics: UAT-UK does not publish per-question facility values. No Revisr screen claims that a question matches official TMUA difficulty.
 
+**Updated in R3 (28 October 2026):** a content-based review of all originals found stored levels higher than an independent estimate for 68 of 92, never lower. It also found no Paper 1 original above level 3 on content and no original at level 5. R3 adds 12 demanding drafts, two of them level 4 on both estimates. Existing stored levels were not changed. See `R3_MATHEMATICAL_QUALITY.md` and `R3_CONTENT_BANK_AUDIT.md`.
+
 ## How selection uses difficulty now
 
 **Updated in R2:**

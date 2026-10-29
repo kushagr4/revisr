@@ -54,6 +54,8 @@ Self-recorded results update progress and the plan, never topic evidence.
 
   It still bundles the library's metadata manifests (source titles, topics, page numbers, solution document IDs), as it did before this work.
 
+**Updated in R3 (28 October 2026):** the diagnostic hub now links to Papers & sources, and setup can be completed when no diagnostic is available, so public users reach the library. Independent preparation sites are listed as credited links. See `R3_STUDENT_RESOURCE_EXPERIENCE.md`. The original note follows.
+
 **Public builds today:** the Papers & sources screen sits in the main tabs, which open after the diagnostic. So until a public diagnostic exists (original-only, or licensed content), public users would not reach the library. Exposing it from the diagnostic hub is a product decision and was not made here.
 
 ## Diagnostic selection

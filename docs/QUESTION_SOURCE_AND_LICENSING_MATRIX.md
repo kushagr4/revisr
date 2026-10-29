@@ -2,6 +2,8 @@
 
 Status on 26 October 2026. **No third-party source has granted permission for Revisr to reproduce its questions, answer keys or solutions.** Revisr being free to students does not change that: free access and attribution are not a licence, and a public PDF link is not an open licence. Nothing below is legal advice. Provider terms are paraphrased from their own pages as read on R1 (26 October 2026) and re-checked where noted; check them again before relying on them.
 
+**Updated in R3 (28 October 2026):** provider terms were re-checked, Tyler Tutoring and TMUA Euclid are now credited links, and openly licensed sources were assessed. The per-provider evidence and the regenerated permission drafts are described in `R3_CONTENT_RIGHTS_AND_PERMISSIONS.md`. Still no permission is held.
+
 The machine-readable form of this matrix is `revisr/Resources/TMUAResourceProviders.json`, which the app uses to decide what each build shows.
 
 ## Access categories
