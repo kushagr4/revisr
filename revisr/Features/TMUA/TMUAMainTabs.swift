@@ -507,7 +507,8 @@ struct TMUAPracticeView: View {
             .frame(maxWidth: 700)
             .frame(maxWidth: .infinity)
         }
-        .navigationTitle(item.title)
+        // A title can name the method or the trap, so it appears only once the question is answered.
+        .navigationTitle(showsAnswer ? item.title : "Practice question")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { resumedAt = .now } else { accumulate() }
@@ -862,13 +863,16 @@ private struct TMUAQuestionsView: View {
                     let history = byItem[item.stableId] ?? []
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {
-                            Text(item.title).font(.subheadline.weight(.semibold))
+                            // Titles of unattempted questions stay hidden: some name the method.
+                            Text(history.isEmpty ? (content?.syllabus.strandTitle(item.taxonomy.strand) ?? "Practice question")
+                                 : item.title).font(.subheadline.weight(.semibold))
                             if flagged.contains(item.stableId) {
                                 Image(systemName: "flag.fill").foregroundStyle(RevisrColors.warning)
                                     .accessibilityLabel("Flagged")
                             }
                         }
-                        Text("Paper \(item.paper) · \(content?.syllabus.strandTitle(item.taxonomy.strand) ?? "") · level \(item.difficulty) (estimated)")
+                        Text(history.isEmpty ? "Paper \(item.paper) · level \(item.difficulty) (estimated)"
+                             : "Paper \(item.paper) · \(content?.syllabus.strandTitle(item.taxonomy.strand) ?? "") · level \(item.difficulty) (estimated)")
                             .font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
                         Text(history.isEmpty ? item.creditLine
                              : "\(history.count) attempt\(history.count == 1 ? "" : "s") · last \(history.max { $0.attemptedAt < $1.attemptedAt }?.isCorrect == true ? "correct" : "incorrect")")

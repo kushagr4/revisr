@@ -220,8 +220,17 @@ struct TMUAOnboardingView: View {
         switch step {
         case .welcome: "Build my revision plan"
         case .examDate, .availability: "Continue"
-        case .length: length.map { "Start with \($0.totalQuestions) questions" } ?? "Choose a length"
+        case .length: noLengthAvailable ? "Save and browse papers"
+            : length.map { "Start with \($0.totalQuestions) questions" } ?? "Choose a length"
         }
+    }
+
+    /// True when this build can offer no diagnostic at all (a public build before any question
+    /// has completed review and rights clearance). The student can still save their details and
+    /// reach the external library, instead of being held on a step with no enabled choice.
+    private var noLengthAvailable: Bool {
+        guard let content = TMUAContentStore.context() else { return true }
+        return TMUADiagnosticLength.allCases.allSatisfy { !content.availability(for: $0).isAvailable }
     }
 
     private var blockingHint: String? {
@@ -233,6 +242,7 @@ struct TMUAOnboardingView: View {
             return TMUAAvailabilityEditor.validationMessage(weeklyMinutes: weeklyMinutes,
                 availability: availability, sessionMinutes: sessionMinutes)
         case .length:
+            if noLengthAvailable { return nil }
             return length == nil ? "Choose how many diagnostic questions to answer." : nil
         }
     }
@@ -244,15 +254,15 @@ struct TMUAOnboardingView: View {
 
     private func advance() {
         guard step == .length else { go(1); return }
-        guard let length, let weeklyMinutes else { return }
+        guard let weeklyMinutes, length != nil || noLengthAvailable else { return }
         isSaving = true
         defer { isSaving = false }
         do {
             try PublicPreparationService.saveFlexibleTMUAProfile(
                 examDate: examDate, weeklyMinutes: weeklyMinutes, availability: availability,
                 sessionMinutes: sessionMinutes, settings: settings, in: modelContext)
-            settings.publicDiagnosticLength = length
-            if let content = TMUAContentStore.context(), content.availability(for: length).isAvailable {
+            if let length { settings.publicDiagnosticLength = length }
+            if let length, let content = TMUAContentStore.context(), content.availability(for: length).isAvailable {
                 _ = try TMUADiagnosticService.create(settings: settings, length: length,
                                                      content: content, in: modelContext)
             }
@@ -424,10 +434,27 @@ struct TMUALengthPicker: View {
                         .foregroundStyle(RevisrColors.secondaryLabel)
                 }
             }
-            ForEach(options) { option in
-                let availability = content?.availability(for: option, excluding: exposed)
-                    ?? .blocked("Question content could not be loaded.")
-                TMUALengthCard(length: option, selected: selection == option, availability: availability) {
+            let availabilities = options.map { option in
+                content?.availability(for: option, excluding: exposed) ?? .blocked("Question content could not be loaded.")
+            }
+            // When every length is blocked for the same reason, say it once, at full strength,
+            // rather than four times on dimmed cards.
+            let sharedReason: String? = availabilities.allSatisfy { !$0.isAvailable }
+                && Set(availabilities.map(\.message)).count == 1 ? availabilities.first?.message : nil
+            if let sharedReason {
+                Label(sharedReason, systemImage: "exclamationmark.triangle")
+                    .font(.subheadline)
+                    .foregroundStyle(RevisrColors.primaryLabel)
+                    .padding(RevisrSpacing.standard)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(RevisrColors.secondaryBackground,
+                                in: RoundedRectangle(cornerRadius: RevisrMetrics.prominentCornerRadius))
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier("length.unavailableNotice")
+            }
+            ForEach(Array(zip(options, availabilities)), id: \.0) { option, availability in
+                TMUALengthCard(length: option, selected: selection == option, availability: availability,
+                               showsMessage: sharedReason == nil) {
                     selection = option
                 }
             }
@@ -441,6 +468,7 @@ private struct TMUALengthCard: View {
     let length: TMUADiagnosticLength
     let selected: Bool
     let availability: TMUADiagnosticAvailability
+    var showsMessage = true
     let action: () -> Void
 
     var body: some View {
@@ -465,7 +493,7 @@ private struct TMUALengthCard: View {
                 Text("Paper 1: \(length.paperOneQuestions) · Paper 2: \(length.paperTwoQuestions) · about \(length.advisoryMinutes(for: .one) + length.advisoryMinutes(for: .two)) minutes")
                     .font(.subheadline.monospacedDigit())
                 Text(length.summary).font(.subheadline).foregroundStyle(RevisrColors.secondaryLabel)
-                if let message = availability.message {
+                if showsMessage, let message = availability.message {
                     Label(message, systemImage: "exclamationmark.triangle")
                         .font(.footnote).foregroundStyle(RevisrColors.warning)
                 }

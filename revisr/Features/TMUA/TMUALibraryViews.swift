@@ -65,6 +65,28 @@ struct TMUAResourceLibraryView: View {
                 }
             }
         }
+        let sites = TMUAResourceCatalogue.linkedProviders(TMUAResourceRegistry.bundled())
+        if !sites.isEmpty {
+            Section {
+                ForEach(sites, id: \.key) { site in
+                    if let link = site.link {
+                        Link(destination: link) {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Label(site.linkTitle ?? site.name, systemImage: "safari")
+                                    .font(.subheadline.weight(.semibold))
+                                Text(site.terms).font(.caption).foregroundStyle(RevisrColors.secondaryLabel)
+                            }
+                        }
+                        .accessibilityHint("Opens \(site.name)'s website in Safari")
+                        .accessibilityIdentifier("library.site")
+                    }
+                }
+            } header: {
+                Text("Other preparation sites")
+            } footer: {
+                Text("Independent sites, not affiliated with Revisr. Some of their materials are paid. Revisr links to them and does not reproduce their papers.")
+            }
+        }
     }
 
     private func accessLine(_ source: TMUAResourceSource) -> String {
@@ -101,6 +123,7 @@ struct TMUAResourceSourceView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(source.title).font(.title3.weight(.semibold))
                     Text("Source: \(source.provider.credit)").font(.subheadline)
+                        .accessibilityIdentifier("library.credit")
                     Text(source.kind.title + (source.year.map { " · \($0)" } ?? ""))
                         .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
                     if let correction = source.labelCorrection {
@@ -122,8 +145,10 @@ struct TMUAResourceSourceView: View {
                         openURL(link)
                     }
                     .accessibilityHint("Opens the publisher's page in Safari")
+                    .accessibilityIdentifier("library.providerLink")
                 }
                 Button("Record a whole-paper result", systemImage: "square.and.pencil") { recordingPaper = true }
+                    .accessibilityIdentifier("library.recordPaper")
             } footer: {
                 Text(source.access == .studyCopy
                      ? "Personal study copy from your own library, shown in this development build only. \(source.provider.terms)"

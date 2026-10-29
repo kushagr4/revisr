@@ -227,12 +227,29 @@ struct TMUADiagnosticHubView: View {
                   ?? "Question content could not be loaded in this build.",
                   systemImage: "exclamationmark.triangle")
                 .foregroundStyle(RevisrColors.secondaryLabel)
+                .accessibilityIdentifier("hub.unavailable")
             Text("Your examination date and study availability are saved.")
                 .font(.footnote).foregroundStyle(RevisrColors.secondaryLabel)
-            Button("Choose a different length") {
-                pendingLength = length
-                showingLengthPicker = true
+            if let content, TMUADiagnosticLength.allCases.contains(where: { content.availability(for: $0).isAvailable }) {
+                Button("Choose a different length") {
+                    pendingLength = length
+                    showingLengthPicker = true
+                }
             }
+        }
+        // Without a diagnostic there is no plan and no tabs, so the library would otherwise be
+        // out of reach in a build with no approved questions.
+        Section {
+            NavigationLink {
+                List { TMUAResourceLibraryView(settings: settings, content: content) }
+                    .navigationTitle("Papers & sources")
+                    .navigationBarTitleDisplayMode(.inline)
+            } label: {
+                Label("Browse papers and sources", systemImage: "books.vertical")
+            }
+            .accessibilityIdentifier("hub.library")
+        } footer: {
+            Text("Official papers and other sources open on their publishers’ websites. Results you record yourself track your progress but are not used as evidence of topic mastery.")
         }
     }
 
